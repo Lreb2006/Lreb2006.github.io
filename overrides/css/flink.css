@@ -1,95 +1,77 @@
-/* 友链列表容器样式 */
 .flink-list {
-  overflow: auto; /* 当内容超出容器时，显示滚动条 */
-  padding: 10px 10px 0; /* 内边距：上10px，左右10px，下0 */
-  text-align: center; /* 容器内文本居中对齐（影响行内元素和文本）*/
+  overflow: auto;
+  padding: 10px 10px 0;
+  text-align: center;
 }
-/* 友链列表内链接默认颜色 */
 .flink-list a {
-  color: #4a4a4a; /* 亮色主题下的链接颜色 */
+  color: #4a4a4a;
 }
-/* 暗色主题下友链列表内链接颜色 */
 [data-md-color-scheme="slate"] .flink-list a {
-  color: rgba(255,255,255,0.7); /* 暗色主题下的链接颜色，带透明度 */
+  color: rgba(255,255,255,0.7);
 }
-/* 单个友链项目样式 */
 .flink-list-item {
-  position: relative; /* 设置相对定位，用于可能的绝对定位子元素 */
-  float: left; /* 使项目向左浮动，实现横向排列 */
-  overflow: hidden; /* 超出项目边界的内容将被隐藏 */
-  margin: 15px 7px; /* 外边距：上下15px，左右7px */
-  /* 项目宽度计算：父容器宽度的50% 减去 15px (用于左右两个项目的间距) */
-  /* 意味着一行默认显示两个友链项目 */
+  position: relative;
+  float: left;
+  overflow: hidden;
+  margin: 15px 7px;
   width: calc(100% / 2 - 15px);
-  height: 90px; /* 项目固定高度 */
-  border-radius: 8px; /* 项目圆角 */
-  line-height: 17px; /* 行高，影响文字垂直间距 */
-  /* transform: translateZ(0) 通常用于开启硬件加速，改善动画性能 */
+  height: 90px;
+  border-radius: 8px;
+  line-height: 17px;
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
-  transition: 0.25s; /* 为所有可过渡的属性设置 0.25s 的过渡时间 */
+  transition: 0.25s;
 }
-/* 友链项目图标样式 */
 .flink-item-icon {
-  float: left; /* 图标向左浮动，在项目内部的左侧 */
-  overflow: hidden; /* 超出图标边界的内容将被隐藏 */
-  margin: 15px 10px; /* 图标外边距 */
-  width: 60px; /* 图标宽度 */
-  height: 60px; /* 图标高度 */
-  border-radius: 35px; /* 图标圆角，设为较大值可形成圆形 */
+  float: left;
+  overflow: hidden;
+  margin: 15px 10px;
+  width: 60px;
+  height: 60px;
+  border-radius: 35px;
 }
-/* 友链项目名称样式 */
 .flink-item-name {
-  padding: 19px 10px 0 0; /* 内边距：上19px，右10px，下0，左0 */
-  height: 40px; /* 名称区域高度 */
-  font-weight: bold; /* 字体加粗 */
-  font-size: 1.3em; /* 字体大小 */
+  padding: 19px 10px 0 0;
+  height: 40px;
+  font-weight: bold;
+  font-size: 1.3em;
 }
-/* 友链项目描述样式 */
 .flink-item-desc {
-  padding: 13px 10px 16px 0; /* 内边距：上13px，右10px，下16px，左0 */
-  height: 50px; /* 描述区域高度 */
-  font-size: 0.93em; /* 字体大小 */
+  padding: 13px 10px 16px 0;
+  height: 50px;
+  font-size: 0.93em;
 }
-/* 友链项目鼠标悬停效果 */
 .flink-list-item:hover {
-  background-color: rgba(68,138,255,.1); /* 背景色变化，带透明度的蓝色 */
-  transform: scale(1.1); /* 项目放大 1.1 倍 */
-  /* 添加阴影效果 */
+  background-color: rgba(68,138,255,.1);
+  transform: scale(1.1);
   box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.12), 0 0 6px 0 rgba(0, 0, 0, 0.04);
 }
-/* 再次定义友链项目宽度，确保其优先级（通常 !important 用于覆盖其他规则）*/
 .flink-list-item {
   width: calc(50% - 15px) !important;
 }
 
-/* 响应式设计：当屏幕宽度小于等于 1310px 时 */
 @media screen and (max-width: 1310px) {
   .flink-list-item {
-    width: calc(100% - 15px) !important; /* 每行显示一个友链项目 */
+    width: calc(100% - 15px) !important;
   }
 }
-/* 响应式设计：当屏幕宽度小于等于 1219px 时 */
 @media screen and (max-width: 1219px) {
   .flink-list-item {
-    width: calc(50% - 15px) !important; /* 每行显示两个友链项目 */
+    width: calc(50% - 15px) !important;
   }
 }
-/* 响应式设计：当屏幕宽度小于等于 1027px 时 */
 @media screen and (max-width: 1027px) {
   .flink-list-item {
-    width: calc(100% - 15px) !important; /* 每行显示一个友链项目 */
+    width: calc(100% - 15px) !important;
   }
 }
-/* 响应式设计：当屏幕宽度小于等于 959px 时 (通常是平板或大手机的临界点) */
 @media screen and (max-width: 959px) {
   .flink-list-item {
-    width: calc(50% - 15px) !important; /* 每行显示两个友链项目 */
+    width: calc(50% - 15px) !important;
   }
 }
-/* 响应式设计：当屏幕宽度小于等于 692px 时 (通常是手机屏幕) */
 @media screen and (max-width: 692px) {
   .flink-list-item {
-    width: calc(100% - 15px) !important; /* 每行显示一个友链项目 */
+    width: calc(100% - 15px) !important;
   }
-} 
+}

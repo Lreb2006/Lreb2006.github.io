@@ -1,5 +1,12 @@
 ---
-icon: material/home-outline
+hide:
+  - date
+  - navigation
+  - toc
+home: true
+nostatistics: true
+comments: false
+icon: material/home
 ---
 
 <div class="hero-section">

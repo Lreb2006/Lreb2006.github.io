@@ -1,53 +1,47 @@
-/* 针对 Markdown 主体内容中的任务列表项 */
 .markdown-body .task-list-item {
-  list-style-type: none !important; /* 移除列表项默认的项目符号（如圆点、数字），!important 提高优先级 */
+  list-style-type: none !important;
 }
 
-/* 任务列表项中的复选框样式 */
 .markdown-body .task-list-item input[type="checkbox"] {
-  margin: 0 4px 0.25em -20px; /* 外边距：上0 右4px 下0.25em 左-20px (负边距用于调整位置) */
-  vertical-align: middle; /* 垂直对齐方式：居中，使复选框与文本在垂直方向上对齐 */
+  margin: 0 4px 0.25em -20px;
+  vertical-align: middle;
 }
 
-/* 任务列表的控制标签 (通常是 <label>) 的样式 */
-/* .markdown-body .task-list-control (重复定义，下面的更具体) */
-/* display: inline; */ /* 确保标签是行内元素，以防主题将其设为块级 */
-
-/* 任务列表的控制标签的进一步样式 */
 .markdown-body .task-list-control {
-  position: relative; /* 相对定位，为其绝对定位的子元素（如指示器）提供基准 */
-  display: inline-block; /* 设置为行内块元素，可以设置宽高，同时像行内元素一样排列 */
-  color: #555; /* 文本颜色 */
-  cursor: pointer; /* 鼠标指针样式：手型，表示可点击 */
+  display: inline; /* Ensure label is inline incase theme sets it to block.*/
 }
 
-/* 任务列表控制标签内的原生复选框 (通常被隐藏，由自定义指示器替代) */
+.markdown-body .task-list-control {
+  position: relative;
+  display: inline-block;
+  color: #555;
+  cursor: pointer;
+}
+
 .markdown-body .task-list-control input[type="checkbox"] {
-  position: absolute; /* 绝对定位，相对于 .task-list-control */
-  opacity: 0; /* 完全透明，隐藏原生复选框 */
-  z-index: -1; /* 将原生复选框置于自定义指示器之后，防止遮挡文本或点击 */
+  position: absolute;
+  opacity: 0;
+  z-index: -1; /* Put the input behind the label so it doesn't overlay text */
 }
 
-/* 自定义复选框指示器 (即视觉上的复选框外观) */
 .markdown-body .task-list-indicator {
-  position: absolute; /* 绝对定位 */
-  top: -8px; /* 向上偏移 8px */
-  left: -18px; /* 向左偏移 18px */
-  display: block; /* 设置为块级元素，可以设置宽高 */
-  width:  14px; /* 指示器宽度 */
-  height: 14px; /* 指示器高度 */
-  color: #eee; /* 文本颜色 (此处可能用于边框或背景，如果背景是透明的话) */
-  background-color: #eee; /* 背景色 (未选中状态的复选框颜色) */
-  border-radius: .25rem; /* 圆角，使复选框边角略圆 */
+  position: absolute;
+  top: -8px;
+  left: -18px;
+  display: block;
+  width:  14px;
+  height: 14px;
+  color: #eee;
+  background-color: #eee;
+  border-radius: .25rem;
 }
 
-/* 当原生复选框被选中时，其后的自定义指示器的 :before 伪元素样式 (用于显示勾号) */
 .markdown-body .task-list-control input[type="checkbox"]:checked + .task-list-indicator::before {
-  display: block; /* 设置为块级元素 */
-  margin-top: -4px; /* 向上调整勾号位置 */
-  margin-left: 2px; /* 向左调整勾号位置 */
-  font-size: 16px; /* 勾号字体大小 */
-  line-height: 1; /* 行高为1，确保勾号垂直居中 */
-  content: "✔"; /* 使用 Unicode 对勾符号作为内容 */
-  color: #1EBB52; /* 勾号颜色 (选中状态的颜色) */
-} 
+  display: block;
+  margin-top: -4px;
+  margin-left: 2px;
+  font-size: 16px;
+  line-height: 1;
+  content: "✔";
+  color: #1EBB52;
+}

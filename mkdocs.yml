@@ -169,7 +169,8 @@ extra_css:
   - css/card.css                   # 卡片组件样式
   - css/flink.css                  # 友链样式
   - css/tasklist.css               # 自定义任务列表样式
-  - https://gcore.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css # 外部字体 (霞鹜文楷)
+  - https://gcore.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css
+  - https://gcore.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css
 
 # 额外数据，可用于模板或插件
 extra:
@@ -194,3 +195,7 @@ nav:
 extra_javascript:
   - js/mathjax.js                  # 自定义 MathJax 配置文件 (通常在 overrides/js/mathjax.js)
   - https://cn.vercount.one/js     # 外部 JS (可能是网站统计脚本)
+  - https://cn.vercount.one/js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.jss
