@@ -1,0 +1,125 @@
+/* 页脚主要样式 */
+.md-footer {
+    background-color: white !important; /* 页脚背景色设为白色，!important 提升优先级以覆盖主题默认样式 */
+    color: black !important;          /* 页脚文字颜色设为黑色 */
+}
+/* 页脚内链接样式 */
+.md-footer a { 
+    color: #007bff !important;         /* 链接文字颜色 (Bootstrap 蓝色示例) */
+}
+/* 页脚内链接鼠标悬停样式 */
+.md-footer a:hover {
+    color: #0056b3 !important;         /* 链接文字颜色变深 */
+}
+/* 版权信息特定样式 */
+.md-copyright { 
+    color: black !important;          /* 版权文字颜色设为黑色 */
+}
+
+/* 首页顶部 "Hero" (英雄/焦点图) 区域样式 */
+.hero-section {
+    /* 背景图片路径，'../img/' 表示从当前 CSS 文件 (overrides/css/custom.css) 的上一级目录 (overrides) 再进入 img 目录 */
+    background-image: url('../img/【哲风壁纸】云-动漫女孩.png'); 
+    background-size: cover;            /* 背景图片缩放以完全覆盖容器，可能裁剪图片 */
+    background-position: center;       /* 背景图片居中显示 */
+    min-height: 70vh;                  /* 最小高度为视口高度的 70% */
+    padding: 40px 20px;                /* 内边距：上下 40px，左右 20px */
+    display: flex;                     /* 使用 Flexbox 布局 */
+    flex-direction: column;            /* Flex 项目垂直排列 */
+    justify-content: center;           /* Flex 项目在主轴（垂直）上居中对齐 */
+    align-items: center;               /* Flex 项目在交叉轴（水平）上居中对齐 */
+    text-align: center;                /* 文本居中对齐 */
+    color: white;                      /* 文字颜色设为白色，以在背景图上清晰显示 */
+}
+/* Hero 区域内 H1 标题样式 */
+.hero-section h1 {
+    font-size: 2.8em;                  /* 字体大小 */
+    font-weight: bold;                 /* 字体加粗 */
+    margin-bottom: 0.6em;              /* 底部外边距 */
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.7); /* 文字阴影，增强在复杂背景上的可读性 */
+}
+/* Hero 区域内段落文字样式 */
+.hero-section p {
+    font-size: 1.4em;                  /* 字体大小 */
+    max-width: 700px;                  /* 段落最大宽度，避免文本行过长 */
+    margin-bottom: 1em;                /* 底部外边距 */
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.7); /* 文字阴影 */
+}
+
+/* CSS 自定义属性 (变量) 定义，用于全局控制字体 */
+:root { /* :root 选择器指向文档的根元素 (通常是 <html>) */
+  /* 定义自定义文本字体栈，优先使用 "LXGW WenKai Screen"，备选 "JetBrains Mono" 和通用无衬线字体 */
+  --md-text-font-custom: "LXGW WenKai Screen", "JetBrains Mono", sans-serif;
+  /* 定义自定义代码字体栈，优先使用 "JetBrains Mono" 和通用等宽字体 */
+  --md-code-font-custom: "JetBrains Mono", monospace;
+}
+/* 全局应用自定义文本字体 */
+body {
+  font-family: var(--md-text-font-custom); /* 将 body 的字体设置为上面定义的变量 */
+}
+/* 确保 Markdown 内容中的代码块也使用自定义的代码字体 */
+.md-typeset code { 
+  font-family: var(--md-code-font-custom);
+}
+
+/* 图片统一样式 */
+img {
+  /* 为 transform, box-shadow, border-radius 属性添加过渡效果 */
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, border-radius 0.3s ease-in-out;
+  border-radius: 10px;                 /* 图片圆角 */
+}
+/* 图片鼠标悬停效果 */
+img:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* 添加阴影 */
+  /* border-radius 和 transition 在此重复定义，通常在基础 img 样式中定义一次即可 */
+  border-radius: 10px;
+  transition: all 0.3s ease-in-out;
+}
+/* 暗色主题下图片鼠标悬停效果 */
+[data-md-color-scheme="slate"] img:hover {
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15); /* 阴影颜色调整为适应暗色背景 */
+}
+
+/* 亮色主题下 admonition (提示块) 和 details (可折叠详情) 的样式 */
+[data-md-color-scheme="default"] .md-typeset .admonition,
+[data-md-color-scheme="default"] .md-typeset details {
+    box-shadow: var(--md-shadow-z2); /* 使用 Material 主题定义的阴影变量 */
+    border: none;                    /* 移除边框 */
+}
+
+/* Markdown 表格样式 */
+.md-typeset__table { 
+    width: auto;                     /* 表格宽度自动，或可设为 100% 填充其包装器 */
+    margin-left: auto;                 /* 左外边距自动 */
+    margin-right: auto;                /* 右外边距自动，三者配合可使块级元素居中 */
+}
+/* Markdown 表格的包装器样式 (Material 主题通常会为 table 包裹一个 div) */
+.md-typeset div.md-typeset__table { 
+    text-align: center;              /* 使表格块本身在其父容器中居中对齐 */
+    overflow-x: auto;                /* 当表格内容过宽时，允许水平滚动 */
+}
+/* Markdown 表格的表头单元格样式 */
+.md-typeset table:not([class]) th { /* :not([class]) 排除有特定类的 table，更通用地应用到普通 Markdown 表格 */
+    text-align: center;              /* 表头文字居中 */
+}
+
+/* 媒体查询：当屏幕宽度大于等于 960px 时应用以下样式 */
+@media screen and (min-width: 960px) {
+  html { /* 调整 HTML 根元素的字体大小，从而影响整个页面的字体大小 */
+    font-size: 137.5%; /* 将基础字体大小（通常16px）放大到 22px (16 * 1.375) */
+  }
+}
+
+/* 媒体查询：当屏幕宽度大于等于 100em (通常是 1600px，如果 1em=16px) 时 */
+@media screen and (min-width: 100em) { 
+  html {
+    font-size: 137.5%; /* 保持与 960px 以上相同的字体放大比例 */
+  }
+}
+
+/* 媒体查询：当屏幕宽度大于等于 125em (通常是 2000px，如果 1em=16px) 时 */
+@media screen and (min-width: 125em) { 
+  html {
+    font-size: 137.5%; /* 保持与 960px 以上相同的字体放大比例 */
+  }
+} 
