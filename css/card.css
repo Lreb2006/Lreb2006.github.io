@@ -1,128 +1,110 @@
-/* 卡片组件的基础样式 */
 .card {
-    position: right; /* 定位属性，通常与 top, bottom, left, right 配合使用，但单独使用 'right' 效果依赖上下文 */
-    display: -ms-flexbox; /* IE10+ 的 Flexbox 写法 */
-    display: flex; /* 现代浏览器的 Flexbox 写法，使元素成为 Flex 容器 */
-    -ms-flex-direction: column; /* IE10+ Flex 项目排列方向：垂直 */
-    flex-direction: column; /* Flex 项目排列方向：垂直 */
-    min-width: 0; /* 最小宽度为0，允许卡片在 Flex 布局中收缩 */
-    word-wrap: break-word; /* 允许长单词或 URL 换行，防止溢出 */
-    background-color: #FEFEFE; /* 卡片背景色（亮色主题） */
-    background-clip: border-box; /* 背景裁剪到边框盒区域 */
-    border: 0.5px solid #606060; /* 卡片边框 */
-    transition-duration: 0.15s; /* 过渡动画的持续时间 */
-    border-radius: .25rem; /* 卡片圆角 */
-    margin-bottom: 1em; /* 卡片底部外边距 */
+    position: right;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #FEFEFE;
+    background-clip: border-box;
+    border: 0.5px solid #606060;
+    transition-duration: 0.15s;
+    border-radius: .25rem;
+    margin-bottom: 1em;
 }
 
-/* 暗色主题下的卡片样式 */
 [data-md-color-scheme="slate"] .card {
-    background-color: #181818; /* 卡片背景色（暗色主题） */
-    border: 0.5px solid #606060; /* 卡片边框（暗色主题，与亮色主题一致）*/
+    background-color: #181818;
+    border: 0.5px solid #606060;
 }
 
-/* 卡片主体内容的样式 */
 .card-body {
-    -ms-flex: 1 1 auto; /* IE10+ Flex 项目的放大、缩小比例和基础大小 */
-    flex: 1 1 auto; /* Flex 项目的放大、缩小比例和基础大小，使其填充可用空间 */
-    min-height: 1px; /* 最小高度，确保在内容为空时仍有占位 */
-    padding-left: 1rem; /* 左内边距 */
-    padding-right: 1rem; /* 右内边距 */
-    padding-bottom: 1rem; /* 底内边距 */
-    padding-top: 0.5rem; /* 顶内边距 */
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    min-height: 1px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-bottom: 1rem;
+    padding-top: 0.5rem;
 }
 
-/* 卡片头部的样式 */
 .card-header {
-    padding-left: 1.5rem; /* 左内边距 */
-    padding-right: 1.5rem; /* 右内边距 */
-    padding-top: 0.7rem; /* 顶内边距 */
-    padding-bottom: 0.25rem; /* 底内边距 */
-    margin-bottom: 0; /* 底部外边距为0 */
-    font-size: 1.5em; /* 字体大小 */
-    text-transform: uppercase; /* 文本转换为大写 */
-    font-weight: 600; /* 字体粗细 */
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-top: 0.7rem;
+    padding-bottom: 0.25rem;
+    margin-bottom: 0;
+    font-size: 1.5em;
+    text-transform: uppercase;
+    font-weight: 600;
 }
 
-/* 卡片主体内的无序列表样式 */
 .card-body ul {
-    margin-top: 0; /* 顶部外边距为0 */
-    margin-bottom: 0; /* 底部外边距为0 */
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
-/* 卡片主体内 <details> 元素的特定样式 (在 .md-typeset 环境下) */
-.md-typeset :is(.card-body details) { /* :is() 选择器用于匹配括号内任一选择器 */
-    margin-top: 0.25rem; /* 顶部外边距 */
-    margin-bottom: 0; /* 底部外边距为0 */
+.md-typeset :is(.card-body details) {
+    margin-top: 0.25rem;
+    margin-bottom: 0;
 }
 
-/* 文件块样式 (可能用于卡片内显示文件链接等) */
 .file-block {
-    display: flex; /* 设为 Flex 容器 */
-    flex-direction: row; /* Flex 项目排列方向：水平 */
-    align-items: center; /* Flex 项目在交叉轴上居中对齐 */
-    padding: 0.2em 1em; /* 内边距 */
-    transition: background-color .3s cubic-bezier(.4,0,.2,1); /* 背景色过渡效果 */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0.2em 1em;
+    transition: background-color .3s cubic-bezier(.4,0,.2,1);
 }
 
-/* 文件块鼠标悬停时的样式 */
 .file-block:hover {
-    background-color: #eeeeee; /* 背景色（亮色主题）*/
+    background-color: #eeeeee;
 }
-/* 暗色主题下文件块鼠标悬停时的样式 */
 [data-md-color-scheme="slate"] .file-block:hover {
-    background-color: #606060; /* 背景色（暗色主题）*/
+    background-color: #606060;
 }
 
-/* 文件标题样式 */
 .file-title {
-    padding-left: 0rem; /* 左内边距 */
-    margin-bottom: 0; /* 底部外边距 */
-    font-size: 1.1em; /* 字体大小 */
-    font-weight: 600; /* 字体粗细 */
+    padding-left: 0rem;
+    margin-bottom: 0;
+    font-size: 1.1em;
+    font-weight: 600;
 }
 
-/* 文件元数据区域样式 (可能用于放置文件大小、日期等) */
 .file-meta {
-    -ms-flex: 1 1 auto; /* IE10+ Flex 属性 */
-    flex: 1 1 auto; /* Flex 属性，使其填充可用空间 */
-    min-height: 1px; /* 最小高度 */
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    min-height: 1px;
 }
 
-/* 文件主体内容区域样式 (可能用于文件描述) */
 .file-body {
-    padding-left: 1em; /* 左内边距 */
-    margin-right: auto; /* 右外边距自动，常用于 Flex 布局中推开其他元素 */
+    padding-left: 1em;
+    margin-right: auto;
 }
 
-/* 下载按钮样式 */
 .down-button {
-    border: 0.05rem solid; /* 边框 */
-    border-radius: 0.1rem; /* 圆角 */
-    cursor: pointer; /* 鼠标指针样式：手型 */
-    display: inline-block; /* 显示为行内块元素 */
-    font-weight: 700; /* 字体粗细 */
-    padding: 0.25em 0.5em; /* 内边距 */
-    /* 颜色、背景色、边框色的过渡效果，!important 提升优先级 */
-    transition: color .3s,background-color .3s,border-color .3s !important; 
+    border: 0.05rem solid;
+    border-radius: 0.1rem;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: 700;
+    padding: 0.25em 0.5em;
+    transition: color .3s,background-color .3s,border-color .3s !important;
 }
 
-/* 下载按钮获得焦点或鼠标悬停时的样式 */
-.down-button:is(:focus,:hover) { /* :is() 选择器用于匹配焦点或悬停状态 */
-    background-color: var(--md-accent-fg-color); /* 背景色使用主题强调前景色变量 */
-    border-color: var(--md-accent-fg-color); /* 边框色使用主题强调前景色变量 */
-    color: var(--md-accent-bg-color) !important; /* 文字颜色使用主题强调背景色变量，!important 提升优先级 */
+.down-button:is(:focus,:hover) {
+    background-color: var(--md-accent-fg-color);
+    border-color: var(--md-accent-fg-color);
+    color: var(--md-accent-bg-color) !important;
 }
 
-/* 卡片鼠标悬停时的样式 */
 .card:hover {
-   transform: scale(1.1); /* 放大 1.1 倍 */
-   /* 添加阴影效果 */
+   transform: scale(1.1);
    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.12), 0 0 6px 0 rgba(0, 0, 0, 0.04);
 }
 
-/* 卡片内的链接样式 */
 .card a {
-   border: none; /* 移除链接的边框 (Material 主题可能默认给链接加下划线或边框) */
+   border: none;
 }
  
