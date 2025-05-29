@@ -1,5 +1,5 @@
 :root {
-  --md-text-font: "JetBrains Mono", "LXGW WenKai Screen"; 
+  --md-text-font: "JetBrains Mono", "LXGW WenKai Screen";
   --md-code-font: "JetBrains Mono";
   --base-border-radius: 0.5rem;
 }
@@ -120,16 +120,16 @@ body[data-md-prefers-color-scheme=true] .md-icon .unknown-mode {
 
 [data-md-color-scheme="slate"] .fl-affected {
   background: linear-gradient(
-    45deg, 
-    rgb(255 255 255 / 30%) 0, rgb(255 255 255 / 30%) 25%, transparent 25%, transparent 50%, 
+    45deg,
+    rgb(255 255 255 / 30%) 0, rgb(255 255 255 / 30%) 25%, transparent 25%, transparent 50%,
     rgb(255 255 255 / 30%) 50%, rgb(255 255 255 / 30%) 75%, transparent 75%, transparent
   );
   background-size: 10px 10px;
 }
 [data-md-color-scheme="default"] .fl-affected {
   background: linear-gradient(
-    45deg, 
-    rgb(0 0 0 / 30%) 0, rgb(0 0 0 / 30%) 25%, transparent 25%, transparent 50%, 
+    45deg,
+    rgb(0 0 0 / 30%) 0, rgb(0 0 0 / 30%) 25%, transparent 25%, transparent 50%,
     rgb(0 0 0 / 30%) 50%, rgb(0 0 0 / 30%) 75%, transparent 75%, transparent
   );
   background-size: 10px 10px;
@@ -259,4 +259,74 @@ img:hover {
 .md-typeset table:not([class]) th {
     min-width: 0rem;
     text-align: center; /* 可选：表头文字居中 */
+}
+
+/* 仅针对首页 (home: true 对应的模板) 设置背景 */
+body[data-md-template="home.html"] {
+  background-image: url("../img/hero-background.png"); /* 图片路径相对于 custom.css */
+  background-size: cover; /* 图片覆盖整个区域 */
+  background-position: center center; /* 图片居中显示 */
+  background-repeat: no-repeat; /* 图片不重复 */
+  background-attachment: fixed; /* 背景图片固定，内容滚动时产生视差效果 (可选) */
+}
+
+/* 使首页的头部导航栏背景透明 */
+body[data-md-template="home.html"] .md-header {
+  background-color: transparent !important; /* 使用 !important 确保覆盖主题默认样式 */
+  position: absolute; /* 让 header 浮动在背景之上，并占据宽度 */
+  width: 100%;
+  /* 如果背景图颜色复杂，可以给 header 加一点点阴影让它和背景区分开 */
+  /* box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); */
+}
+
+/* 调整首页头部导航栏中文字、图标颜色，确保在背景图上可读 */
+body[data-md-template="home.html"] .md-header .md-header__topic .md-ellipsis,
+body[data-md-template="home.html"] .md-header .md-nav__link, /* 导航链接 */
+body[data-md-template="home.html"] .md-header .md-tabs__link, /* Tabs 导航链接 */
+body[data-md-template="home.html"] .md-header .md-social__link svg, /* 社交图标 */
+body[data-md-template="home.html"] .md-header [data-md-component="palette"] .md-icon svg, /* 调色板图标 */
+body[data-md-template="home.html"] .md-header .md-search__icon svg { /* 搜索图标 */
+  color: white !important; /* 假设白色在你的背景图上更清晰 */
+  fill: white !important; /*针对 SVG 图标的填充色 */
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.7), 0 0 5px rgba(0, 0, 0, 0.5); /* 给文字和图标加点阴影提高可读性 */
+}
+
+body[data-md-template="home.html"] .md-header .md-search__input {
+    color: white !important; /* 搜索框文字颜色 */
+    /* 如果搜索框背景也需要调整，可以类似处理 */
+    /* background-color: rgba(255, 255, 255, 0.1); */
+    /* border-color: rgba(255, 255, 255, 0.3); */
+}
+
+/* 确保搜索建议的背景和文字也适配 */
+body[data-md-template="home.html"] .md-search__input::placeholder { /* 修正: 作用于 input 并使用 ::placeholder */
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+body[data-md-template="home.html"] .md-search__input:-ms-input-placeholder { /* 修正: IE 10-11 兼容 */
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+body[data-md-template="home.html"] .md-search__input::-ms-input-placeholder { /* 修正: Edge 兼容 */
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+
+/* 使首页的主要内容区域背景透明，这样才能透出 body 的背景图 */
+body[data-md-template="home.html"] .md-main__inner {
+  background-color: transparent !important;
+}
+
+/* 你首页的 .hero-section 文本颜色可能也需要调整 */
+body[data-md-template="home.html"] .hero-section h1,
+body[data-md-template="home.html"] .hero-section p {
+  color: white; /* 或者其他在背景图上清晰的颜色 */
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.8), 0 0 8px rgba(0, 0, 0, 0.6); /* 增加文字阴影提高可读性 */
+}
+
+/* 首页内容区域可能需要一些顶部内边距，以避免被绝对定位的 header 遮挡 */
+/* Material for MkDocs 的 .md-content 默认有 padding-top，但 header 绝对定位后，
+  这个 padding 的参照物变了。你可能需要根据你的 header 高度调整。
+  一个简单的做法是给 .md-main 也加上 padding-top */
+body[data-md-template="home.html"] .md-main {
+    margin-top: 0; /* 重置可能存在的 margin */
+    padding-top: 4.5rem; /* 假设 header 大约是 3rem 或 4.5rem 高，根据实际情况调整 */
 }

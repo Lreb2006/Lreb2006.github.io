@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+
+{# 在页面主要内容之后，页脚之前插入评论区 #}
+{% block content_footer %}
+  {{ super() }} {# 保留主题原有的 content_footer 内容 #}
+  {% include "partials/comment.html" %} {# 包含你的 comment.html 片段 #}
+{% endblock %}

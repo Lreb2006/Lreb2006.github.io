@@ -1,7 +1,6 @@
 ---
 glightbox: false
 nostatistics: true
-git-revision-date-localize: false
 icon: /octicons/link-24
 ---
 
@@ -11,7 +10,7 @@ icon: /octicons/link-24
 <div class="flink-list">
 
 <div class="flink-list-item">
-    <a href="www.qcrtimo.com" title="QcrTiMo" target="_blank">
+    <a href="https://www.qcrtimo.com" title="QcrTiMo" target="_blank">
         <div class="flink-item-icon">
             <img src="https://qcrtimo.com/wp-content/uploads/2025/04/QcrTiMo.png" alt="佳代子">
         </div>

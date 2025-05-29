@@ -68,7 +68,7 @@ theme:
 
   # 主题内置图标配置
   icon:
-    logo: material/chess-queen         # 导航栏左上角显示的 Logo 图标
+    logo: material/jellyfish         # 导航栏左上角显示的 Logo 图标
     repo: fontawesome/brands/git-alt   # 代码仓库链接旁边显示的图标
     edit: material/pencil              # "编辑此页" 按钮图标 (如果启用)
 
@@ -90,6 +90,12 @@ plugins:
       enable_creation_date: true     # 同时显示页面创建日期
       exclude:                       # 排除以下页面的日期显示
         - index.md
+        - backend/index.md
+        - notes/index.md
+        - summaries/index.md
+        - links/index.md
+        - about/index.md
+        - blogs/index.md
         
   - minify:                          # 压缩 HTML 文件以减小体积
                                      # 需要安装 `pip install mkdocs-minify-plugin`
