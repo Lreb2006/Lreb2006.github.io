@@ -6,7 +6,7 @@ site_description: 路人蛃的个人网址 # 网站描述，用于搜索引擎�
 
 # 代码仓库信息 (可选，用于在网站上显示仓库链接)
 repo_url: https://github.com/Lreb2006/Lreb2006.github.io # 仓库的 URL
-repo_name: Lrein's Site          # 在网站上显示的仓库名称
+repo_name: Lrebin's Site          # 在网站上显示的仓库名称
 
 # 版权信息，显示在页脚
 copyright: Copyright &copy; 2025 路人蛃
@@ -63,7 +63,7 @@ theme:
     text: JetBrains Mono               # 主要文本字体设置为 JetBrains Mono (通常在 custom.css 中会被覆盖)
 
   # 网站图标配置
-  favicon:                             # 指向网站 favicon.ico 或 .png 文件的路径 (相对于 docs 目录)
+  favicon: img/favoricon.png                             # 指向网站 favicon.ico 或 .png 文件的路径 (相对于 docs 目录)
                                        # 例如: img/favicon.png
 
   # 主题内置图标配置
@@ -94,7 +94,6 @@ plugins:
         - notes/index.md
         - summaries/index.md
         - links/index.md
-        - about/index.md
         - blogs/index.md
         
   - minify:                          # 压缩 HTML 文件以减小体积
@@ -181,15 +180,31 @@ extra_css:
 # 额外数据，可用于模板或插件
 extra:
   social:                            # 社交链接配置，通常在主题中用于显示社交图标链接
-    - icon: /fontawesome/brands/qq   # 图标路径或 FontAwesome 类名 (需要主题支持)
+    - icon: fontawesome/brands/qq   # 图标路径或 FontAwesome 类名 (需要主题支持)
       link: \img\qq.png              # 链接地址 (此处是本地图片，可能用于显示QQ二维码)
       name: contact with me!           # 鼠标悬浮提示或链接文字
+
+    - icon: fontawesome/brands/bilibili
+      link: https://space.bilibili.com/382127786?spm_id_from=333.337.0.0           
+      name: subscribe to me!
+
+    - icon: csdn-logo
+      link: https://blog.csdn.net/2403_87432910         
+      name: visit my csdn blog!
 
 # 导航栏配置
 # 定义网站的页面结构和导航顺序
 nav:
-  - Home: index.md                  # "Home" 导航项链接到 docs/index.md
-  - Backend: backend/index.md       # "Backend" 链接到 docs/backend/index.md
+  - Home: index.md             
+  - Backend: 
+    - index: backend/index.md
+    - JavaSE: 
+      - "1 基本语法": backend/javase/1-基本语法.md
+      - "2 方法": backend/javase/2-方法.md
+      - "3 面向对象1": backend/javase/3-面向对象1.md
+      - "4 面向对象2": backend/javase/4-面向对象2.md
+      - "5 核心类1": backend/javase/5-核心类1.md
+      - "6 核心类2": backend/javase/6-核心类2.md
   - Notes: notes/index.md
   - Summaries: summaries/index.md
   - Links: links/index.md
@@ -200,8 +215,9 @@ nav:
 # 路径规则同 extra_css
 extra_javascript:
   - js/mathjax.js                  # 自定义 MathJax 配置文件 (通常在 overrides/js/mathjax.js)
+  - js/extra.js                    # Sakura falling effect
   - https://cn.vercount.one/js     # 外部 JS (可能是网站统计脚本)
   - https://cn.vercount.one/js
   - https://polyfill.io/v3/polyfill.min.js?features=es6
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
-  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.jss
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js # Corrected .jss to .js

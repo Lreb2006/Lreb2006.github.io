@@ -1,7 +1,196 @@
+<!-- 
+{% if page and page.meta %}
+  DEBUG_EXTRA_CLASSES_RAW: {{ page.meta.extra_classes }}
+  DEBUG_EXTRA_CLASSES_JOINED: "{{ page.meta.extra_classes | join(' ') }}"
+{% else %}
+  DEBUG: page or page.meta is undefined for this page (e.g., 404.html)
+{% endif %}
+-->
 {% extends "base.html" %}
+
+{% block hero %}
+  {{ super() }} {# This preserves any hero content the page might already have #}
+  {% if page and page.meta and page.meta.home %}
+    <script>
+      document.body.classList.add('homepage');
+    </script>
+    <div id="vinyl-player-wrapper-home" class="vinyl-player-instance">
+      <div id="vinyl-disk-rotator-home" class="vinyl-disk"></div>
+      <div id="play-pause-button-home" class="play-pause-btn paused"></div>
+    </div>
+    <audio id="custom-background-audio-home" loop>
+      {# Ensure 'audio/Cherish.mp3' matches the path and name of the file you placed in step 1 #}
+      <source src="{{ 'audio/Cherish.mp3' | url }}" type="audio/mpeg">
+      您的浏览器不支持音频播放。
+    </audio>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const audio_home = document.getElementById('custom-background-audio-home');
+        const playPauseButton_home = document.getElementById('play-pause-button-home');
+        const vinylDiskRotator_home = document.getElementById('vinyl-disk-rotator-home');
+
+        if (playPauseButton_home && audio_home && vinylDiskRotator_home) {
+          playPauseButton_home.addEventListener('click', function() {
+            if (audio_home.paused || audio_home.ended) {
+              audio_home.play().then(() => {
+                playPauseButton_home.classList.remove('paused');
+                playPauseButton_home.classList.add('playing');
+                vinylDiskRotator_home.style.animationPlayState = 'running';
+              }).catch(error => console.error("Error playing audio on home:", error));
+            } else {
+              audio_home.pause();
+              playPauseButton_home.classList.remove('playing');
+              playPauseButton_home.classList.add('paused');
+              vinylDiskRotator_home.style.animationPlayState = 'paused';
+            }
+          });
+
+          audio_home.addEventListener('ended', function() {
+            playPauseButton_home.classList.remove('playing');
+            playPauseButton_home.classList.add('paused');
+            vinylDiskRotator_home.style.animationPlayState = 'paused';
+            audio_home.currentTime = 0;
+          });
+
+          audio_home.addEventListener('pause', function() {
+            if (!audio_home.ended) {
+                playPauseButton_home.classList.remove('playing');
+                playPauseButton_home.classList.add('paused');
+                vinylDiskRotator_home.style.animationPlayState = 'paused';
+            }
+          });
+
+           audio_home.addEventListener('play', function() {
+                playPauseButton_home.classList.remove('paused');
+                playPauseButton_home.classList.add('playing');
+                vinylDiskRotator_home.style.animationPlayState = 'running';
+          });
+
+          audio_home.play().then(() => {
+            playPauseButton_home.classList.remove('paused');
+            playPauseButton_home.classList.add('playing');
+            vinylDiskRotator_home.style.animationPlayState = 'running';
+          }).catch(error => {
+            console.error("Autoplay failed on home:", error);
+            playPauseButton_home.classList.remove('playing');
+            playPauseButton_home.classList.add('paused');
+            vinylDiskRotator_home.style.animationPlayState = 'paused';
+          });
+
+        } else {
+          if (document.body.classList.contains('homepage')) { // Check class instead of attribute
+             console.error('Home audio player elements not found!');
+          }
+        }
+      });
+    </script>
+  {% endif %}
+
+  {% if page and page.meta and page.meta.about_player %}
+    <div id="vinyl-player-wrapper-about" class="vinyl-player-instance">
+      <div id="vinyl-disk-rotator-about" class="vinyl-disk"></div>
+      <div id="play-pause-button-about" class="play-pause-btn paused"></div>
+    </div>
+    <audio id="custom-background-audio-about">
+      <!-- <source src="{{ 'audio/About/Everything\'sAlright.mp3' | url }}" type="audio/mpeg"> -->
+      您的浏览器不支持音频播放。
+    </audio>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const audio_about = document.getElementById('custom-background-audio-about');
+        const playPauseButton_about = document.getElementById('play-pause-button-about');
+        const vinylDiskRotator_about = document.getElementById('vinyl-disk-rotator-about');
+
+        const aboutPlaylist = [
+          { src: "{{ 'audio/About/FindingParadise.mp3' | url }}" }, 
+          { src: "{{ 'audio/About/Everything\'sAlright.mp3' | url }}" }
+        ];
+        let currentTrackIndex_about = 0;
+
+        function loadTrack_about(trackIndex) {
+          if (!audio_about) return;
+          audio_about.src = aboutPlaylist[trackIndex].src;
+          audio_about.load();
+          // Cover is fixed by CSS, no JS update needed for cover based on Strategy A
+        }
+
+        if (playPauseButton_about && audio_about && vinylDiskRotator_about) {
+          loadTrack_about(currentTrackIndex_about); // Load the first track initially
+
+          playPauseButton_about.addEventListener('click', function() {
+            // Ensure the current track is loaded if src is not set or different
+            if (!audio_about.src || audio_about.currentSrc !== aboutPlaylist[currentTrackIndex_about].src) {
+                loadTrack_about(currentTrackIndex_about);
+            }
+            if (audio_about.paused || audio_about.ended) {
+              audio_about.play().then(() => {
+                playPauseButton_about.classList.remove('paused');
+                playPauseButton_about.classList.add('playing');
+                vinylDiskRotator_about.style.animationPlayState = 'running';
+              }).catch(error => console.error("Error playing audio on about:", error));
+            } else {
+              audio_about.pause();
+              playPauseButton_about.classList.remove('playing');
+              playPauseButton_about.classList.add('paused');
+              vinylDiskRotator_about.style.animationPlayState = 'paused';
+            }
+          });
+
+          audio_about.addEventListener('ended', function() {
+            currentTrackIndex_about++;
+            if (currentTrackIndex_about >= aboutPlaylist.length) {
+              currentTrackIndex_about = 0; // Loop back to the first track
+            }
+            loadTrack_about(currentTrackIndex_about);
+            audio_about.play().then(() => {
+                playPauseButton_about.classList.remove('paused');
+                playPauseButton_about.classList.add('playing');
+                vinylDiskRotator_about.style.animationPlayState = 'running';
+            }).catch(error => console.error("Error auto-playing next track on about:", error));
+          });
+
+          audio_about.addEventListener('pause', function() {
+            if (!audio_about.ended) {
+                playPauseButton_about.classList.remove('playing');
+                playPauseButton_about.classList.add('paused');
+                vinylDiskRotator_about.style.animationPlayState = 'paused';
+            }
+          });
+
+           audio_about.addEventListener('play', function() {
+                playPauseButton_about.classList.remove('paused');
+                playPauseButton_about.classList.add('playing');
+                vinylDiskRotator_about.style.animationPlayState = 'running';
+          });
+
+          // Autoplay the first track (after it's loaded by loadTrack_about above)
+          audio_about.play().then(() => {
+            playPauseButton_about.classList.remove('paused');
+            playPauseButton_about.classList.add('playing');
+            vinylDiskRotator_about.style.animationPlayState = 'running';
+          }).catch(error => {
+            // console.error("Autoplay failed on about:", error); // Autoplay might be blocked
+            // UI should remain in loaded & paused state if autoplay fails silently
+            if (audio_about.paused) { // Ensure UI reflects actual state
+                playPauseButton_about.classList.remove('playing');
+                playPauseButton_about.classList.add('paused');
+                vinylDiskRotator_about.style.animationPlayState = 'paused';
+            }
+          });
+
+        } else {
+          console.error('About page audio player elements not found (or page.meta.about_player is false at JS execution time)!');
+        }
+      });
+    </script>
+  {% endif %}
+{% endblock %}
 
 {# 在页面主要内容之后，页脚之前插入评论区 #}
 {% block content_footer %}
   {{ super() }} {# 保留主题原有的 content_footer 内容 #}
-  {% include "partials/comment.html" %} {# 包含你的 comment.html 片段 #}
+  {% if page and page.meta and page.meta.comments %}
+    {% include "partials/comment.html" %}
+  {% endif %}
 {% endblock %}

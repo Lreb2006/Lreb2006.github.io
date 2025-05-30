@@ -3,14 +3,59 @@ hide:
   - date
   - navigation
   - toc
+# template: home.html # Removed this due to 'home.html' not found error
 home: true
 nostatistics: true
 comments: false
-icon: material/home
+icon: fontawesome/solid/house
+extra_classes:
+  - homepage
 ---
 
+<br><br><br>
 <div class="hero-section">
-  <h1>欢迎来到 路人蛃 的站点</h1>
-  <p>这里是我的个人空间，记录学习、分享感悟，希望你能在这里找到有价值的内容。</p>
+  <h1 style="text-align: center; font-size: 3em; letter-spacing: 0.1em;">欢迎来到路人蛃的博客🥳</h1>
+  <p id="typing-effect" style="text-align: center; font-size: 1.5em; letter-spacing: 0.05em;"></p>
   <!-- 您可以在这里添加更多介绍性文字或按钮 -->
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const textElement = document.getElementById('typing-effect');
+  const textsToAnimate = [
+    "Only through hell can one create heaven.",
+    "Only with bleeding fingers can one play the world\'s most sublime tunes."
+  ];
+  let currentTextIndex = 0;
+  let index = 0;
+  let isDeleting = false;
+
+  function typeWriter() {
+    const currentText = textsToAnimate[currentTextIndex];
+    if (!isDeleting && index < currentText.length) {
+      textElement.innerHTML = currentText.substring(0, index + 1) + '<span class="cursor"></span>';
+      index++;
+      setTimeout(typeWriter, 60); // Faster typing
+    } else if (isDeleting && index > 0) {
+      textElement.innerHTML = currentText.substring(0, index - 1) + '<span class="cursor"></span>';
+      index--;
+      setTimeout(typeWriter, 30); // Faster deleting
+    } else if (!isDeleting && index === currentText.length) {
+      // Pause at the end of typing
+      setTimeout(() => {
+        isDeleting = true;
+        setTimeout(typeWriter, 500); // Wait before deleting
+      }, 2000);
+    } else if (isDeleting && index === 0) {
+      isDeleting = false;
+      currentTextIndex = (currentTextIndex + 1) % textsToAnimate.length; // Move to the next text
+      // Pause before typing again
+      setTimeout(() => {
+          index = 0; // Reset index to start typing from the beginning
+          setTimeout(typeWriter, 500); // Wait before re-typing
+      }, 1000);
+    }
+  }
+  typeWriter();
+});
+</script>
