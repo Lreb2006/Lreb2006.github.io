@@ -1,7 +1,6 @@
 ---
 import mobileDarkImage from "@/assets/images/charlore/mobile-home-dark.webp";
 import mobileLightImage from "@/assets/images/charlore/mobile-home-light.webp";
-import ImageWrapper from "@/components/common/ImageWrapper.astro";
 import TypewriterText from "@/components/features/TypewriterText.astro";
 import HomeTiltImageCard from "@/components/layout/HomeTiltImageCard.astro";
 
@@ -13,43 +12,19 @@ const mobileQuotes = [
 ---
 
 <section class="home-water-garden-backdrop" aria-label="Charloré 水花园主页背景">
-	<div class="home-hero-card-layer" data-home-desktop-hero>
-		<template data-home-desktop-hero-template>
-			<HomeTiltImageCard />
-		</template>
+	<div class="home-hero-card-layer">
+		<HomeTiltImageCard />
 	</div>
 
 	<div class="mobile-home-art" aria-hidden="true">
-		<div class="mobile-home-art-image mobile-home-art-light">
-			<ImageWrapper
-				class="mobile-home-art-render"
-				src="assets/images/charlore/mobile-home-light.webp"
-				alt=""
-				width={mobileLightImage.width}
-				widths={[320, 480, 640, 828]}
-				sizes="100vw"
-				layout="full-width"
-				loading="lazy"
-				fetchpriority="high"
-				quality={80}
-				showOverlay={false}
-			/>
-		</div>
-		<div class="mobile-home-art-image mobile-home-art-dark">
-			<ImageWrapper
-				class="mobile-home-art-render"
-				src="assets/images/charlore/mobile-home-dark.webp"
-				alt=""
-				width={mobileDarkImage.width}
-				widths={[320, 480, 640, 828]}
-				sizes="100vw"
-				layout="full-width"
-				loading="lazy"
-				fetchpriority="high"
-				quality={80}
-				showOverlay={false}
-			/>
-		</div>
+		<div
+			class="mobile-home-art-image mobile-home-art-light"
+			style={`background-image: url("${mobileLightImage.src}")`}
+		></div>
+		<div
+			class="mobile-home-art-image mobile-home-art-dark"
+			style={`background-image: url("${mobileDarkImage.src}")`}
+		></div>
 	</div>
 
 	<div class="garden-celestial-field" aria-hidden="true">
@@ -391,14 +366,6 @@ const mobileQuotes = [
 
 	.mobile-home-art-dark {
 		display: none;
-	}
-
-	.mobile-home-art-image :global(picture),
-	.mobile-home-art-image :global(img),
-	.mobile-home-art-image :global(.mobile-home-art-render) {
-		display: block;
-		width: 100%;
-		height: 100%;
 	}
 
 	.mobile-home-quote {
@@ -1073,13 +1040,9 @@ const mobileQuotes = [
 			position: absolute;
 			inset: 0;
 			display: block;
-			min-width: 100%;
-			min-height: 100%;
-		}
-
-		.mobile-home-art-image :global(img) {
-			object-fit: cover;
-			object-position: center;
+			background-position: center;
+			background-repeat: no-repeat;
+			background-size: cover;
 		}
 
 		.mobile-home-art-dark {

@@ -37,10 +37,6 @@ const scrollIndicatorUrl = new URL(
 	import.meta.url,
 );
 const navbarUrl = new URL("./Navbar.astro", import.meta.url);
-const navbarCompactStateUrl = new URL(
-	"../../utils/navbar-compact-state.ts",
-	import.meta.url,
-);
 const tiltCardUrl = new URL("./HomeTiltImageCard.astro", import.meta.url);
 const mainStyleUrl = new URL("../../styles/main.css", import.meta.url);
 const navbarStyleUrl = new URL("../../styles/navbar.css", import.meta.url);
@@ -314,16 +310,6 @@ test("homepage labels stay above the unreparented hero while both story cards sh
 	assert.match(tiltCard, /\.home-tilt-card-shell--story\s*\{[^}]*inset:\s*0/s);
 });
 
-test("desktop-only template mounting initializes tilt behavior after insertion", async () => {
-	const [story, tiltCard] = await Promise.all([
-		readFile(componentUrl, "utf8"),
-		readFile(tiltCardUrl, "utf8"),
-	]);
-
-	assert.match(story, /charlore:home-tilt-mounted/);
-	assert.match(tiltCard, /charlore:home-tilt-mounted/);
-});
-
 test("the final portal overtakes the first story card during expansion", async () => {
 	const source = await readFile(componentUrl, "utf8");
 
@@ -390,18 +376,16 @@ test("returning home at the top clears stale hero shrink before the story is sho
 });
 
 test("the finale expands both navbar capsules and restores scroll control on reverse", async () => {
-	const [story, navbar, compactState] = await Promise.all([
+	const [story, navbar] = await Promise.all([
 		readFile(componentUrl, "utf8"),
 		readFile(navbarUrl, "utf8"),
-		readFile(navbarCompactStateUrl, "utf8"),
 	]);
 
 	assert.match(story, /data-home-story-nav-expanded/);
 	assert.match(story, /charlore:home-story-nav-state/);
 	assert.match(story, /finaleProgressCurrent\s*>=\s*0\.98/);
 	assert.match(navbar, /data-home-story-nav-expanded/);
-	assert.match(navbar, /replaceNavbarCompactHandler/);
-	assert.match(compactState, /charlore:home-story-nav-state/);
+	assert.match(navbar, /charlore:home-story-nav-state/);
 });
 
 test("dark homepage and story foreground use the same card crop contract", async () => {
