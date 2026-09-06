@@ -4,15 +4,16 @@ import { Icon } from "astro-icon/components";
 import PageJump from "@/components/common/PageJump.svelte";
 import I18nKey from "@/i18n/i18nKey";
 import { i18n } from "@/i18n/translation";
-import { url } from "@/utils/url-utils";
+import { getPaginationPath, url } from "@/utils/url-utils";
 
 interface Props {
 	page: Page;
+	basePath?: string;
 	class?: string;
 	style?: string;
 }
 
-const { page, style } = Astro.props;
+const { page, style, basePath = "/" } = Astro.props;
 
 const HIDDEN = -1;
 
@@ -49,13 +50,12 @@ if (r === page.lastPage - 2) pages.push(page.lastPage - 1);
 if (r < page.lastPage) pages.push(page.lastPage);
 
 const getPageUrl = (p: number) => {
-	if (p === 1) return "/";
-	return `/${p}/`;
+	return getPaginationPath(basePath, p);
 };
 
 // 传给 PageJump island 的跳转模板。函数没法跨 island 边界传，只能给字符串
-const jumpHrefTemplate = url("/{page}/");
-const jumpHrefFirst = url("/");
+const jumpHrefTemplate = url(getPaginationPath(basePath, "{page}"));
+const jumpHrefFirst = url(getPaginationPath(basePath, 1));
 ---
 
 <div class:list={[className, "pagination-wrapper flex flex-col gap-4 items-center"]} style={style}>

@@ -18,13 +18,12 @@ if (!siteConfig.pages.friends) {
 	return Astro.redirect("/404/");
 }
 
-const friendsPost = await getEntry("spec", "friends");
-
-if (!friendsPost) {
-	throw new Error("friends page content not found");
-}
-
-const { Content } = await render(friendsPost);
+// 友链卡片来自配置，只有启用自定义内容时才读取 Markdown。
+const friendsPost =
+	friendsPageConfig.showCustomContent !== false
+		? await getEntry("spec", "friends")
+		: undefined;
+const Content = friendsPost ? (await render(friendsPost)).Content : undefined;
 
 // 检查评论系统是否启用
 const isCommentEnabled =
@@ -84,7 +83,7 @@ const description =
                 class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-(--line-divider) bg-transparent text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 dark:placeholder-neutral-500 focus:border-(--primary) focus:ring-1 focus:ring-(--primary) outline-none transition-all duration-200 text-sm"
               />
             </div>
-            <div class="flex flex-wrap gap-2">
+            {allTags.length > 0 && <div class="flex flex-wrap gap-2">
               <button
                 data-tag="all"
                 class="category-pill px-3 py-1.5 rounded-full text-sm font-medium transition-colors duration-200"
@@ -100,7 +99,7 @@ const description =
                   {tag}
                 </button>
               ))}
-            </div>
+            </div>}
           </friend-filter>
         )
       }
@@ -180,7 +179,7 @@ const description =
     </div>
   </div>
 
-  {friendsPageConfig.showCustomContent !== false && (
+  {Content && (
     <div class="mt-4 card-base z-10 px-9 py-6 relative w-full">
       <Markdown class="">
         <Content />

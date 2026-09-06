@@ -25,6 +25,9 @@ declare global {
 		/** 按需加载 pagefind.js，由 Navbar.astro 的内联脚本挂载；幂等 */
 		__loadPagefind?: () => Promise<void>;
 		__pagefindLoading?: Promise<void>;
+		/** 同步释放首页滚动叙事的固定层、动画和导航状态。 */
+		__charloreHomeStoryDeactivate?: () => void;
+		__charloreHomeStoryActivate?: () => void;
 		__fireflyMusic?: {
 			init: () => Promise<void>;
 			getState: () => {

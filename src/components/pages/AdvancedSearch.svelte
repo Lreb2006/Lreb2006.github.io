@@ -4,11 +4,12 @@ import { i18n } from "@i18n/translation";
 import { onMount } from "svelte";
 import Icon from "@/components/common/Icon.svelte";
 import type { SearchResult } from "@/global";
-import { url as formatUrl } from "@/utils/url-utils";
+import { type LocalSearchEntry, searchLocalPosts } from "@/utils/search-utils";
 
 // --- Props ---
 export let title = i18n(I18nKey.search);
 export let description = "";
+export let localEntries: LocalSearchEntry[] = [];
 
 // --- State ---
 let keyword = "";
@@ -25,20 +26,6 @@ const getInitialKeyword = (): string => {
 	return "";
 };
 
-// --- Mocks for Dev Mode ---
-const fakeResult: SearchResult[] = [
-	{
-		url: formatUrl("/"),
-		meta: { title: "Dev Mode Search Result 1" },
-		excerpt: "This is a <mark>mock</mark> result for development.",
-	},
-	{
-		url: formatUrl("/"),
-		meta: { title: "Dev Mode Search Result 2" },
-		excerpt: "Pagefind only works in <mark>production</mark> build.",
-	},
-];
-
 // --- Core Search Logic ---
 const search = async () => {
 	if (!initialized || !keyword.trim()) {
@@ -48,19 +35,14 @@ const search = async () => {
 	isSearching = true;
 
 	try {
-		if (import.meta.env.PROD && window.pagefind) {
+		if (window.pagefind) {
 			const response = await window.pagefind.search(keyword);
 			const rawResults = await Promise.all(
 				response.results.map((item) => item.data()),
 			);
 			results = rawResults;
 		} else if (import.meta.env.DEV) {
-			// 开发模式下的模拟结果
-			results = fakeResult.filter(
-				(item) =>
-					item.excerpt.toLowerCase().includes(keyword.toLowerCase()) ||
-					item.meta.title.toLowerCase().includes(keyword.toLowerCase()),
-			);
+			results = searchLocalPosts(localEntries, keyword);
 		}
 	} catch (error) {
 		console.error("Search error:", error);

@@ -49,3 +49,23 @@ export function resolveNavbarLinks(links: NavBarLink[]): NavBarLink[] {
 		return resolved;
 	});
 }
+
+export function isNavbarLinkActive(
+	currentPath: string,
+	linkPath: string,
+): boolean {
+	const normalizePath = (value: string): string => {
+		const pathname = new URL(value, "https://charlore.local").pathname;
+		const normalized = pathname === "/" ? "/" : pathname.replace(/\/$/, "");
+		return normalized.toLocaleLowerCase();
+	};
+
+	const current = normalizePath(currentPath);
+	const link = normalizePath(linkPath);
+	if (link === "/") return current === "/";
+	if (link === "/archive" && /^\/(tags|categories)(\/|$)/.test(current)) {
+		return true;
+	}
+	if (link === "/articles" && current.startsWith("/posts/")) return true;
+	return current === link || current.startsWith(`${link}/`);
+}

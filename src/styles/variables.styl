@@ -6,9 +6,37 @@
 /* ===== 主题相关变量 ===== */
 :root
   --primary: oklch(0.70 0.14 var(--hue))
-  --page-bg: oklch(0.95 0.01 var(--hue))
+  --page-bg: #FEDFE1
   --card-bg: white
   --card-bg-transparent: unquote("rgb(255 255 255 / var(--card-transparent-opacity, 0.6))")
+
+  /* Charloré：清晨水花园 */
+  --charlore-blue: #aed0ed
+  --charlore-water: #a6d2eb
+  --charlore-mint: #b8ded0
+  --charlore-pink: #f3b9d2
+  --charlore-cream: #fcf9e8
+  --charlore-hero-top: #e5f0f1
+  --charlore-hero-middle: #d4e6e6
+  --charlore-hero-bottom: #b9d7d6
+  --charlore-hero-text: #65808a
+  --charlore-hero-muted: #789097
+  --charlore-hero-border: rgba(117, 155, 161, 0.22)
+  --charlore-hero-shadow: 0 26px 70px rgba(82, 127, 138, 0.13)
+  --charlore-card-surface: rgba(255, 255, 255, 0.78)
+  --charlore-card-border: rgba(106, 144, 166, 0.24)
+  --charlore-card-border-hover: rgba(129, 175, 194, 0.52)
+  --charlore-card-shadow: 0 12px 34px rgba(73, 119, 139, 0.1)
+  --charlore-card-shadow-hover: 0 20px 44px rgba(73, 119, 139, 0.17), 0 0 0 1px rgba(243, 185, 210, 0.18)
+  --charlore-card-shadow-mobile: 0 8px 24px rgba(73, 119, 139, 0.1)
+  --home-image-frame-inset: clamp(0.45rem, 0.8vw, 0.8rem)
+  --charlore-ui-glass-surface: rgba(244, 252, 255, 0.28)
+  --charlore-ui-glass-highlight: rgba(255, 255, 255, 0.58)
+  --charlore-ui-glass-background: linear-gradient(135deg, var(--charlore-ui-glass-highlight), transparent 48%), var(--charlore-ui-glass-surface)
+  --charlore-ui-glass-border: rgba(255, 255, 255, 0.82)
+  --charlore-ui-glass-shadow: 0 12px 34px rgba(47, 94, 111, 0.16), 0 2px 8px rgba(72, 119, 135, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.9), inset 0 -1px 0 rgba(91, 148, 168, 0.14)
+  --charlore-ui-glass-filter: blur(28px) saturate(142%) brightness(1.04)
+  --charlore-ui-font: var(--font-zen-maru-gothic, var(--font-sans))
   
   --btn-content: oklch(0.55 0.12 var(--hue))
   --btn-regular-bg: oklch(0.95 0.025 var(--hue))
@@ -63,11 +91,22 @@
   --display-light-icon: 1
   --display-dark-icon: 0
   
-  --admonitions-color-tip: oklch(0.7 0.14 180)
-  --admonitions-color-note: oklch(0.7 0.14 250)
-  --admonitions-color-important: oklch(0.7 0.14 310)
-  --admonitions-color-warning: oklch(0.7 0.14 60)
-  --admonitions-color-caution: oklch(0.6 0.2 25)
+  --admonitions-color-tip: var(--callout-tip-color-light)
+  --admonitions-color-note: var(--callout-note-color-light)
+  --admonitions-color-important: var(--callout-important-color-light)
+  --admonitions-color-warning: var(--callout-warning-color-light)
+  --admonitions-color-caution: var(--callout-caution-color-light)
+  --callout-tip-color-light: #bed1c3
+  --callout-note-color-light: #bfd2df
+  --callout-important-color-light: #d2c4d8
+  --callout-warning-color-light: #ddccb0
+  --callout-caution-color-light: #dabbbb
+  --callout-tip-color-dark: #a5b8aa
+  --callout-note-color-dark: #a7b8c6
+  --callout-important-color-dark: #b9acc3
+  --callout-warning-color-dark: #c6b498
+  --callout-caution-color-dark: #c9a6a6
+  --admonitions-marker-content: #607981
   
   /* TOC相关变量 */
   --toc-badge-bg: oklch(0.9 0.045 var(--hue))
@@ -90,9 +129,33 @@
 /* 暗色主题变量 */
 :root.dark
   --primary: oklch(0.75 0.14 var(--hue))
-  --page-bg: oklch(0.16 0.014 var(--hue))
-  --card-bg: oklch(0.23 0.015 var(--hue))
+  --page-bg: #0d1b2b
+  --card-bg: #17283a
   --card-bg-transparent: unquote("rgb(23 23 23 / var(--card-transparent-opacity, 0.6))")
+
+  /* Charloré：月光水母海 */
+  --charlore-blue: #8fb8dc
+  --charlore-water: #75c1c4
+  --charlore-mint: #9ccdc8
+  --charlore-pink: #d9a1c3
+  --charlore-cream: #e9e6dc
+  --charlore-hero-top: #142a46
+  --charlore-hero-middle: #12384d
+  --charlore-hero-bottom: #174b57
+  --charlore-hero-text: #edf6fa
+  --charlore-hero-muted: #b4d2dc
+  --charlore-hero-border: rgba(150, 194, 218, 0.22)
+  --charlore-hero-shadow: 0 28px 80px rgba(2, 12, 26, 0.42), 0 0 45px rgba(117, 193, 196, 0.08)
+  --charlore-card-surface: rgba(22, 42, 59, 0.82)
+  --charlore-card-border: rgba(143, 184, 220, 0.18)
+  --charlore-card-border-hover: rgba(217, 161, 195, 0.46)
+  --charlore-card-shadow: 0 14px 38px rgba(2, 10, 23, 0.32)
+  --charlore-card-shadow-hover: 0 22px 50px rgba(2, 10, 23, 0.48), 0 0 28px rgba(117, 193, 196, 0.1)
+  --charlore-card-shadow-mobile: 0 9px 28px rgba(2, 10, 23, 0.3)
+  --charlore-ui-glass-surface: rgba(204, 235, 245, 0.1)
+  --charlore-ui-glass-highlight: rgba(235, 249, 253, 0.16)
+  --charlore-ui-glass-border: rgba(205, 238, 248, 0.34)
+  --charlore-ui-glass-shadow: 0 14px 38px rgba(2, 12, 22, 0.34), 0 2px 10px rgba(0, 8, 16, 0.22), inset 0 1px 0 rgba(238, 251, 255, 0.34), inset 0 -1px 0 rgba(117, 180, 199, 0.12)
   
   --btn-content: oklch(0.75 0.1 var(--hue))
   --btn-regular-bg: oklch(0.33 0.035 var(--hue))
@@ -130,11 +193,12 @@
   --display-light-icon: 0
   --display-dark-icon: 1
   
-  --admonitions-color-tip: oklch(0.75 0.14 180)
-  --admonitions-color-note: oklch(0.75 0.14 250)
-  --admonitions-color-important: oklch(0.75 0.14 310)
-  --admonitions-color-warning: oklch(0.75 0.14 60)
-  --admonitions-color-caution: oklch(0.65 0.2 25)
+  --admonitions-color-tip: var(--callout-tip-color-dark)
+  --admonitions-color-note: var(--callout-note-color-dark)
+  --admonitions-color-important: var(--callout-important-color-dark)
+  --admonitions-color-warning: var(--callout-warning-color-dark)
+  --admonitions-color-caution: var(--callout-caution-color-dark)
+  --admonitions-marker-content: #f4f7f8
   
   /* TOC相关变量 - 暗色主题 */
   --toc-badge-bg: var(--btn-regular-bg)

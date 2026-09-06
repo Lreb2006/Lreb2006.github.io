@@ -1,4 +1,5 @@
 export type CoverImageConfig = {
+	defaultImage?: string; // 未指定封面时使用的本地图片
 	enableInPost: boolean; // 是否在文章详情页显示封面图
 	enableInPostOverlay?: boolean; // 是否使用标题和元数据叠加在封面上的布局
 	showLoading?: boolean; // 是否显示加载动画

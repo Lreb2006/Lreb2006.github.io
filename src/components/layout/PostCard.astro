@@ -103,14 +103,20 @@ const minutes = remarkPluginFrontmatter.minutes;
 
 <div
   class:list={[
+    "post-card-item-shell",
+    className,
+  ]}
+  style={style}
+>
+<div class="post-card-motion">
+<div
+  class:list={[
     "post-card-wrapper",
     hasCover ? "has-cover" : "no-cover",
     pinned ? "pinned" : "",
     gridCoverFullWidth ? "" : "grid-cover-inset",
     "card-base flex flex-col-reverse w-full rounded-(--radius-large) overflow-hidden relative",
-    className,
   ]}
-  style={style}
 >
   <!-- pinned icon -->
   <div
@@ -279,8 +285,74 @@ const minutes = remarkPluginFrontmatter.minutes;
     )
   }
 </div>
+</div>
+</div>
 
 <style define:vars={{ coverWidth, descriptionClampLines }}>
+  .post-card-item-shell {
+    width: 100%;
+    will-change: auto;
+  }
+
+  .post-card-motion {
+    position: relative;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    transition: top 260ms var(--ease-decelerate);
+  }
+
+  .post-card-wrapper {
+    --mobile-cover-width: clamp(5.5rem, 28vw, 8rem);
+    border: 1px solid var(--charlore-card-border);
+    background: var(--charlore-card-surface);
+    box-shadow: var(--charlore-card-shadow);
+    backdrop-filter: blur(14px) saturate(112%);
+    opacity: 1;
+    transition:
+      border-color 260ms ease,
+      box-shadow 260ms ease;
+  }
+
+  .post-card-wrapper::after {
+    position: absolute;
+    inset: 0;
+    z-index: 30;
+    border-radius: inherit;
+    box-shadow: inset 0 1px rgb(255 255 255 / 0.52);
+    content: "";
+    pointer-events: none;
+  }
+
+  .post-card-image {
+    border: 1px solid rgb(255 255 255 / 0.34);
+    box-shadow: 0 10px 28px rgb(59 107 131 / 0.14);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .post-card-motion:hover {
+      z-index: 2;
+      top: -4px;
+    }
+
+    .post-card-motion:hover .post-card-wrapper {
+      border-color: var(--charlore-card-border-hover);
+      box-shadow: var(--charlore-card-shadow-hover);
+    }
+  }
+
+  .post-card-motion:focus-within {
+    z-index: 2;
+    top: -4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .post-card-motion:hover,
+    .post-card-motion:focus-within {
+      top: 0;
+    }
+  }
+
   .description-clamped {
     display: -webkit-box;
     -webkit-box-orient: vertical;
@@ -296,7 +368,7 @@ const minutes = remarkPluginFrontmatter.minutes;
   }
 
   :global(.list-mode) .has-cover .post-card-content {
-    width: calc(100% - 9rem - 0.75rem) !important;
+    width: calc(100% - var(--mobile-cover-width) - 0.75rem) !important;
     padding: 0.75rem 0.5rem 0.75rem 0.75rem !important;
   }
 
@@ -305,7 +377,7 @@ const minutes = remarkPluginFrontmatter.minutes;
     top: 0.5rem !important;
     bottom: 0.5rem !important;
     right: 0.5rem !important;
-    width: 9rem !important;
+    width: var(--mobile-cover-width) !important;
     aspect-ratio: auto !important;
     border-radius: 0.75rem !important;
   }
@@ -469,5 +541,17 @@ const minutes = remarkPluginFrontmatter.minutes;
 
   :global(.grid-mode) .post-card-enter-btn {
     display: flex !important;
+  }
+
+  @media (max-width: 640px) {
+    .post-card-wrapper {
+      border-radius: 1.1rem !important;
+      box-shadow: var(--charlore-card-shadow-mobile);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .post-card-motion,
+    .post-card-wrapper { transition: none; }
   }
 </style>

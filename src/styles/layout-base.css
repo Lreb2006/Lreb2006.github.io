@@ -30,6 +30,12 @@
     --content-top: 100vh;
   }
 
+  @media (min-width: 901px) and (prefers-reduced-motion: no-preference) {
+    html[data-wallpaper-mode="fullscreen"] body.is-home .content-panel {
+      --content-top: calc(100vh + var(--home-story-height, 0px));
+    }
+  }
+
   /* banner wrapper：统一顶到顶部、高 65vh（不再用 -30vh/translateY 抵消；短屏高度由 layout-styles 媒体查询覆盖） */
   html[data-wallpaper-mode="banner"] #wallpaper-wrapper {
     position: absolute;
@@ -154,4 +160,27 @@
   transition:
     opacity 0.35s ease-in-out,
     transform 0.35s ease-in-out;
+}
+
+/* 只在文章详情页将正文和目录作为两列共同居中。 */
+@media (min-width: 1280px) {
+  #main-grid:has(#post-container) {
+    max-width: 82rem;
+    grid-template-columns: minmax(0, 1fr) 17.5rem;
+  }
+
+  #main-grid:has(#post-container) #left-sidebar-wrapper {
+    display: none;
+  }
+
+  #main-grid:has(#post-container) > :is(.main-content-column, .footer) {
+    grid-column: 1;
+    min-width: 0;
+  }
+
+  #main-grid:has(#post-container) #right-sidebar {
+    display: block;
+    grid-column: 2;
+    grid-row: 1 / 3;
+  }
 }

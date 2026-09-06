@@ -37,7 +37,7 @@ export function processCoverImageSync(
 	seed?: string,
 ): string {
 	if (!image || image === "") {
-		return "";
+		return coverImageConfig.defaultImage ?? "";
 	}
 
 	if (image !== "api") {
@@ -49,7 +49,7 @@ export function processCoverImageSync(
 		!randomCoverImage.apis ||
 		randomCoverImage.apis.length === 0
 	) {
-		return "";
+		return coverImageConfig.defaultImage ?? "";
 	}
 
 	// 始终使用第一个API，失败时由客户端按顺序尝试后续API

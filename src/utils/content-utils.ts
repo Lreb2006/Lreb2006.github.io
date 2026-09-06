@@ -1,7 +1,8 @@
 import { type CollectionEntry, getCollection } from "astro:content";
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
-import { getCategoryUrl } from "@utils/url-utils";
+import { getCategoryUrl, getPostUrlBySlug } from "@utils/url-utils";
+import type { LocalSearchEntry } from "@/utils/search-utils";
 
 // // Retrieve posts and sort them by publication date
 async function getRawSortedPosts() {
@@ -50,6 +51,20 @@ export async function getSortedPostsList(): Promise<PostForList[]> {
 	}));
 
 	return sortedPostsList;
+}
+
+/** 开发服务器使用的轻量文章索引；生产环境仍由 Pagefind 检索正文。 */
+export async function getLocalSearchEntries(): Promise<LocalSearchEntry[]> {
+	const posts = await getSortedPostsList();
+	return posts
+		.filter((post) => !post.data.password)
+		.map((post) => ({
+			url: getPostUrlBySlug(post.id),
+			title: post.data.title,
+			description: post.data.description || "",
+			category: post.data.category || "",
+			tags: post.data.tags || [],
+		}));
 }
 
 /**

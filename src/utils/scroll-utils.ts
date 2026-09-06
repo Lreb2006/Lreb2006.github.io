@@ -70,7 +70,9 @@ export function scrollFunction(): void {
 
 	if (navbarElement) {
 		operations.push(() => {
-			if (scrollTop > 8) {
+			const usesCapsuleNavbar =
+				document.documentElement.dataset.wallpaperMode === "fullscreen";
+			if (scrollTop > 8 && !usesCapsuleNavbar) {
 				navbarElement.classList.add("navbar-sticky-shadow");
 			} else {
 				navbarElement.classList.remove("navbar-sticky-shadow");

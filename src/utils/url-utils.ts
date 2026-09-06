@@ -72,6 +72,19 @@ export function getSearchUrl(query: string): string {
 	return url(`/search/?q=${encodeURIComponent(query.trim())}`);
 }
 
+export function getPaginationPath(
+	basePath: string,
+	page: number | "{page}",
+): string {
+	const withLeadingSlash = basePath.startsWith("/") ? basePath : `/${basePath}`;
+	const normalizedBase = withLeadingSlash.endsWith("/")
+		? withLeadingSlash
+		: `${withLeadingSlash}/`;
+
+	if (page === 1) return normalizedBase;
+	return `${normalizedBase}${page}/`;
+}
+
 export function url(path: string): string {
 	// 关键修复：如果是网络URL，直接返回原地址
 	if (

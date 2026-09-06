@@ -79,6 +79,10 @@ export const isHomePage = (pathname: string): boolean => {
 	return false;
 };
 
+export const selectRecentItems = <T>(items: T[], limit = 5): T[] => {
+	return items.slice(0, Math.max(0, Math.trunc(limit)));
+};
+
 // 获取横幅偏移量
 export const getBannerOffset = (position = "center"): string => {
 	const bannerOffsetByPosition = {

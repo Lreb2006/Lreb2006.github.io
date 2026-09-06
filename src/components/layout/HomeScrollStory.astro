@@ -1,0 +1,986 @@
+---
+import type { ImageMetadata } from "astro";
+import { Icon } from "astro-icon/components";
+import finalStoryDarkImage from "@/assets/images/charlore/home-story-final-dark.png";
+import finalStoryImage from "@/assets/images/charlore/home-story-final-wide.png";
+import HomeTiltImageCard from "@/components/layout/HomeTiltImageCard.astro";
+import { sortHomeCarouselPaths } from "@/utils/home-scroll-story";
+
+type CarouselModule = { default: ImageMetadata };
+
+const carouselModules = import.meta.glob<CarouselModule>(
+	"/src/assets/images/home-scroll-carousel/*.{jpg,jpeg,png,webp,avif}",
+	{ eager: true },
+);
+
+const carouselImages = sortHomeCarouselPaths(Object.keys(carouselModules)).map(
+	(path) => ({
+		path,
+		image: carouselModules[path].default,
+	}),
+);
+---
+
+<section
+	class="home-scroll-story"
+	data-home-scroll-story
+	aria-label="Charloré 滚动影像叙事"
+>
+	<div class="story-scenes-viewport" data-story-scenes-viewport>
+		<div class="story-cycle" data-story-cycle aria-hidden="true">
+			<div class="story-cycle-track" data-story-cycle-track>
+				{
+					[carouselImages, carouselImages].map((sequence, sequenceIndex) => (
+						<div
+							class="story-cycle-sequence"
+							aria-hidden={sequenceIndex === 1 ? "true" : undefined}
+						>
+							{sequence.map(({ path, image }) => (
+								<figure
+									class="story-cycle-cell"
+									style={`--story-cycle-ratio: ${image.width} / ${image.height};`}
+									data-carousel-source={path.split("/").at(-1)}
+								>
+									<img
+										src={image.src}
+										width={image.width}
+										height={image.height}
+										alt=""
+										loading="lazy"
+										decoding="async"
+									/>
+								</figure>
+							))}
+						</div>
+					))
+				}
+			</div>
+			<span class="story-cycle-veil"></span>
+			<svg class="story-orbits" viewBox="0 0 1600 900" preserveAspectRatio="none" aria-hidden="true">
+				<g class="story-orbit-lines">
+					<path d="M-120 220 C300 -60 850 60 1720 300" />
+					<path d="M-120 790 C440 550 1080 990 1720 610" />
+					<path d="M180 -100 C-120 290 450 810 1420 990" />
+				</g>
+				<g class="story-orbit-tracers">
+					<path pathLength="100" d="M-120 220 C300 -60 850 60 1720 300" />
+					<path pathLength="100" d="M-120 790 C440 550 1080 990 1720 610" />
+					<path pathLength="100" d="M180 -100 C-120 290 450 810 1420 990" />
+				</g>
+			</svg>
+		</div>
+
+		<div class="story-scenes-track" data-story-scenes-track>
+			<div
+				class="story-scene story-scene-aquarium"
+				data-story-scene="aquarium"
+			>
+				<HomeTiltImageCard variant="story" />
+			</div>
+			<button
+				type="button"
+				class="story-scene story-scene-final"
+				data-story-scene="final"
+				data-story-final-frame
+				aria-label="放大最终场景"
+			>
+				<HomeTiltImageCard
+					variant="story"
+					image={finalStoryImage}
+					darkImage={finalStoryDarkImage}
+					imagePosition="center top"
+					alt="小糸侑与七海灯子牵手走向林间铁路"
+				/>
+			</button>
+		</div>
+
+		<button
+			type="button"
+			class="story-next-indicator"
+			data-story-next-indicator
+			aria-label="继续播放并进入文章主体"
+		>
+			<Icon
+				name="material-symbols:keyboard-arrow-right-rounded"
+				class="story-next-icon"
+			/>
+		</button>
+	</div>
+
+	<div class="story-finale-portal" data-story-finale-portal aria-hidden="true">
+		<div class="story-finale-art" data-story-finale-image>
+		<img
+			class="story-finale-light"
+			src={finalStoryImage.src}
+			width={finalStoryImage.width}
+			height={finalStoryImage.height}
+			alt=""
+		/>
+		<img
+			class="story-finale-dark"
+			src={finalStoryDarkImage.src}
+			width={finalStoryDarkImage.width}
+			height={finalStoryDarkImage.height}
+			alt=""
+		/>
+		</div>
+		<span class="story-finale-edge" data-story-finale-edge></span>
+	</div>
+</section>
+
+<script>
+	import {
+		getAquariumOwner,
+		getHomeForegroundTransform,
+		getHomeAfterglowFrame,
+		getHomeFinaleHandoffFrame,
+		getHomeHeroBrandOpacity,
+		getHomeSceneFrame,
+		getHomeStorySceneGeometry,
+		getHomeStoryDistance,
+		getSmoothedHomeFinaleProgress,
+		getSmoothedHomeTilt,
+	} from "@/utils/home-scroll-story";
+
+	let disposeHomeScrollStory: (() => void) | undefined;
+	let homeScrollStoryGeneration = 0;
+	const isHomeStoryPage = () => document.body.classList.contains("is-home");
+	const deactivateHomeScrollStory = () => {
+		homeScrollStoryGeneration += 1;
+		disposeHomeScrollStory?.();
+		disposeHomeScrollStory = undefined;
+		document
+			.querySelector<HTMLElement>("[data-home-scroll-story]")
+			?.setAttribute("aria-hidden", "true");
+		if (
+			document.documentElement.hasAttribute("data-home-story-nav-expanded")
+		) {
+			document.documentElement.removeAttribute("data-home-story-nav-expanded");
+			document.dispatchEvent(new Event("charlore:home-story-nav-state"));
+		}
+	};
+
+	const initHomeScrollStory = async () => {
+		deactivateHomeScrollStory();
+		if (!isHomeStoryPage()) return;
+		const generation = ++homeScrollStoryGeneration;
+
+		const root = document.querySelector<HTMLElement>("[data-home-scroll-story]");
+		if (!root) return;
+		root.removeAttribute("aria-hidden");
+
+		const desktop = window.matchMedia("(min-width: 901px)");
+		const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+		if (!desktop.matches || reducedMotion.matches) return;
+
+		const viewport = root.querySelector<HTMLElement>("[data-story-scenes-viewport]");
+		const cycleLayer = root.querySelector<HTMLElement>("[data-story-cycle]");
+		const cycleTrack = root.querySelector<HTMLElement>("[data-story-cycle-track]");
+		const aquariumScene = root.querySelector<HTMLElement>(
+			'[data-story-scene="aquarium"]',
+		);
+		const finalScene = root.querySelector<HTMLButtonElement>(
+			'[data-story-scene="final"]',
+		);
+		const finalePortal = root.querySelector<HTMLElement>(
+			"[data-story-finale-portal]",
+		);
+		const finaleImage = root.querySelector<HTMLElement>(
+			"[data-story-finale-image]",
+		);
+		const finaleEdge = root.querySelector<HTMLElement>("[data-story-finale-edge]");
+		const nextIndicator = root.querySelector<HTMLButtonElement>(
+			"[data-story-next-indicator]",
+		);
+		if (
+			!viewport ||
+			!cycleLayer ||
+			!cycleTrack ||
+			!aquariumScene ||
+			!finalScene ||
+			!finalePortal ||
+			!finaleImage ||
+			!finaleEdge ||
+			!nextIndicator
+		) {
+			return;
+		}
+
+		const heroShell = document.querySelector<HTMLElement>(
+			"#wallpaper-wrapper .home-tilt-card-shell",
+		);
+		const heroBrand = document.querySelector<HTMLElement>(
+			"#wallpaper-wrapper .garden-character",
+		);
+		const heroDecor = document.querySelector<HTMLElement>(
+			"#wallpaper-wrapper .garden-editorial-layer",
+		);
+		if (!heroShell) return;
+
+		const controller = new AbortController();
+		const { signal } = controller;
+		const [{ gsap }, { ScrollTrigger }] = await Promise.all([
+			import("gsap"),
+			import("gsap/ScrollTrigger"),
+		]);
+		if (
+			generation !== homeScrollStoryGeneration ||
+			!root.isConnected ||
+			!isHomeStoryPage()
+		) {
+			controller.abort();
+			return;
+		}
+
+		gsap.registerPlugin(ScrollTrigger);
+		const storyDistance = () => getHomeStoryDistance(window.innerHeight);
+		const sceneGeometry = () =>
+			getHomeStorySceneGeometry({
+				heroWidth: heroShell.offsetWidth,
+				heroHeight: heroShell.offsetHeight,
+				viewportWidth: window.innerWidth,
+				viewportHeight: window.innerHeight,
+			});
+		const sceneWidth = () => sceneGeometry().width;
+		const sceneHeight = () => sceneGeometry().height;
+		const sceneStride = () => sceneGeometry().stride;
+		const syncSceneGeometry = () => {
+			const geometry = sceneGeometry();
+			root.style.setProperty(
+				"--home-story-scene-ratio",
+				String(geometry.aspect),
+			);
+			root.style.setProperty("--home-story-scene-width", `${geometry.width}px`);
+		};
+		const originalSceneRatio = root.style.getPropertyValue(
+			"--home-story-scene-ratio",
+		);
+		const originalSceneWidth = root.style.getPropertyValue(
+			"--home-story-scene-width",
+		);
+		syncSceneGeometry();
+		window.addEventListener("resize", syncSceneGeometry, { signal });
+		const sourceBounds = () => ({
+			left: heroShell.offsetLeft,
+			top: heroShell.offsetTop,
+			width: heroShell.offsetWidth,
+			height: heroShell.offsetHeight,
+		});
+		const foregroundTransform = () => {
+			const source = sourceBounds();
+			return getHomeForegroundTransform({
+				sourceLeft: source.left,
+				sourceTop: source.top,
+				sourceWidth: source.width,
+				sourceHeight: source.height,
+				targetMaxWidth: sceneWidth(),
+				targetMaxHeight: sceneHeight(),
+				viewportWidth: window.innerWidth,
+				viewportHeight: window.innerHeight,
+			});
+		};
+		const targetLeft = () => (window.innerWidth - sceneWidth()) / 2;
+		const targetTop = () => (window.innerHeight - sceneHeight()) / 2;
+		const finaleBounds = (progress: number) => ({
+			left: targetLeft() * (1 - progress),
+			top: targetTop() * (1 - progress),
+			width: sceneWidth() + (window.innerWidth - sceneWidth()) * progress,
+			height: sceneHeight() + (window.innerHeight - sceneHeight()) * progress,
+		});
+
+		const animatedElements = [
+			heroShell,
+			heroBrand,
+			heroDecor,
+			cycleLayer,
+			cycleTrack,
+			aquariumScene,
+			finalScene,
+			finalePortal,
+			finaleImage,
+			finaleEdge,
+			nextIndicator,
+		].filter((element): element is HTMLElement => Boolean(element));
+		const originalStyles = new Map(
+			animatedElements.map((element) => [element, element.getAttribute("style")]),
+		);
+		gsap.set(heroShell, { transformOrigin: "50% 50%" });
+
+		gsap.set(viewport, { autoAlpha: 0 });
+		gsap.set(cycleLayer, {
+			autoAlpha: 0,
+			rotationX: 88,
+			yPercent: 0,
+			transformOrigin: "50% 100%",
+			transformPerspective: 1400,
+		});
+		gsap.set([aquariumScene, finalScene], {
+			xPercent: -50,
+			yPercent: -50,
+			autoAlpha: 0,
+		});
+		gsap.set(nextIndicator, { autoAlpha: 0 });
+		gsap.set(finalePortal, {
+			autoAlpha: 0,
+			yPercent: 0,
+			...finaleBounds(0),
+		});
+		gsap.set(finaleImage, {
+			autoAlpha: 1,
+			scale: 1,
+			"--story-finale-mask-start": "100%",
+		});
+
+		const cycleTimeline = gsap.timeline({ repeat: -1, paused: true });
+		cycleTimeline.fromTo(
+			cycleTrack,
+			{ xPercent: 0 },
+			{ xPercent: -50, duration: 48, ease: "none" },
+		);
+
+		let cycleStanding = false;
+		let scenePhaseStarted = false;
+		let finaleNavbarExpanded = false;
+		let cycleStandTween: ReturnType<typeof gsap.to> | undefined;
+		let guidedScrollTween: ReturnType<typeof gsap.to> | undefined;
+		let restoreGuidedScrollBehavior = () => {};
+		const scrollPosition = { y: window.scrollY };
+		const setFinaleNavbarExpanded = (expanded: boolean) => {
+			if (finaleNavbarExpanded === expanded) return;
+			finaleNavbarExpanded = expanded;
+			document.documentElement.toggleAttribute(
+				"data-home-story-nav-expanded",
+				expanded,
+			);
+			document.dispatchEvent(new Event("charlore:home-story-nav-state"));
+		};
+		const setCycleExitLocked = (locked: boolean) => {
+			viewport.classList.toggle("is-cycle-exit-locked", locked);
+		};
+		const guideScrollTo = (top: number, duration: number) => {
+			guidedScrollTween?.kill();
+			restoreGuidedScrollBehavior();
+			const previousScrollBehavior =
+				document.documentElement.style.scrollBehavior;
+			document.documentElement.style.scrollBehavior = "auto";
+			let scrollBehaviorRestored = false;
+			restoreGuidedScrollBehavior = () => {
+				if (scrollBehaviorRestored) return;
+				scrollBehaviorRestored = true;
+				if (previousScrollBehavior) {
+					document.documentElement.style.scrollBehavior = previousScrollBehavior;
+				} else {
+					document.documentElement.style.removeProperty("scroll-behavior");
+				}
+			};
+			scrollPosition.y = window.scrollY;
+			guidedScrollTween = gsap.to(scrollPosition, {
+				y: top,
+				duration,
+				ease: "none",
+				onUpdate: () => window.scrollTo(0, scrollPosition.y),
+				onComplete: restoreGuidedScrollBehavior,
+				onInterrupt: restoreGuidedScrollBehavior,
+			});
+		};
+		const setCycleStanding = (
+			standing: boolean,
+			animateExit = false,
+			onHidden?: () => void,
+		) => {
+			const wasStanding = cycleStanding;
+			cycleStanding = standing;
+			cycleTimeline.pause();
+			cycleStandTween?.kill();
+			if (!standing) {
+				if (animateExit && wasStanding) {
+					setCycleExitLocked(true);
+					gsap.set(cycleLayer, {
+						autoAlpha: 1,
+						yPercent: 0,
+					});
+					cycleStandTween = gsap.to(cycleLayer, {
+						yPercent: -12,
+						autoAlpha: 0,
+						duration: 0.22,
+						ease: "power2.out",
+						onComplete: () => {
+							if (cycleStanding) return;
+							onHidden?.();
+							setCycleExitLocked(false);
+						},
+					});
+					return;
+				}
+				setCycleExitLocked(false);
+				gsap.set(cycleLayer, {
+					autoAlpha: 0,
+					rotationX: 88,
+					yPercent: 0,
+				});
+				onHidden?.();
+				return;
+			}
+
+			setCycleExitLocked(false);
+			gsap.set(cycleLayer, { autoAlpha: 1, rotationX: 88, yPercent: 0 });
+			cycleStandTween = gsap.to(cycleLayer, {
+				rotationX: 0,
+				duration: 0.48,
+				ease: "power4.out",
+				onComplete: () => {
+					if (cycleStanding) cycleTimeline.play();
+				},
+			});
+		};
+
+		const syncForegroundOwnership = (
+			shrinkProgress: number,
+			pinnedSceneStarted: boolean,
+		) => {
+			const owner = getAquariumOwner(shrinkProgress, pinnedSceneStarted);
+			gsap.set(heroShell, { autoAlpha: owner === "hero" ? 1 : 0 });
+			gsap.set(aquariumScene, { autoAlpha: owner === "scene" ? 1 : 0 });
+		};
+
+		const shrinkTimeline = gsap.timeline({
+			scrollTrigger: {
+				id: "charlore-story-shrink",
+				trigger: root,
+				start: "top bottom",
+				end: "top top",
+				scrub: 0.4,
+				invalidateOnRefresh: true,
+				onUpdate: (self) => {
+					if (heroBrand) {
+						gsap.set(heroBrand, {
+							autoAlpha: getHomeHeroBrandOpacity(self.progress),
+						});
+					}
+					syncForegroundOwnership(self.progress, scenePhaseStarted);
+				},
+				onLeaveBack: () => {
+					scenePhaseStarted = false;
+					if (heroBrand) gsap.set(heroBrand, { autoAlpha: 1 });
+					syncForegroundOwnership(0, false);
+				},
+			},
+		});
+		shrinkTimeline
+			.fromTo(
+				heroShell,
+				{
+					x: 0,
+					y: 0,
+					scale: 1,
+				},
+				{
+					x: () => foregroundTransform().x,
+					y: () => foregroundTransform().y,
+					scale: () => foregroundTransform().scale,
+					duration: 1,
+					ease: "power3.out",
+					immediateRender: false,
+				},
+				0,
+			)
+			.to(
+				[heroDecor].filter(Boolean),
+				{ autoAlpha: 0, yPercent: -18, duration: 0.5, ease: "power2.in" },
+				0,
+			);
+
+		const setAquariumTilt = gsap.quickSetter(aquariumScene, "rotation", "deg");
+		const setFinalTilt = gsap.quickSetter(finalScene, "rotation", "deg");
+		const setFinalePortalTilt = gsap.quickSetter(
+			finalePortal,
+			"rotation",
+			"deg",
+		);
+		let tiltCurrent = 0;
+		let tiltTarget = 0;
+		let finaleProgressCurrent = 0;
+		let finaleProgressTarget = 0;
+		let lastTiltInput = performance.now();
+		const renderFinaleGeometry = (progress: number) => {
+			const finale = finaleBounds(progress);
+			gsap.set(finalePortal, {
+				left: finale.left,
+				top: finale.top,
+				width: finale.width,
+				height: finale.height,
+			});
+			gsap.set(finaleEdge, { autoAlpha: 1 - progress });
+		};
+		const updateSceneMotion = (_time: number, deltaMs: number) => {
+			tiltCurrent = getSmoothedHomeTilt(
+				tiltCurrent,
+				tiltTarget,
+				deltaMs,
+				performance.now() - lastTiltInput,
+			);
+			setAquariumTilt(tiltCurrent);
+			setFinalTilt(tiltCurrent);
+			setFinalePortalTilt(tiltCurrent);
+
+			const nextFinaleProgress = getSmoothedHomeFinaleProgress(
+				finaleProgressCurrent,
+				finaleProgressTarget,
+				deltaMs,
+			);
+			if (nextFinaleProgress !== finaleProgressCurrent) {
+				finaleProgressCurrent = nextFinaleProgress;
+				renderFinaleGeometry(finaleProgressCurrent);
+				const handoff = getHomeFinaleHandoffFrame(finaleProgressCurrent);
+				gsap.set(finalScene, {
+					autoAlpha: handoff.sceneOpacity,
+				});
+				if (finaleProgressTarget < 1) {
+					gsap.set(finalePortal, { autoAlpha: handoff.portalOpacity });
+				}
+			}
+			setFinaleNavbarExpanded(finaleProgressCurrent >= 0.98);
+		};
+		gsap.ticker.add(updateSceneMotion);
+
+		const renderScenes = (progress: number, velocity: number) => {
+			const frame = getHomeSceneFrame(progress, velocity);
+			finaleProgressTarget = frame.portalProgress;
+			const handoff = getHomeFinaleHandoffFrame(finaleProgressCurrent);
+			const stride = sceneStride();
+			gsap.set(aquariumScene, {
+				xPercent: -50,
+				yPercent: -50,
+				x: frame.aquariumX * stride,
+				autoAlpha: frame.aquariumOpacity,
+			});
+			gsap.set(finalScene, {
+				xPercent: -50,
+				yPercent: -50,
+				x: frame.finalX * stride,
+				autoAlpha: handoff.sceneOpacity,
+			});
+			gsap.set(nextIndicator, {
+				autoAlpha: frame.portalProgress <= 0 ? 1 : 0,
+			});
+			tiltTarget = frame.cardRotateZ;
+			lastTiltInput = performance.now();
+
+			if (frame.portalProgress <= 0 && finaleProgressCurrent <= 0) {
+				gsap.set(finalePortal, { autoAlpha: 0, ...finaleBounds(0) });
+				gsap.set(finaleImage, {
+					autoAlpha: 1,
+					scale: 1,
+					"--story-finale-mask-start": "100%",
+				});
+				return;
+			}
+
+			gsap.set(finalePortal, {
+				autoAlpha:
+					frame.portalProgress >= 1 ? 1 : handoff.portalOpacity,
+				yPercent: 0,
+			});
+			gsap.set(finaleImage, {
+				autoAlpha: 1,
+				scale: 1,
+				"--story-finale-mask-start": "100%",
+			});
+		};
+
+		const pinTrigger = ScrollTrigger.create({
+			id: "charlore-story-scenes-pin",
+			trigger: viewport,
+			start: "top 1px",
+			end: () => `+=${storyDistance()}`,
+			pin: true,
+			pinSpacing: false,
+			anticipatePin: 1,
+			invalidateOnRefresh: true,
+				onToggle: (self) => {
+					if (self.isActive) {
+						scenePhaseStarted = true;
+						renderScenes(self.progress, self.getVelocity());
+						syncForegroundOwnership(1, true);
+						gsap.set(viewport, { autoAlpha: 1 });
+					gsap.set(nextIndicator, { autoAlpha: 1 });
+					gsap.set(finalePortal, { yPercent: 0 });
+					setCycleStanding(true);
+				} else if (self.progress <= 0) {
+					gsap.set([finalScene, nextIndicator], {
+						autoAlpha: 0,
+					});
+					setCycleStanding(false, true, () => {
+						scenePhaseStarted = false;
+						syncForegroundOwnership(1, false);
+						gsap.set(viewport, { autoAlpha: 0 });
+					});
+					gsap.set(nextIndicator, { autoAlpha: 0 });
+					gsap.set(finalePortal, { autoAlpha: 0, yPercent: 0 });
+				} else {
+					scenePhaseStarted = true;
+					setCycleStanding(false);
+					syncForegroundOwnership(1, true);
+					gsap.set(viewport, { autoAlpha: 0 });
+					gsap.set(nextIndicator, { autoAlpha: 0 });
+					renderScenes(1, 0);
+				}
+			},
+			onUpdate: (self) => {
+				if (self.isActive) renderScenes(self.progress, self.getVelocity());
+			},
+		});
+
+		const afterglowTrigger = ScrollTrigger.create({
+			id: "charlore-story-afterglow",
+			trigger: root,
+			start: () => pinTrigger.end,
+			end: () => pinTrigger.end + window.innerHeight,
+			invalidateOnRefresh: true,
+			onUpdate: (self) => {
+				if (window.scrollY < pinTrigger.end) return;
+				const afterglow = getHomeAfterglowFrame(self.progress);
+				gsap.set(finalePortal, {
+					autoAlpha: afterglow.portalOpacity,
+					yPercent: 0,
+				});
+				gsap.set(finaleImage, {
+					autoAlpha: afterglow.imageOpacity,
+					"--story-finale-mask-start": `${afterglow.maskStartPercent}%`,
+				});
+			},
+		});
+
+		finalScene.addEventListener(
+			"click",
+			() => {
+				window.scrollTo({
+					top: pinTrigger.start + storyDistance(),
+					behavior: "smooth",
+				});
+			},
+			{ signal },
+		);
+		nextIndicator.addEventListener(
+			"click",
+			() => {
+				guideScrollTo(pinTrigger.end + window.innerHeight, 1.1);
+			},
+			{ signal },
+		);
+		ScrollTrigger.refresh();
+		if (window.scrollY <= 1) {
+			shrinkTimeline.progress(0);
+			gsap.set(heroShell, {
+				x: 0,
+				y: 0,
+				scale: 1,
+				autoAlpha: 1,
+			});
+			if (heroBrand) gsap.set(heroBrand, { autoAlpha: 1 });
+			scenePhaseStarted = false;
+			syncForegroundOwnership(0, false);
+		}
+
+		disposeHomeScrollStory = () => {
+			controller.abort();
+			cycleStanding = false;
+			setFinaleNavbarExpanded(false);
+			setCycleExitLocked(false);
+			gsap.ticker.remove(updateSceneMotion);
+			cycleStandTween?.kill();
+			guidedScrollTween?.kill();
+			restoreGuidedScrollBehavior();
+			cycleTimeline.kill();
+			shrinkTimeline.kill();
+			pinTrigger.kill();
+			afterglowTrigger.kill();
+			gsap.killTweensOf(animatedElements);
+			for (const [element, originalStyle] of originalStyles) {
+				if (originalStyle === null) element.removeAttribute("style");
+				else element.setAttribute("style", originalStyle);
+			}
+			if (originalSceneRatio) {
+				root.style.setProperty("--home-story-scene-ratio", originalSceneRatio);
+			} else {
+				root.style.removeProperty("--home-story-scene-ratio");
+			}
+			if (originalSceneWidth) {
+				root.style.setProperty("--home-story-scene-width", originalSceneWidth);
+			} else {
+				root.style.removeProperty("--home-story-scene-width");
+			}
+		};
+	};
+
+	const storyWindow = window as typeof window & {
+		__charloreHomeStoryCleanup?: () => void;
+	};
+	storyWindow.__charloreHomeStoryCleanup?.();
+	const activateHomeScrollStory = () => void initHomeScrollStory();
+	storyWindow.__charloreHomeStoryDeactivate = deactivateHomeScrollStory;
+	storyWindow.__charloreHomeStoryActivate = activateHomeScrollStory;
+	storyWindow.__charloreHomeStoryCleanup = () => {
+		deactivateHomeScrollStory();
+		if (
+			storyWindow.__charloreHomeStoryDeactivate === deactivateHomeScrollStory
+		) {
+			delete storyWindow.__charloreHomeStoryDeactivate;
+		}
+		if (storyWindow.__charloreHomeStoryActivate === activateHomeScrollStory) {
+			delete storyWindow.__charloreHomeStoryActivate;
+		}
+	};
+	void initHomeScrollStory();
+</script>
+
+<style>
+	:global(:root) {
+		--home-story-height: calc(100vh + max(1600px, 180vh));
+		--story-band-inset: clamp(5rem, 9vh, 7rem);
+	}
+
+	.home-scroll-story {
+		position: absolute;
+		z-index: 22;
+		top: 100vh;
+		left: 0;
+		width: 100%;
+		height: var(--home-story-height);
+		pointer-events: none;
+	}
+
+	:global(body:not(.is-home)) .home-scroll-story {
+		display: none;
+	}
+
+	.story-scenes-viewport {
+		position: relative;
+		width: 100%;
+		height: 100vh;
+		overflow: hidden;
+		isolation: isolate;
+		perspective: 1400px;
+		visibility: hidden;
+	}
+
+	.story-scenes-viewport.is-cycle-exit-locked {
+		position: fixed !important;
+		inset: 0 !important;
+		width: 100vw !important;
+		height: 100vh !important;
+	}
+
+	.story-cycle {
+		position: absolute;
+		z-index: 0;
+		top: var(--story-band-inset);
+		right: 0;
+		bottom: var(--story-band-inset);
+		left: 0;
+		overflow: hidden;
+		transform-origin: 50% 100%;
+		will-change: transform, opacity;
+	}
+
+	.story-cycle-track {
+		position: absolute;
+		top: 0;
+		left: 0;
+		display: flex;
+		width: max-content;
+		height: 100%;
+		gap: 0;
+		will-change: transform;
+	}
+
+	.story-cycle-sequence {
+		display: flex;
+		flex: none;
+		height: 100%;
+		gap: 0;
+	}
+
+	.story-cycle-cell {
+		flex: none;
+		height: 100%;
+		aspect-ratio: var(--story-cycle-ratio);
+		margin: 0;
+		overflow: hidden;
+		border: 0;
+		border-radius: 0;
+		background: transparent;
+	}
+
+	.story-cycle-cell img,
+	.story-finale-art img {
+		display: block;
+		width: 100%;
+		height: 100%;
+		max-width: none;
+		object-fit: cover;
+		object-position: center;
+	}
+
+	.story-cycle-veil {
+		position: absolute;
+		z-index: 1;
+		inset: 0;
+		background: rgba(205, 230, 237, 0.1);
+		pointer-events: none;
+	}
+
+	.story-orbits {
+		position: absolute;
+		z-index: 2;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		fill: none;
+		stroke: #e1faff;
+		stroke-width: 1;
+		pointer-events: none;
+	}
+
+	.story-orbit-lines { opacity: 0.3; }
+	.story-orbit-tracers {
+		stroke-width: 1.8;
+		stroke-linecap: round;
+		stroke-dasharray: 5 95;
+		opacity: 0.8;
+	}
+	.story-orbit-tracers path { animation: story-orbit-flow 22s linear infinite; }
+	.story-orbit-tracers path:nth-child(2) { animation-duration: 29s; animation-delay: -11s; }
+	.story-orbit-tracers path:nth-child(3) { animation-duration: 35s; animation-delay: -19s; }
+	@keyframes story-orbit-flow { to { stroke-dashoffset: -100; } }
+
+	:global(html.dark) .story-cycle-veil {
+		background: rgba(8, 29, 42, 0.14);
+	}
+
+	.story-scenes-track {
+		position: absolute;
+		z-index: 2;
+		inset: 0;
+		pointer-events: none;
+	}
+
+	.story-next-indicator {
+		position: fixed;
+		z-index: 25;
+		top: 50%;
+		right: clamp(1.5rem, 3vw, 3.5rem);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 5rem;
+		height: 5rem;
+		padding: 0;
+		border: 0;
+		background: transparent;
+		color: rgba(255, 255, 255, 0.82);
+		filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3));
+		transform: translateY(-50%);
+		visibility: hidden;
+		cursor: pointer;
+		pointer-events: auto;
+		transition: color 0.25s ease;
+	}
+
+	.story-next-indicator:hover {
+		color: #fff;
+	}
+
+	:global(.story-next-icon) {
+		font-size: 5rem;
+		animation: story-next-bounce 2s ease-in-out infinite;
+	}
+
+	@keyframes story-next-bounce {
+		0%,
+		100% {
+			transform: translateX(0);
+		}
+		50% {
+			transform: translateX(8px);
+		}
+	}
+
+	.story-scene {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: var(--home-story-scene-width, min(56vw, 62rem));
+		aspect-ratio: var(--home-story-scene-ratio, 16 / 9);
+		margin: 0;
+		padding: 0;
+		border: 0;
+		background: transparent;
+		visibility: hidden;
+		opacity: 1;
+		pointer-events: auto;
+		will-change: transform;
+	}
+
+	.story-scene-aquarium {
+		z-index: 3;
+	}
+
+	.story-scene-final {
+		z-index: 4;
+		cursor: zoom-in;
+	}
+
+	.story-finale-portal {
+		position: fixed;
+		z-index: 30;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		height: 100vh;
+		overflow: hidden;
+		background: transparent;
+		visibility: hidden;
+		will-change: left, top, width, height, opacity, transform;
+	}
+
+	.story-finale-art {
+		width: 100%;
+		height: 100%;
+		-webkit-mask-image: linear-gradient(
+			to bottom,
+			#000 0%,
+			#000 var(--story-finale-mask-start, 100%),
+			transparent 100%
+		);
+		mask-image: linear-gradient(
+			to bottom,
+			#000 0%,
+			#000 var(--story-finale-mask-start, 100%),
+			transparent 100%
+		);
+		will-change: transform, opacity;
+	}
+
+	.story-finale-art img { object-position: center top; }
+	.story-finale-art .story-finale-dark { display: none; }
+	:global(html.dark) .story-finale-light { display: none; }
+	:global(html.dark) .story-finale-art .story-finale-dark { display: block; }
+
+	.story-finale-edge {
+		position: absolute;
+		inset: 0;
+		border: 2px solid rgba(227, 246, 249, 0.88);
+		pointer-events: none;
+	}
+
+	@media (max-width: 900px), (prefers-reduced-motion: reduce) {
+		:global(:root) {
+			--home-story-height: 0px;
+		}
+
+		.home-scroll-story {
+			display: none;
+		}
+	}
+</style>

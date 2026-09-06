@@ -35,8 +35,8 @@ const iconHtml = icon ? ICONS[icon] : undefined;
 <style>
 	/* 编号圆颜色：default 为主题色，其余对应提示框色板 */
 	.step-item {
-		--step-bg: var(--primary);
-		--step-ring: color-mix(in srgb, var(--primary) 22%, transparent);
+		--step-bg: var(--admonitions-color-note);
+		--step-ring: color-mix(in srgb, var(--admonitions-color-note) 22%, transparent);
 
 		/* 递增放在条目上而非 ::before：有 icon 隐藏数字后，后续编号仍连续 */
 		counter-increment: step;
@@ -84,7 +84,7 @@ const iconHtml = icon ? ICONS[icon] : undefined;
 		border-radius: var(--radius-full);
 		background: var(--step-bg);
 		box-shadow: 0 0 0 3px var(--step-ring);
-		color: #fff;
+		color: var(--admonitions-marker-content);
 		font-size: 0.8rem;
 		font-weight: 700;
 		font-variant-numeric: tabular-nums;

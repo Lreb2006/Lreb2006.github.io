@@ -1,0 +1,424 @@
+---
+import { Icon } from "astro-icon/components";
+import MusicPlayer from "@/components/features/MusicPlayer.astro";
+import I18nKey from "@/i18n/i18nKey";
+import { i18n } from "@/i18n/translation";
+
+const triggerId = "home-music-trigger";
+const panelId = "home-music-panel";
+---
+
+<div class="home-music-player" data-home-music-player data-pagefind-ignore>
+	<div
+		id={panelId}
+		class="home-music-panel float-panel float-panel-closed"
+		data-home-music-panel
+		data-floating-panel
+		data-floating-panel-trigger={triggerId}
+		inert
+		aria-hidden="true"
+	>
+		<MusicPlayer id="home-music-player-widget" />
+	</div>
+
+	<button
+		id={triggerId}
+		type="button"
+		class="float-panel home-music-trigger"
+		data-home-music-trigger
+		aria-label={i18n(I18nKey.music)}
+		aria-controls={panelId}
+		aria-expanded="false"
+	>
+		<Icon
+			name="material-symbols:music-note-rounded"
+			class="home-music-icon home-music-icon-open"
+			aria-hidden="true"
+		/>
+		<Icon
+			name="material-symbols:close-rounded"
+			class="home-music-icon home-music-icon-close"
+			aria-hidden="true"
+		/>
+	</button>
+</div>
+
+<script is:inline>
+	(function () {
+		if (document.documentElement.dataset.homeMusicPlayerBound === "true") {
+			return;
+		}
+
+		document.documentElement.dataset.homeMusicPlayerBound = "true";
+		document.addEventListener("click", function (event) {
+			var target = event.target;
+			if (!(target instanceof Element)) return;
+
+			var trigger = target.closest("[data-home-music-trigger]");
+			if (trigger) {
+				var root = trigger.closest("[data-home-music-player]");
+				var panel = root && root.querySelector("[data-home-music-panel]");
+				if (panel) panel.classList.toggle("float-panel-closed");
+				return;
+			}
+
+			document
+				.querySelectorAll("[data-home-music-player]")
+				.forEach(function (root) {
+					if (root.contains(target)) return;
+					var panel = root.querySelector("[data-home-music-panel]");
+					if (panel) panel.classList.add("float-panel-closed");
+				});
+		});
+	})();
+</script>
+
+<style>
+	.home-music-player {
+		position: relative;
+		flex-shrink: 0;
+		z-index: 1000;
+		pointer-events: none;
+	}
+
+	.home-music-trigger {
+		position: relative !important;
+		top: auto !important;
+		display: grid;
+		width: 3rem;
+		height: 3rem;
+		place-items: center;
+		padding: 0;
+		overflow: hidden;
+		color: var(--btn-content);
+		border-radius: 999px !important;
+		cursor: pointer;
+		pointer-events: auto;
+		transition:
+			color 0.18s ease,
+			transform 0.18s ease,
+			box-shadow 0.18s ease;
+	}
+
+	.home-music-trigger:hover,
+	.home-music-trigger:focus-visible {
+		color: var(--primary);
+		box-shadow: var(--shadow-button);
+	}
+
+	.home-music-trigger:focus-visible {
+		outline: 2px solid var(--primary);
+		outline-offset: 3px;
+	}
+
+	.home-music-trigger:active {
+		transform: scale(0.92);
+	}
+
+	.home-music-icon {
+		grid-area: 1 / 1;
+		font-size: 1.5rem;
+		transition:
+			opacity 0.18s ease,
+			transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	.home-music-icon-close {
+		opacity: 0;
+		transform: rotate(-45deg) scale(0.65);
+	}
+
+	.home-music-trigger[aria-expanded="true"] .home-music-icon-open {
+		opacity: 0;
+		transform: rotate(45deg) scale(0.65);
+	}
+
+	.home-music-trigger[aria-expanded="true"] .home-music-icon-close {
+		opacity: 1;
+		transform: rotate(0) scale(1);
+	}
+
+	.home-music-panel {
+		position: absolute;
+		top: auto !important;
+		right: 0;
+		bottom: calc(100% + 0.5rem);
+		width: min(24rem, calc(100vw - 2rem));
+		max-height: calc(100dvh - 6rem - env(safe-area-inset-bottom));
+		overflow-y: auto;
+		padding: 1rem;
+		pointer-events: auto;
+		transform-origin: bottom right;
+		transition:
+			opacity 0.2s ease,
+			transform 0.24s cubic-bezier(0.22, 1, 0.36, 1),
+			visibility 0s linear 0s;
+	}
+
+	.home-music-panel.float-panel-closed {
+		visibility: hidden;
+		transform: translateY(0.5rem) scale(0.97);
+		transition:
+			opacity 0.18s ease,
+			transform 0.2s ease,
+			visibility 0s linear 0.2s;
+	}
+
+	/* 全屏壁纸下完整复用 Charloré 导航栏色板，覆盖播放器默认主题色。 */
+	:global(html[data-wallpaper-mode="fullscreen"][data-has-wallpaper])
+		.home-music-player {
+		--home-music-ink: #294b59;
+		--home-music-strong: #173744;
+		--home-music-play-bg: var(--charlore-nav-slider);
+		--primary: var(--home-music-ink);
+		--btn-content: var(--home-music-ink);
+		--btn-regular-bg: var(--charlore-nav-slider);
+		--btn-regular-bg-hover: var(--charlore-nav-hover);
+		--btn-regular-bg-active: color-mix(
+			in srgb,
+			var(--charlore-nav-slider) 72%,
+			var(--charlore-nav-text) 28%
+		);
+	}
+
+	:global(:root.dark[data-wallpaper-mode="fullscreen"][data-has-wallpaper])
+		.home-music-player {
+		--home-music-ink: #edf6fb;
+		--home-music-strong: #ffffff;
+		--home-music-play-bg: rgba(151, 216, 225, 0.24);
+	}
+
+	:global(html[data-wallpaper-mode="fullscreen"][data-has-wallpaper])
+		.home-music-panel
+		:global(.music-title) {
+		color: var(--home-music-strong) !important;
+		font-size: 1.125rem !important;
+		line-height: 1.35 !important;
+	}
+
+	:global(html[data-wallpaper-mode="fullscreen"][data-has-wallpaper])
+		.home-music-panel
+		:global(.item-title) {
+		color: var(--home-music-strong) !important;
+		font-size: 0.8125rem !important;
+		line-height: 1.3 !important;
+	}
+
+	:global(html[data-wallpaper-mode="fullscreen"][data-has-wallpaper])
+		.home-music-panel
+		:global(.item-artist) {
+		color: var(--home-music-ink) !important;
+		font-size: 0.7rem !important;
+		line-height: 1.3 !important;
+		opacity: 1 !important;
+	}
+
+	.home-music-panel :global(.music-player-top-row) {
+		gap: 0.75rem !important;
+		margin-bottom: 0.75rem !important;
+	}
+
+	.home-music-panel :global(.music-cover-shell) {
+		width: 4.25rem !important;
+		height: 4.25rem !important;
+	}
+
+	.home-music-panel :global(.music-artist) {
+		font-size: 0.875rem !important;
+		line-height: 1.35 !important;
+	}
+
+	.home-music-panel :global(.current-time),
+	.home-music-panel :global(.total-time) {
+		font-size: 0.75rem !important;
+	}
+
+	.home-music-panel :global(.music-player-controls-row) {
+		margin-top: 0.25rem;
+	}
+
+	.home-music-panel :global(.music-player-controls-row button) {
+		padding: 0.625rem !important;
+	}
+
+	.home-music-panel :global(.btn-play) {
+		width: 3.5rem !important;
+		height: 3.5rem !important;
+		color: var(--home-music-ink) !important;
+		background: var(--home-music-play-bg) !important;
+		border: 1px solid var(--charlore-nav-border) !important;
+		box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.24);
+	}
+
+	.home-music-panel :global(.btn-prev svg),
+	.home-music-panel :global(.btn-play svg),
+	.home-music-panel :global(.btn-next svg) {
+		font-size: 2.125rem !important;
+	}
+
+	.home-music-panel :global(.btn-repeat svg),
+	.home-music-panel :global(.btn-drawer-toggle svg),
+	.home-music-panel :global(.btn-lrc-toggle svg),
+	.home-music-panel :global(.btn-mute svg) {
+		font-size: 1.4rem !important;
+	}
+
+	:global(html[data-wallpaper-mode="fullscreen"][data-has-wallpaper])
+		.home-music-panel
+		:global(.music-artist),
+	:global(html[data-wallpaper-mode="fullscreen"][data-has-wallpaper])
+		.home-music-panel
+		:global(.current-time),
+	:global(html[data-wallpaper-mode="fullscreen"][data-has-wallpaper])
+		.home-music-panel
+		:global(.total-time),
+	:global(html[data-wallpaper-mode="fullscreen"][data-has-wallpaper])
+		.home-music-panel
+		:global(.btn-lrc-toggle),
+	:global(html[data-wallpaper-mode="fullscreen"][data-has-wallpaper])
+		.home-music-panel
+		:global(.btn-mute),
+	:global(html[data-wallpaper-mode="fullscreen"][data-has-wallpaper])
+		.home-music-panel
+		:global(.btn-repeat),
+	:global(html[data-wallpaper-mode="fullscreen"][data-has-wallpaper])
+		.home-music-panel
+		:global(.btn-prev),
+	:global(html[data-wallpaper-mode="fullscreen"][data-has-wallpaper])
+		.home-music-panel
+		:global(.btn-play),
+	:global(html[data-wallpaper-mode="fullscreen"][data-has-wallpaper])
+		.home-music-panel
+		:global(.btn-next),
+	:global(html[data-wallpaper-mode="fullscreen"][data-has-wallpaper])
+		.home-music-panel
+		:global(.btn-drawer-toggle) {
+		color: var(--home-music-ink) !important;
+		opacity: 1 !important;
+	}
+
+	:global(html[data-wallpaper-mode="fullscreen"][data-has-wallpaper])
+		.home-music-panel
+		:global(.music-player-widget svg) {
+		color: var(--home-music-ink) !important;
+		opacity: 1 !important;
+	}
+
+	:global(html[data-wallpaper-mode="fullscreen"][data-has-wallpaper])
+		.home-music-trigger.float-panel {
+		color: var(--charlore-nav-text) !important;
+		background:
+			linear-gradient(
+				135deg,
+				var(--charlore-nav-highlight),
+				transparent 48%
+			),
+			var(--charlore-nav-surface) !important;
+		border: 1px solid var(--charlore-nav-border) !important;
+		box-shadow: var(--charlore-nav-shadow) !important;
+		backdrop-filter: blur(28px) saturate(142%) brightness(1.04) !important;
+		-webkit-backdrop-filter: blur(28px) saturate(142%) brightness(1.04) !important;
+	}
+
+	:global(html[data-wallpaper-mode="fullscreen"][data-has-wallpaper])
+		.home-music-panel.float-panel {
+		color: var(--charlore-nav-text) !important;
+		background:
+			linear-gradient(
+				135deg,
+				var(--charlore-nav-highlight),
+				transparent 48%
+			),
+			var(--charlore-nav-surface) !important;
+		border: 1px solid var(--charlore-nav-border) !important;
+		box-shadow: var(--charlore-nav-shadow) !important;
+		backdrop-filter: blur(28px) saturate(142%) brightness(1.04) !important;
+		-webkit-backdrop-filter: blur(28px) saturate(142%) brightness(1.04) !important;
+	}
+
+	/* 暗色通用 float-panel 规则优先级较高，这里显式恢复导航栏毛玻璃。 */
+	:global(:root.dark[data-wallpaper-mode="fullscreen"][data-has-wallpaper])
+		.home-music-player
+		.home-music-trigger.float-panel {
+		color: var(--charlore-nav-text) !important;
+		background:
+			linear-gradient(
+				135deg,
+				var(--charlore-nav-highlight),
+				transparent 48%
+			),
+			var(--charlore-nav-surface) !important;
+		border: 1px solid var(--charlore-nav-border) !important;
+		box-shadow: var(--charlore-nav-shadow) !important;
+		backdrop-filter: blur(28px) saturate(142%) brightness(1.04) !important;
+		-webkit-backdrop-filter: blur(28px) saturate(142%) brightness(1.04) !important;
+	}
+
+	:global(:root.dark[data-wallpaper-mode="fullscreen"][data-has-wallpaper])
+		.home-music-player
+		.home-music-panel.float-panel {
+		color: var(--charlore-nav-text) !important;
+		background:
+			linear-gradient(
+				135deg,
+				var(--charlore-nav-highlight),
+				transparent 48%
+			),
+			var(--charlore-nav-surface) !important;
+		border: 1px solid var(--charlore-nav-border) !important;
+		box-shadow: var(--charlore-nav-shadow) !important;
+		backdrop-filter: blur(28px) saturate(142%) brightness(1.04) !important;
+		-webkit-backdrop-filter: blur(28px) saturate(142%) brightness(1.04) !important;
+	}
+
+	:global(html[data-wallpaper-mode="fullscreen"][data-has-wallpaper])
+		.home-music-trigger.float-panel:hover,
+	:global(html[data-wallpaper-mode="fullscreen"][data-has-wallpaper])
+		.home-music-trigger.float-panel:focus-visible {
+		background:
+			linear-gradient(var(--charlore-nav-hover), var(--charlore-nav-hover)),
+			linear-gradient(
+				135deg,
+				var(--charlore-nav-highlight),
+				transparent 48%
+			),
+			var(--charlore-nav-surface) !important;
+	}
+
+	@media (max-width: 768px) {
+		:global(html:not(.dark)[data-wallpaper-mode="fullscreen"][data-has-wallpaper])
+			.home-music-player {
+			--home-music-ink: #7A3E35;
+			--home-music-strong: #7A3E35;
+		}
+
+
+		.home-music-panel {
+			width: min(20rem, calc(100vw - 1.5rem));
+		}
+	}
+
+	@media (max-width: 480px) {
+
+		.home-music-trigger {
+			width: 2.5rem;
+			height: 2.5rem;
+		}
+
+		.home-music-icon {
+			font-size: 1.25rem;
+		}
+
+		.home-music-panel {
+			width: calc(100vw - 1rem);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.home-music-trigger,
+		.home-music-icon,
+		.home-music-panel {
+			transition: none !important;
+		}
+	}
+</style>

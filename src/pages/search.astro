@@ -3,15 +3,24 @@ import AdvancedSearch from "@components/pages/AdvancedSearch.svelte";
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import MainGridLayout from "@layouts/MainGridLayout.astro";
+import { getLocalSearchEntries } from "@/utils/content-utils";
 import { url } from "@/utils/url-utils";
 
 const title = i18n(I18nKey.search);
 const description = "";
+const localSearchEntries = import.meta.env.DEV
+	? await getLocalSearchEntries()
+	: [];
 ---
 
 <MainGridLayout title={title} description={description}>
     <div class="min-h-[80vh]">
-        <AdvancedSearch client:load title={title} description={description} />
+        <AdvancedSearch
+			client:load
+			title={title}
+			description={description}
+			localEntries={localSearchEntries}
+		/>
     </div>
 </MainGridLayout>
 

@@ -69,8 +69,14 @@ function finishProgressBar(): void {
  * 注册 link:click / content:replace / visit:start / page:view / visit:end 钩子。
  */
 function registerSwupHooks(): void {
-	// 非首页全屏模式与 overlay 一致（内容在最上面），首页 hero 结构回顶即可，
-	// 均无需自定义 swup 回顶行为，保留默认滚动到顶部
+	// Swup 默认的 auto 会继承 html 的 smooth，导致 visit:end 时回顶尚未完成。
+	// 在 Swup 原有回顶步骤中指定 instant，首页故事才会从完成后的滚动位置初始化。
+	window.swup.hooks.before(
+		"scroll:top",
+		(_visit: unknown, { options }: { options: ScrollToOptions }) => {
+			options.behavior = "instant";
+		},
+	);
 	// TODO: temp solution to change the height of the banner
 	window.swup.hooks.on(
 		"link:click",
@@ -140,24 +146,6 @@ function registerSwupHooks(): void {
 				}, 100);
 			}
 		}
-
-		// 重新初始化semifull模式的滚动检测
-		// （全屏模式跳过：导航栏状态由 updateNavbarTransparency 统一管理，
-		//   避免切换页面时 initSemifullScrollDetection 重置 scrolled 导致背景闪烁）
-		const navbar = document.getElementById("navbar");
-		if (navbar) {
-			const transparentMode = navbar.getAttribute("data-transparent-mode");
-			const navWallpaperMode = document.documentElement.getAttribute(
-				"data-wallpaper-mode",
-			);
-
-			if (transparentMode === "semifull" && navWallpaperMode !== "fullscreen") {
-				// 重新调用初始化函数来重新绑定滚动事件
-				if (typeof window.initSemifullScrollDetection === "function") {
-					window.initSemifullScrollDetection();
-				}
-			}
-		}
 	});
 	window.swup.hooks.on("visit:start", (visit: { to: { url: string } }) => {
 		// Start progress bar（WAAPI 合成线程动画，不强制回流）
@@ -166,15 +154,21 @@ function registerSwupHooks(): void {
 		// 更新首页状态（body.is-home 驱动 CSS --content-top 等）
 		const bodyElement = document.querySelector("body") as HTMLElement;
 		const isHomePage = pathsEqual(visit.to.url, url("/"));
+		// 每次换页先释放可能残留的 ScrollTrigger pin / fixed portal。
+		window.__charloreHomeStoryDeactivate?.();
 		const wasHome = bodyElement.classList.contains("is-home");
 		const contentPanel = document.querySelector(
 			".content-panel",
 		) as HTMLElement | null;
+		const oldTop =
+			isHomePage !== wasHome && contentPanel
+				? contentPanel.getBoundingClientRect().top
+				: null;
+		// 即使旧内容面板暂时不存在，也必须同步页面身份，避免残留首页样式。
+		bodyElement.classList.toggle("is-home", isHomePage);
 		// FLIP 只在 is-home 状态变化（首页↔非首页）时才有意义；文章↔文章、首页↔首页
 		// 类未变 → delta 必为 0，直接短路，避免常见切页白付两次强制布局读取
-		if (isHomePage !== wasHome && contentPanel) {
-			const oldTop = contentPanel.getBoundingClientRect().top; // 类切换前读
-			bodyElement.classList.toggle("is-home", isHomePage);
+		if (oldTop !== null && contentPanel) {
 			const newTop = contentPanel.getBoundingClientRect().top; // 类切换后读
 			const delta = oldTop - newTop;
 			// 超大位移（>75% 视口，如全屏首页→非首页）不做 FLIP：新页内容重排叠加会抖动，直接到位由 swup 淡入掩盖
@@ -197,20 +191,6 @@ function registerSwupHooks(): void {
 		const navbar = document.getElementById("navbar");
 		if (navbar) {
 			navbar.setAttribute("data-is-home", isHomePage.toString());
-
-			// 重新初始化semifull模式的滚动检测
-			// （全屏模式跳过：导航栏状态由 updateNavbarTransparency 统一管理，
-			//   避免切换页面时 initSemifullScrollDetection 重置 scrolled 导致背景闪烁）
-			const transparentMode = navbar.getAttribute("data-transparent-mode");
-			const navWallpaperMode = document.documentElement.getAttribute(
-				"data-wallpaper-mode",
-			);
-			if (transparentMode === "semifull" && navWallpaperMode !== "fullscreen") {
-				// 重新调用初始化函数来重新绑定滚动事件
-				if (typeof window.initSemifullScrollDetection === "function") {
-					window.initSemifullScrollDetection();
-				}
-			}
 		}
 
 		// 在移动端禁用文章列表容器的过渡动画，防止与主内容区位置变化冲突
@@ -231,16 +211,6 @@ function registerSwupHooks(): void {
 		const toc = document.getElementById("toc-wrapper");
 		if (toc) {
 			toc.classList.add("toc-not-ready");
-		}
-
-		// 确保页面滚动到顶部，切页期间使用即时回顶，移动端不使用，避免出现闪烁
-		// （非首页全屏模式与 overlay 一致、内容在最上面，回顶即内容顶部）
-		const shouldUseSmoothScroll = window.innerWidth >= 768;
-		if (shouldUseSmoothScroll) {
-			window.scrollTo({
-				top: 0,
-				behavior: "auto",
-			});
 		}
 	});
 	window.swup.hooks.on("page:view", () => {
@@ -325,6 +295,12 @@ function registerSwupHooks(): void {
 	window.swup.hooks.on("visit:end", (_visit: { to: { url: string } }) => {
 		// Finish progress bar（WAAPI：快速填满后淡出）
 		finishProgressBar();
+		document.documentElement.classList.remove("is-page-transitioning");
+		if (pathsEqual(window.location.pathname, url("/"))) {
+			window.__charloreHomeStoryActivate?.();
+		}
+		window.initSemifullScrollDetection?.();
+		scrollFunction();
 
 		setTimeout(() => {
 			const heightExtend = document.getElementById("page-height-extend");
@@ -337,10 +313,6 @@ function registerSwupHooks(): void {
 			if (toc) {
 				toc.classList.remove("toc-not-ready");
 			}
-
-			// 移除页面切换保护，恢复过渡动画
-			document.documentElement.classList.remove("is-page-transitioning");
-			scrollFunction();
 		}, 200);
 	});
 }

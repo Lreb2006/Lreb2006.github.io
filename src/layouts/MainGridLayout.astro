@@ -7,10 +7,16 @@ import HeaderTopRow from "@components/layout/HeaderTopRow.astro";
 import SideBar from "@components/layout/SideBar.astro";
 import type { MarkdownHeading } from "astro";
 import FloatingControls from "@/components/controls/FloatingControls.astro";
-import CategoryBar from "@/components/layout/CategoryBar.astro";
+import HomeScrollStory from "@/components/layout/HomeScrollStory.astro";
+import InnerPageHero from "@/components/layout/InnerPageHero.astro";
 import SidebarColumn from "@/components/layout/SidebarColumn.astro";
 import WallpaperSection from "@/components/layout/WallpaperSection.astro";
-import { live2dWidgetConfig, sidebarLayoutConfig, siteConfig } from "@/config";
+import Profile from "@/components/widget/Profile.astro";
+import {
+	live2dWidgetConfig,
+	sidebarLayoutConfig,
+	siteConfig,
+} from "@/config";
 import { getBannerVisibilityState } from "@/utils/banner-visibility-utils";
 import { getBackgroundImages, isHomePage } from "@/utils/layout-utils";
 import { getEffectiveSidebarState } from "@/utils/sidebar-effective-utils";
@@ -55,7 +61,6 @@ const {
 
 const isHomePageCheck = isHomePage(Astro.url.pathname);
 const isPostPage = !!postSlug;
-const shouldRenderCategoryBar = !!siteConfig.categoryBar;
 const navbarWidthFull = siteConfig.navbar.widthFull ?? false;
 const stickyNavbar = siteConfig.navbar.stickyNavbar ?? false;
 
@@ -88,6 +93,8 @@ const {
 <HeaderTopRow stickyNavbar={stickyNavbar} navbarWidthFull={navbarWidthFull} />
 
 <WallpaperSection state={banner} backgroundImages={backgroundImages} title={title} bannerPostMeta={bannerPostMeta} />
+<HomeScrollStory />
+<InnerPageHero />
 
 <!-- Main content -->
 <div class="content-panel absolute w-full z-30 pointer-events-none">
@@ -116,16 +123,15 @@ const {
                 encrypted={encrypted}
             />
                     
-            {/* 主内容区包装器 - 包含静态栏位和swup容器，作为单个grid item */}
-            <div class={staticBarClass}>
-                {/* 分类导航栏 - 全站渲染并显示 */}
-                {shouldRenderCategoryBar && <div id="category-bar-wrapper"><CategoryBar currentPostCategory={postCategory} /></div>}
+			{/* 主内容区包装器 - 包含静态栏位和swup容器，作为单个grid item */}
+			<div class={`main-content-column ${staticBarClass}`}>
                 {/* 主内容区 - 始终渲染，确保 Swup 容器存在 */}
                 <main
                     id="swup-container"
                     class="transition-main"
                     data-current-post-category={postCategory || ""}
                 >
+				{isHomePageCheck && <Profile class="onload-animation mb-4" />}
                 {/* 为每个页面提供一个隐藏的h1标题，用于SEO和可访问性 */}
                 <h1 class="sr-only">{title}</h1>
                 <div id="content-wrapper" class="onload-animation transition-leaving">
@@ -176,5 +182,3 @@ const {
 
 
 </Layout>
-
-</style>

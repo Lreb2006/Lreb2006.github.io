@@ -3,10 +3,13 @@ import type { MusicPlayerConfig } from "../types/musicConfig";
 // 音乐播放器配置
 export const musicPlayerConfig: MusicPlayerConfig = {
 	// 是否在导航栏显示音乐播放器入口
-	showInNavbar: true,
+	showInNavbar: false,
+
+	// 是否在全站右下角显示悬浮音乐播放器入口
+	showFloatingPlayer: true,
 
 	// 是否在侧边栏显示音乐播放器组件
-	showInSidebar: true,
+	showInSidebar: false,
 
 	// 使用方式："meting" 使用 Meting API，"local" 使用本地音乐列表
 	mode: "local",
@@ -48,11 +51,64 @@ export const musicPlayerConfig: MusicPlayerConfig = {
 	local: {
 		playlist: [
 			{
-				name: "使一颗心免于哀伤",
-				artist: "知更鸟 / HOYO-MiX / Chevy",
-				url: "/assets/music/使一颗心免于哀伤-哼唱.mp3",
-				cover: "/assets/music/cover/109951169585655912.webp",
-				lrc: "",
+				name: "让我一直陪着你",
+				artist: "冰心",
+				url: "/assets/music/audio/let-me-stay-with-you.mp3",
+				cover: "/assets/music/covers/let-me-stay-with-you.jpg",
+			},
+			{
+				name: "好き、以外の言葉で",
+				artist: "高田憂希 / 寿美菜子",
+				url: "/assets/music/audio/suki-igai-no-kotoba-de.mp3",
+				cover: "/assets/music/covers/suki-igai-no-kotoba-de.jpg",
+			},
+			{
+				name: "∞ TIMEs",
+				artist: "洛天依Official / 星葵77",
+				url: "/assets/music/audio/infinite-times.mp3",
+				cover: "/assets/music/covers/infinite-times.jpg",
+			},
+			{
+				name: "有何不可",
+				artist: "许嵩",
+				url: "/assets/music/audio/you-he-bu-ke.mp3",
+				cover: "/assets/music/covers/you-he-bu-ke.jpg",
+			},
+			{
+				name: "Shut Up and Dance (Acoustic)",
+				artist: "Jada Facer",
+				url: "/assets/music/audio/shut-up-and-dance-acoustic.mp3",
+				cover: "/assets/music/covers/shut-up-and-dance-acoustic.jpg",
+			},
+			{
+				name: "月の温度",
+				artist: "JELEE",
+				url: "/assets/music/audio/tsuki-no-ondo.mp3",
+				cover: "/assets/music/covers/tsuki-no-ondo.jpg",
+			},
+			{
+				name: "Sleep Tight (feat. まこと)",
+				artist: "Neko Hacker / まこと",
+				url: "/assets/music/audio/sleep-tight.mp3",
+				cover: "/assets/music/covers/sleep-tight.jpg",
+			},
+			{
+				name: "oh my girl",
+				artist: "鎖那",
+				url: "/assets/music/audio/oh-my-girl.mp3",
+				cover: "/assets/music/covers/oh-my-girl.jpg",
+			},
+			{
+				name: "Undress",
+				artist: "Adib Sin/Violieu/Napp-Chan",
+				url: "/assets/music/audio/undress.mp3",
+				cover: "/assets/music/covers/undress.jpg",
+			},
+			{
+				name: "Cherish Your Life",
+				artist: "Delos",
+				url: "/assets/music/audio/cherish-your-life.mp3",
+				cover: "/assets/music/covers/cherish-your-life.jpg",
 			},
 		],
 	},

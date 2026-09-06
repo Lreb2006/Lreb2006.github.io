@@ -1,27 +1,46 @@
-# 关于我 / About Me
+# About
 
-你好！我是 **夏叶** ，一个在数字世界中默默无闻的一片叶子。
+Hi！我是 **Charlore**，也可以是 **路人蛃**。
 
-## 🛠️ 关于本站
+一名还在不断探索方向的24级大学生，目前主要关注 **Computer Science、AI / LLM、AI Infra**。
 
-这个网站使用 **Astro** 框架构建，采用了 [Firefly](https://github.com/CuteLeaf/Firefly) 模板，Firefly 是基于 [Fuwari](https://github.com/saicaca/fuwari) 的二次开发。
+## What I'm doing
 
-**Firefly** 是一款基于 Astro 框架和 Fuwari 模板开发的清新美观且现代化个人博客主题模板，专为技术爱好者和内容创作者设计。该主题融合了现代 Web 技术栈，提供了丰富的功能模块和高度可定制的界面，让您能够轻松打造出专业且美观的个人博客网站。
+目前我主要在做这些事情：
 
+- 学习 AI / LLM 相关技术
+- 探索 AI Infra 模型推理与性能优化
+- 阅读、写作，以及偶尔研究一些感兴趣的美好事物
 
-**🖥️在线预览： [Firefly - Demo site](https://firefly.cuteleaf.cn/)**
+技术足够重要，但文学、设计、游戏和哲学同样构成了我理解世界的方式。
 
-**📝Firefly使用文档： [https://docs-firefly.cuteleaf.cn](https://docs-firefly.cuteleaf.cn/)**
+## Things I like
 
-**⭐Firefly开源地址：[https://github.com/CuteLeaf/Firefly](https://github.com/CuteLeaf/Firefly)** 
+**Technology**
 
-**⭐Fuwari开源地址：[https://github.com/saicaca/fuwari](https://github.com/saicaca/fuwari)**
+C++ · Java · Python · Linux · Backend · DL · LLM · AI Infra · Open Source
 
-::github{repo="CuteLeaf/Firefly"}
+**Literature**
 
-::github{repo="saicaca/fuwari"}
+陀思妥耶夫斯基 · 列夫托尔斯泰 ·  奥威尔 · 马尔克斯 · 加缪 · 福楼拜 · 吉屋信子 · 清少纳言
 
----
+**Games**
 
-*感谢你的来访！希望在这里能找到对你有用的内容！*
+Minecraft · 杀戮尖塔2 · Fiding Paradise · To The Moon · 文明6 · VRChat
 
+同时我也对游戏开发、世界设计和视觉表达感兴趣，欢迎与我交流~
+
+**Others**
+
+Yuri · 写作 · 视觉设计 · VOCALOID · 编曲 · Miku · Internet Culture · 绘画
+
+## Elsewhere
+
+如果你想找到我：
+
+- QQ — `2047269247`
+- Email — `yxie0867@gmail.com`
+
+## One more thing
+
+**Never give up and smile!**

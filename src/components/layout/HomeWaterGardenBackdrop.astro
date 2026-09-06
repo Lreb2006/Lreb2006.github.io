@@ -1,0 +1,1216 @@
+---
+import mobileDarkImage from "@/assets/images/charlore/mobile-home-dark.webp";
+import mobileLightImage from "@/assets/images/charlore/mobile-home-light.webp";
+import TypewriterText from "@/components/features/TypewriterText.astro";
+import HomeTiltImageCard from "@/components/layout/HomeTiltImageCard.astro";
+
+const mobileQuotes = [
+	"Don’t walk in front of me, I may not follow.",
+	"Don’t walk behind me, I may not lead.",
+	"Walk beside me, just be my friend.",
+];
+---
+
+<section class="home-water-garden-backdrop" aria-label="Charloré 水花园主页背景">
+	<div class="home-hero-card-layer">
+		<HomeTiltImageCard />
+	</div>
+
+	<div class="mobile-home-art" aria-hidden="true">
+		<div
+			class="mobile-home-art-image mobile-home-art-light"
+			style={`background-image: url("${mobileLightImage.src}")`}
+		></div>
+		<div
+			class="mobile-home-art-image mobile-home-art-dark"
+			style={`background-image: url("${mobileDarkImage.src}")`}
+		></div>
+	</div>
+
+	<div class="garden-celestial-field" aria-hidden="true">
+		<span class="celestial-bokeh celestial-bokeh-one"></span>
+		<span class="celestial-bokeh celestial-bokeh-two"></span>
+		<span class="celestial-bokeh celestial-bokeh-three"></span>
+
+		<svg class="celestial-orbit celestial-orbit-near" viewBox="0 0 640 520">
+			<ellipse cx="268" cy="278" rx="230" ry="112" transform="rotate(-18 268 278)"></ellipse>
+			<ellipse class="orbit-dashed" cx="268" cy="278" rx="178" ry="78" transform="rotate(22 268 278)"></ellipse>
+			<circle class="orbit-planet planet-coral" cx="488" cy="205" r="18"></circle>
+			<circle class="orbit-planet planet-pearl" cx="104" cy="352" r="7"></circle>
+			<path d="M268 114v328M42 278h452"></path>
+		</svg>
+
+		<svg class="celestial-orbit celestial-orbit-far" viewBox="0 0 560 560">
+			<circle cx="280" cy="280" r="204"></circle>
+			<circle class="orbit-dashed" cx="280" cy="280" r="146"></circle>
+			<ellipse cx="280" cy="280" rx="242" ry="86" transform="rotate(31 280 280)"></ellipse>
+			<circle class="orbit-planet planet-cream" cx="424" cy="153" r="13"></circle>
+			<circle class="orbit-planet planet-coral" cx="93" cy="327" r="6"></circle>
+		</svg>
+
+		<span class="celestial-star star-a">✦</span>
+		<span class="celestial-star star-b">✧</span>
+		<span class="celestial-star star-c">✦</span>
+		<span class="celestial-star star-d">＋</span>
+		<span class="celestial-star star-e">✧</span>
+		<span class="celestial-star star-f">·</span>
+		<span class="celestial-label celestial-label-a">ORBITAL MEMORY / 01</span>
+		<span class="celestial-label celestial-label-b">PERIHELION · 18°</span>
+		<span class="celestial-label celestial-label-c">CHARLORÉ CELESTIAL FIELD</span>
+		<span class="dark-shooting-star shooting-star-a"></span>
+		<span class="dark-shooting-star shooting-star-b"></span>
+	</div>
+
+	<div class="dark-starlight-layer" aria-hidden="true">
+		<svg class="dark-constellation-map" viewBox="0 0 1600 800" preserveAspectRatio="none">
+			<path d="M54 204l72-58 66 28 52-71m-118 43 17 86"></path>
+			<path d="M1372 117l72 54 68-39m-68 39 44 74"></path>
+			<path class="constellation-dashed" d="M72 619l64-46 58 18 43-61"></path>
+			<g>
+				<circle cx="54" cy="204" r="3"></circle><circle cx="126" cy="146" r="4"></circle>
+				<circle cx="192" cy="174" r="2.5"></circle><circle cx="244" cy="103" r="3.5"></circle>
+				<circle cx="143" cy="232" r="2.5"></circle><circle cx="1372" cy="117" r="3"></circle>
+				<circle cx="1444" cy="171" r="4"></circle><circle cx="1512" cy="132" r="2.5"></circle>
+				<circle cx="1488" cy="245" r="3"></circle><circle cx="72" cy="619" r="2.5"></circle>
+				<circle cx="136" cy="573" r="3.5"></circle><circle cx="194" cy="591" r="2.5"></circle>
+				<circle cx="237" cy="530" r="3"></circle>
+			</g>
+		</svg>
+		<span class="dark-star dark-star-a">✦</span>
+		<span class="dark-star dark-star-b">✧</span>
+		<span class="dark-star dark-star-c">⋆</span>
+		<span class="dark-star dark-star-d">✦</span>
+		<span class="dark-star dark-star-e">·</span>
+		<span class="dark-star dark-star-f">✧</span>
+		<span class="dark-star dark-star-g">✦</span>
+		<span class="dark-star dark-star-h">⋆</span>
+		<span class="dark-lantern-glyph lantern-glyph-a"></span>
+		<span class="dark-lantern-glyph lantern-glyph-b"></span>
+	</div>
+
+	<div class="garden-character">
+		<div class="garden-pool" aria-hidden="true">
+		<span class="garden-bubble bubble-one"></span>
+		<span class="garden-bubble bubble-two"></span>
+		<span class="garden-bubble bubble-three"></span>
+		<span class="garden-bubble bubble-four"></span>
+		<span class="garden-bubble bubble-five"></span>
+		<span class="garden-bubble bubble-six"></span>
+		<span class="garden-bubble bubble-seven"></span>
+		<span class="garden-bubble bubble-eight"></span>
+		<span class="garden-bubble bubble-nine"></span>
+		<span class="garden-spark spark-one">✦</span>
+		<span class="garden-spark spark-two">✦</span>
+
+		<svg
+			class="garden-jellyfish"
+			viewBox="0 0 560 560"
+			role="img"
+			aria-label="带六条飘带式触手的珍珠色水母"
+		>
+			<defs>
+				<radialGradient id="charlore-bell" cx="38%" cy="20%" r="84%">
+					<stop stop-color="#fff"></stop>
+					<stop offset=".28" stop-color="#fffbe1"></stop>
+					<stop offset=".57" stop-color="#d9edf0"></stop>
+					<stop offset=".79" stop-color="#d5dcf3"></stop>
+					<stop offset="1" stop-color="#f3c5d0"></stop>
+				</radialGradient>
+				<linearGradient id="charlore-tentacle-a" x2="1" y2="1">
+					<stop stop-color="#fffbe6"></stop>
+					<stop offset=".34" stop-color="#d7eef0"></stop>
+					<stop offset=".72" stop-color="#a6d2eb"></stop>
+					<stop offset="1" stop-color="#e7c8dc"></stop>
+				</linearGradient>
+				<linearGradient id="charlore-tentacle-b" x2=".8" y2="1">
+					<stop stop-color="#fff"></stop>
+					<stop offset=".32" stop-color="#f6dce7"></stop>
+					<stop offset=".66" stop-color="#c0dce8"></stop>
+					<stop offset="1" stop-color="#86c8c8"></stop>
+				</linearGradient>
+				<linearGradient id="charlore-tentacle-c" x2="1" y2="1">
+					<stop stop-color="#fff8d9"></stop>
+					<stop offset=".38" stop-color="#e5e4f4"></stop>
+					<stop offset=".7" stop-color="#b5dbea"></stop>
+					<stop offset="1" stop-color="#f1bdca"></stop>
+				</linearGradient>
+				<filter id="charlore-soft" x="-30%" y="-20%" width="160%" height="170%">
+					<feGaussianBlur stdDeviation="3.4" result="blurred"></feGaussianBlur>
+					<feMerge>
+						<feMergeNode in="blurred"></feMergeNode>
+						<feMergeNode in="SourceGraphic"></feMergeNode>
+					</feMerge>
+				</filter>
+				<filter id="charlore-organic" x="-20%" y="-20%" width="140%" height="150%">
+					<feTurbulence baseFrequency=".009 .021" numOctaves="2" seed="12" result="noise"></feTurbulence>
+					<feDisplacementMap in="SourceGraphic" in2="noise" scale="3.5"></feDisplacementMap>
+				</filter>
+			</defs>
+
+			<!-- 六条触手：外、中、内各一对，姿态互相呼应但不机械镜像。 -->
+			<g filter="url(#charlore-soft)" stroke="#fff" stroke-opacity=".82" stroke-width="3.2" stroke-linejoin="round">
+				<path d="M142 247C112 273 74 277 45 307c-25 26-29 59-9 68 20 8 35-17 47-36 15-24 43-18 72-51 15-17 19-32 18-43-10 3-21 3-31 2Z" fill="url(#charlore-tentacle-a)"></path>
+				<path d="M191 257c-22 36-53 57-67 99-13 41 3 77 25 78 22 1 29-33 21-54-10-30 30-68 42-116-7-5-14-7-21-7Z" fill="url(#charlore-tentacle-b)"></path>
+				<path d="M245 264c-9 48-30 86-24 139 5 48 31 78 52 69 19-9 9-42-2-62-15-28 14-91 5-146-10 2-21 2-31 0Z" fill="url(#charlore-tentacle-c)"></path>
+				<path d="M306 263c12 47-7 91 10 136 16 43 45 65 63 51 18-15-3-43-20-60-22-23 10-80-18-132-11 3-23 5-35 5Z" fill="url(#charlore-tentacle-c)"></path>
+				<path d="M361 254c22 34 15 69 47 98 30 27 65 26 73 7 7-20-26-27-46-39-28-17-18-53-35-76-13 5-26 8-39 10Z" fill="url(#charlore-tentacle-b)"></path>
+				<path d="M409 241c30 24 46 50 79 61 31 10 58-5 53-25-5-19-35-12-56-14-28-2-35-22-46-36-9 5-19 10-30 14Z" fill="url(#charlore-tentacle-a)"></path>
+			</g>
+			<g fill="none" stroke="#5e9cae" stroke-opacity=".3" stroke-width="2.2" stroke-linecap="round">
+				<path d="M51 350c29-43 70-35 99-91"></path>
+				<path d="M146 410c-14-57 45-95 53-143"></path>
+				<path d="M258 449c-30-62 12-126 1-174"></path>
+				<path d="M356 429c-34-55-1-111-31-157"></path>
+				<path d="M461 345c-50-16-48-65-80-83"></path>
+				<path d="M513 284c-53 7-69-28-91-39"></path>
+			</g>
+			<g filter="url(#charlore-organic)">
+				<path d="M112 250C114 129 181 62 280 60c102-2 168 70 169 190-81 43-256 45-337 0Z" fill="url(#charlore-bell)" stroke="rgba(255,255,255,.96)" stroke-width="6"></path>
+				<path d="M131 221c17-80 71-135 148-138 69-3 122 36 146 112-72-42-220-44-294 26Z" fill="rgba(255,255,255,.26)"></path>
+				<path d="M126 244c77 31 232 30 307 0" fill="none" stroke="#5597aa" stroke-opacity=".42" stroke-width="4.5" stroke-linecap="round"></path>
+				<path d="M151 186c10-49 35-81 71-100M405 184c-13-44-38-75-73-98" fill="none" stroke="rgba(255,255,255,.72)" stroke-width="10" stroke-linecap="round"></path>
+				<path d="M151 176c21 11 42 7 60-9" fill="none" stroke="#f2b6b6" stroke-opacity=".34" stroke-width="22" stroke-linecap="round"></path>
+				<path d="M351 169c19 15 38 16 59 2" fill="none" stroke="#f1c4a4" stroke-opacity=".32" stroke-width="20" stroke-linecap="round"></path>
+			</g>
+			<g fill="#36505d">
+				<circle cx="244" cy="178" r="6"></circle>
+				<circle cx="320" cy="178" r="6"></circle>
+			</g>
+			<path d="M265 201c11 13 24 13 35 0" fill="none" stroke="#36505d" stroke-width="4.5" stroke-linecap="round"></path>
+			<g fill="#f2b6b6" opacity=".48">
+				<ellipse cx="216" cy="201" rx="16" ry="6"></ellipse>
+				<ellipse cx="347" cy="201" rx="16" ry="6"></ellipse>
+			</g>
+			<g fill="rgba(255,255,255,.91)">
+				<ellipse cx="193" cy="118" rx="8" ry="15" transform="rotate(35 193 118)"></ellipse>
+				<circle cx="367" cy="112" r="4"></circle>
+			</g>
+		</svg>
+		</div>
+
+		<div class="garden-wordmark">
+			<span class="garden-wordmark-kicker">CHARLORÉ / AQUATIC MEMORY</span>
+			<h1 class="home-water-garden-name" data-text="Charloré"><span>Charloré</span></h1>
+			<div class="mobile-home-quote">
+				<TypewriterText
+					text={mobileQuotes}
+					speed={70}
+					deleteSpeed={40}
+					pauseTime={2200}
+				/>
+			</div>
+			<div class="garden-wordmark-meta" aria-hidden="true">
+				<span>NO. 01</span>
+				<i></i>
+				<span>LIGHT · WATER · MEMORY</span>
+			</div>
+		</div>
+	</div>
+
+	<div class="garden-editorial-layer" aria-hidden="true">
+		<svg class="garden-editorial-orbits" viewBox="0 0 1600 800" preserveAspectRatio="none">
+			<path d="M116 208C394 66 680 107 884 238c175 113 256 282 514 238"></path>
+			<path d="M1026 112c179 58 322 176 403 345"></path>
+			<circle cx="1274" cy="238" r="166"></circle>
+			<circle cx="1274" cy="238" r="118"></circle>
+			<path d="M1274 48v380M1084 238h380"></path>
+			<path d="M182 616h288M326 572v88"></path>
+		</svg>
+		<span class="editorial-label label-index">AQUATIC STUDY / 01</span>
+		<span class="editorial-label label-depth">DEPTH · LIGHT · REFRACTION</span>
+		<span class="editorial-label label-frame">CHARLORÉ VISUAL ARCHIVE</span>
+		<span class="editorial-cross cross-a">＋</span>
+		<span class="editorial-cross cross-b">×</span>
+		<span class="editorial-cross cross-c">＋</span>
+	</div>
+</section>
+
+<script>
+	import { calculateCelestialParallax } from "@/utils/inverse-tilt";
+
+	const initCelestialParallax = () => {
+		const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+		document.querySelectorAll<HTMLElement>(".home-water-garden-backdrop").forEach((backdrop) => {
+			if (backdrop.dataset.celestialReady === "true" || reduceMotion.matches) return;
+			backdrop.dataset.celestialReady = "true";
+
+			let animationFrame = 0;
+			let pointerX = 0.5;
+			let pointerY = 0.5;
+
+			const render = () => {
+				const motion = calculateCelestialParallax(pointerX, pointerY, 14);
+				backdrop.style.setProperty("--celestial-near-x", `${motion.nearX}px`);
+				backdrop.style.setProperty("--celestial-near-y", `${motion.nearY}px`);
+				backdrop.style.setProperty("--celestial-far-x", `${motion.farX}px`);
+				backdrop.style.setProperty("--celestial-far-y", `${motion.farY}px`);
+				animationFrame = 0;
+			};
+
+			const scheduleRender = () => {
+				if (animationFrame === 0) animationFrame = window.requestAnimationFrame(render);
+			};
+
+			backdrop.addEventListener("pointermove", (event) => {
+				const bounds = backdrop.getBoundingClientRect();
+				pointerX = (event.clientX - bounds.left) / bounds.width;
+				pointerY = (event.clientY - bounds.top) / bounds.height;
+				backdrop.style.setProperty("--celestial-focus-x", `${pointerX * 100}%`);
+				backdrop.style.setProperty("--celestial-focus-y", `${pointerY * 100}%`);
+				scheduleRender();
+			});
+
+			backdrop.addEventListener("pointerleave", () => {
+				pointerX = 0.5;
+				pointerY = 0.5;
+				backdrop.style.setProperty("--celestial-focus-x", "50%");
+				backdrop.style.setProperty("--celestial-focus-y", "50%");
+				scheduleRender();
+			});
+		});
+	};
+
+	initCelestialParallax();
+	document.addEventListener("astro:page-load", initCelestialParallax);
+	document.addEventListener("swup:contentReplaced", initCelestialParallax);
+</script>
+
+<style>
+	.home-water-garden-backdrop {
+		--garden-ink: #729fb2;
+		--garden-blue: #badbe3;
+		--garden-deep: #83aab5;
+		--garden-aqua: #9bc9c6;
+		--garden-pink: #a9d7e7;
+		--garden-pink-soft: #d8edf4;
+		--celestial-near-x: 0px;
+		--celestial-near-y: 0px;
+		--celestial-far-x: 0px;
+		--celestial-far-y: 0px;
+		--celestial-focus-x: 50%;
+		--celestial-focus-y: 50%;
+		position: absolute;
+		inset: 0;
+		isolation: isolate;
+		overflow: hidden;
+		background:
+			url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.76' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.18'/%3E%3C/svg%3E"),
+			repeating-linear-gradient(112deg, rgba(61, 118, 143, 0.034) 0 1px, transparent 1px 31px),
+			radial-gradient(circle at var(--celestial-focus-x) var(--celestial-focus-y), rgba(248, 254, 255, 0.4), transparent 17%),
+			radial-gradient(ellipse at 48% -12%, rgba(255, 255, 255, 0.82), transparent 40%),
+			radial-gradient(ellipse at 8% 26%, rgba(198, 233, 244, 0.78), transparent 31%),
+			radial-gradient(ellipse at 91% 18%, rgba(154, 211, 232, 0.52), transparent 29%),
+			linear-gradient(180deg, #edf8fb 0%, #d3ebf3 48%, #83bcd2 100%);
+		background-blend-mode: soft-light, normal, screen, screen, normal, normal, normal;
+		box-shadow: inset 0 -14rem 180px rgba(38, 103, 130, 0.2);
+		filter: blur(var(--fullscreen-blur, 0px));
+		transform: none;
+		transform-origin: center;
+	}
+
+	.home-hero-card-layer {
+		display: contents;
+	}
+
+	:global(body:not(.is-home)) .home-water-garden-backdrop {
+		filter: none;
+	}
+
+	/* 窄屏保留背景插画，停用会透过半透明内容卡片的星空装饰。 */
+	@media (max-width: 900px) {
+		.garden-celestial-field,
+		.dark-starlight-layer { display: none !important; }
+	}
+
+	:global(body:not(.is-home)) :is(
+		.home-hero-card-layer,
+		.mobile-home-art,
+		.garden-character
+	) {
+		display: none !important;
+	}
+
+	:global(html.dark) .home-water-garden-backdrop {
+		--garden-ink: #cbeaf2;
+		--garden-deep: #83c6d9;
+		background:
+			url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.24'/%3E%3C/svg%3E"),
+			repeating-linear-gradient(112deg, rgba(214, 242, 248, 0.026) 0 1px, transparent 1px 31px),
+			radial-gradient(circle at var(--celestial-focus-x) var(--celestial-focus-y), rgba(194, 236, 247, 0.13), transparent 17%),
+			radial-gradient(ellipse at 48% -12%, rgba(222, 247, 251, 0.15), transparent 40%),
+			radial-gradient(ellipse at 8% 26%, rgba(64, 130, 151, 0.24), transparent 31%),
+			radial-gradient(ellipse at 91% 18%, rgba(57, 122, 150, 0.2), transparent 29%),
+			linear-gradient(180deg, #102630 0%, #163442 48%, #174a5d 100%);
+		background-blend-mode: soft-light, normal, screen, screen, normal, normal, normal;
+		box-shadow: inset 0 -14rem 190px rgba(2, 14, 22, 0.38);
+	}
+
+	.home-water-garden-backdrop::before,
+	.home-water-garden-backdrop::after {
+		content: "";
+		position: absolute;
+		z-index: 0;
+		width: 36vw;
+		aspect-ratio: 1;
+		border-radius: 50%;
+		filter: blur(88px);
+		opacity: 0.3;
+		pointer-events: none;
+		animation: garden-aurora 15s ease-in-out infinite alternate;
+	}
+
+	.mobile-home-art {
+		display: none;
+	}
+
+	.mobile-home-art-dark {
+		display: none;
+	}
+
+	.mobile-home-quote {
+		display: none;
+	}
+
+	.home-water-garden-backdrop::before {
+		left: -9vw;
+		top: 9%;
+		background: rgba(226, 248, 251, 0.74);
+	}
+
+	.home-water-garden-backdrop::after {
+		right: -8vw;
+		top: 42%;
+		background: rgba(74, 155, 184, 0.42);
+		animation-delay: -6s;
+	}
+
+	.garden-celestial-field {
+		position: absolute;
+		z-index: 1;
+		inset: 0;
+		overflow: hidden;
+		color: rgba(246, 253, 255, 0.7);
+		pointer-events: none;
+	}
+
+	.garden-celestial-field::before {
+		content: "";
+		position: absolute;
+		inset: 0;
+		background-image:
+			radial-gradient(circle at 8% 13%, currentColor 0 1px, transparent 1.6px),
+			radial-gradient(circle at 92% 34%, currentColor 0 1.2px, transparent 1.8px),
+			radial-gradient(circle at 15% 81%, currentColor 0 0.9px, transparent 1.5px),
+			radial-gradient(circle at 85% 88%, currentColor 0 1px, transparent 1.6px),
+			radial-gradient(circle at 48% 8%, currentColor 0 0.8px, transparent 1.4px);
+		opacity: 0.7;
+	}
+
+	.celestial-orbit {
+		position: absolute;
+		width: clamp(25rem, 43vw, 47rem);
+		height: auto;
+		overflow: visible;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 1;
+		vector-effect: non-scaling-stroke;
+		will-change: transform;
+	}
+
+	.celestial-orbit-near {
+		left: clamp(-17rem, -13vw, -8rem);
+		bottom: clamp(-14rem, -17vh, -7rem);
+		color: rgba(246, 253, 255, 0.78);
+		filter: drop-shadow(0 0 16px rgba(212, 244, 250, 0.22));
+		transform: translate3d(var(--celestial-near-x), var(--celestial-near-y), 0) rotate(-4deg);
+	}
+
+	.celestial-orbit-far {
+		right: clamp(-15rem, -11vw, -7rem);
+		top: clamp(-14rem, -16vh, -7rem);
+		color: rgba(52, 112, 139, 0.38);
+		transform: translate3d(var(--celestial-far-x), var(--celestial-far-y), 0) rotate(8deg);
+	}
+
+	.orbit-dashed {
+		stroke-dasharray: 4 11;
+		opacity: 0.72;
+	}
+
+	.orbit-planet {
+		stroke-width: 1.5;
+	}
+
+	.planet-coral {
+		fill: rgba(73, 145, 174, 0.46);
+		stroke: rgba(221, 248, 252, 0.8);
+	}
+
+	.planet-pearl {
+		fill: rgba(249, 254, 255, 0.92);
+		stroke: rgba(75, 144, 168, 0.56);
+	}
+
+	.planet-cream {
+		fill: rgba(199, 233, 243, 0.76);
+		stroke: rgba(53, 111, 136, 0.5);
+	}
+
+	.celestial-bokeh {
+		position: absolute;
+		display: block;
+		aspect-ratio: 1;
+		border: 1px solid rgba(245, 253, 255, 0.26);
+		border-radius: 50%;
+		filter: blur(14px);
+		will-change: transform;
+	}
+
+	.celestial-bokeh-one {
+		left: -4%;
+		top: 27%;
+		width: 17vw;
+		background: rgba(228, 248, 252, 0.38);
+		transform: translate3d(var(--celestial-near-x), var(--celestial-near-y), 0);
+	}
+
+	.celestial-bokeh-two {
+		right: -3%;
+		bottom: 8%;
+		width: 20vw;
+		background: rgba(48, 121, 151, 0.22);
+		filter: blur(25px);
+		transform: translate3d(var(--celestial-near-x), var(--celestial-near-y), 0);
+	}
+
+	.celestial-bokeh-three {
+		right: 8%;
+		top: 11%;
+		width: 7vw;
+		background: rgba(255, 255, 247, 0.26);
+		filter: blur(8px);
+		transform: translate3d(var(--celestial-far-x), var(--celestial-far-y), 0);
+	}
+
+	.celestial-star,
+	.celestial-label {
+		position: absolute;
+		will-change: transform;
+	}
+
+	.celestial-star {
+		color: rgba(248, 254, 255, 0.92);
+		font-family: Georgia, serif;
+		text-shadow: 0 0 16px rgba(213, 246, 252, 0.76);
+		animation: celestial-twinkle 4.8s ease-in-out infinite;
+	}
+
+	.star-a { left: 5%; top: 15%; font-size: 1.2rem; transform: translate3d(var(--celestial-near-x), var(--celestial-near-y), 0); }
+	.star-b { right: 6%; top: 25%; font-size: 1.6rem; animation-delay: -2.2s; transform: translate3d(var(--celestial-far-x), var(--celestial-far-y), 0); }
+	.star-c { left: 8%; bottom: 13%; font-size: 0.78rem; animation-delay: -1.1s; transform: translate3d(var(--celestial-near-x), var(--celestial-near-y), 0); }
+	.star-d { right: 10%; bottom: 15%; font-size: 1rem; animation-delay: -3.4s; transform: translate3d(var(--celestial-far-x), var(--celestial-far-y), 0); }
+	.star-e { left: 17%; top: 7%; font-size: 0.72rem; animation-delay: -0.8s; }
+	.star-f { right: 19%; bottom: 7%; font-size: 2rem; animation-delay: -2.7s; }
+
+	.celestial-label {
+		color: rgba(43, 93, 119, 0.58);
+		font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+		font-size: clamp(0.42rem, 0.45vw, 0.53rem);
+		font-weight: 600;
+		letter-spacing: 0.19em;
+		text-transform: uppercase;
+	}
+
+	.celestial-label-a { left: 2.5%; top: 46%; writing-mode: vertical-rl; }
+	.celestial-label-b { right: 2.2%; top: 52%; }
+	.celestial-label-c { left: 8%; bottom: 3.2%; }
+
+	.dark-starlight-layer {
+		position: absolute;
+		z-index: 3;
+		inset: 0;
+		display: none;
+		overflow: hidden;
+		color: rgba(248, 253, 255, 0.88);
+		pointer-events: none;
+		mix-blend-mode: screen;
+	}
+
+	:global(html.dark) .dark-starlight-layer {
+		display: block;
+	}
+
+	.dark-constellation-map {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		fill: none;
+		stroke: rgba(232, 249, 255, 0.28);
+		stroke-width: 0.8;
+		filter: drop-shadow(0 0 8px rgba(205, 240, 250, 0.24));
+		opacity: 0.76;
+		animation: dark-constellation-drift 18s ease-in-out infinite alternate;
+	}
+
+	.dark-constellation-map circle {
+		fill: rgba(255, 255, 255, 0.9);
+		stroke: none;
+	}
+
+	.constellation-dashed {
+		stroke-dasharray: 4 12;
+		opacity: 0.72;
+	}
+
+	.dark-star {
+		position: absolute;
+		color: rgba(255, 255, 255, 0.94);
+		font-family: Georgia, serif;
+		text-shadow:
+			0 0 9px rgba(255, 255, 255, 0.85),
+			0 0 22px rgba(176, 226, 242, 0.52);
+		animation: dark-star-pulse var(--star-speed, 4.6s) ease-in-out infinite;
+	}
+
+	.dark-star-a { left: 6%; top: 11%; font-size: 0.75rem; --star-speed: 3.8s; }
+	.dark-star-b { left: 18%; top: 24%; font-size: 1.2rem; --star-speed: 5.4s; animation-delay: -2s; }
+	.dark-star-c { left: 31%; top: 8%; font-size: 1.6rem; --star-speed: 4.2s; animation-delay: -1.1s; }
+	.dark-star-d { right: 29%; top: 16%; font-size: 0.9rem; --star-speed: 3.4s; animation-delay: -2.7s; }
+	.dark-star-e { right: 17%; top: 38%; font-size: 2rem; --star-speed: 5.8s; animation-delay: -0.8s; }
+	.dark-star-f { right: 5%; bottom: 19%; font-size: 1.4rem; --star-speed: 4.9s; animation-delay: -3s; }
+	.dark-star-g {
+		left: 11%;
+		bottom: 12%;
+		width: 0.8rem;
+		height: 0.8rem;
+		color: transparent;
+		--star-speed: 4s;
+		animation-delay: -1.7s;
+	}
+
+	.dark-star-g::before,
+	.dark-star-g::after {
+		content: "";
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		border-radius: 999px;
+		background: rgba(255, 255, 255, 0.96);
+		box-shadow: 0 0 9px rgba(220, 248, 255, 0.84);
+		transform: translate(-50%, -50%);
+	}
+
+	.dark-star-g::before { width: 1px; height: 0.8rem; }
+	.dark-star-g::after { width: 0.8rem; height: 1px; }
+	.dark-star-h { left: 27%; bottom: 7%; font-size: 1.1rem; --star-speed: 5.2s; animation-delay: -3.6s; }
+
+	.dark-shooting-star {
+		position: absolute;
+		display: none;
+		width: clamp(4rem, 8vw, 8rem);
+		height: 1px;
+		border-radius: 999px;
+		background: linear-gradient(90deg, rgba(255, 255, 255, 0.94), transparent);
+		filter: drop-shadow(0 0 5px rgba(209, 244, 255, 0.76));
+		transform: rotate(-31deg);
+		opacity: 0;
+		animation: dark-shooting-star 10s ease-in-out infinite;
+	}
+
+	:global(html.dark) .dark-shooting-star {
+		display: block;
+	}
+
+	.dark-shooting-star::after {
+		content: "";
+		position: absolute;
+		left: -2px;
+		top: -2px;
+		width: 5px;
+		height: 5px;
+		border-radius: 50%;
+		background: #fff;
+		box-shadow: 0 0 12px rgba(255, 255, 255, 0.9);
+	}
+
+	.shooting-star-a { right: 1.8%; top: 17%; }
+	.shooting-star-b { left: -1%; top: 42%; animation-delay: -6.4s; }
+
+	.dark-lantern-glyph {
+		position: absolute;
+		display: block;
+		width: clamp(1.8rem, 2.8vw, 3.2rem);
+		aspect-ratio: 1;
+		border: 1px solid rgba(244, 252, 255, 0.46);
+		box-shadow:
+			inset 0 0 18px rgba(224, 248, 255, 0.1),
+			0 0 15px rgba(213, 242, 251, 0.14);
+		transform: rotate(45deg);
+		animation: dark-lantern-float 7s ease-in-out infinite;
+	}
+
+	.dark-lantern-glyph::before,
+	.dark-lantern-glyph::after {
+		content: "";
+		position: absolute;
+		inset: 22%;
+		border: 1px solid rgba(255, 255, 255, 0.58);
+		border-radius: 50%;
+		background: rgba(225, 247, 252, 0.08);
+	}
+
+	.dark-lantern-glyph::after {
+		inset: -38% 49% 100%;
+		width: 1px;
+		border: 0;
+		border-radius: 0;
+		background: rgba(239, 251, 255, 0.32);
+	}
+
+	.lantern-glyph-a { right: 8%; top: 33%; }
+	.lantern-glyph-b { left: 7%; bottom: 23%; width: clamp(1.3rem, 2vw, 2.2rem); animation-delay: -3.4s; }
+
+	@keyframes dark-star-pulse {
+		0%, 100% { opacity: 0.25; transform: scale(0.78) rotate(0); }
+		48% { opacity: 0.96; transform: scale(1.08) rotate(10deg); }
+	}
+
+	@keyframes dark-shooting-star {
+		0%, 76%, 100% { opacity: 0; translate: 4rem -3rem; }
+		80% { opacity: 0.92; }
+		88% { opacity: 0; translate: -6rem 4rem; }
+	}
+
+	@keyframes dark-lantern-float {
+		0%, 100% { translate: 0 5px; rotate: -2deg; opacity: 0.48; }
+		50% { translate: 0 -7px; rotate: 3deg; opacity: 0.88; }
+	}
+
+	@keyframes dark-constellation-drift {
+		from { transform: translate3d(-4px, 3px, 0); }
+		to { transform: translate3d(6px, -4px, 0); }
+	}
+
+	.garden-character {
+		position: absolute;
+		z-index: 4;
+		right: clamp(12rem, 19.5vw, 21rem);
+		bottom: clamp(7.5rem, 18vh, 10rem);
+		display: flex;
+		width: auto;
+		flex-direction: row;
+		align-items: center;
+		gap: clamp(0.2rem, 0.65vw, 0.7rem);
+	}
+
+	.garden-character::before {
+		content: "";
+		position: absolute;
+		z-index: -1;
+		inset: -22% -7% -18% -5%;
+		border: 1px solid rgba(238, 249, 249, 0.26);
+		border-radius: 50%;
+		box-shadow: 0 0 28px rgba(184, 223, 223, 0.08);
+		transform: rotate(-7deg);
+		pointer-events: none;
+	}
+
+	.garden-character::after {
+		content: "✦";
+		position: absolute;
+		z-index: 7;
+		right: 9%;
+		top: -27%;
+		color: rgba(247, 252, 248, 0.74);
+		font-size: clamp(0.65rem, 0.9vw, 1rem);
+		text-shadow: 0 0 18px rgba(197, 229, 227, 0.62);
+	}
+
+	.garden-wordmark {
+		position: relative;
+		z-index: 6;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		min-width: 0;
+	}
+
+	.garden-wordmark-kicker,
+	.garden-wordmark-meta {
+		color: rgba(226, 242, 241, 0.78);
+		font-family: ui-monospace, "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
+		font-size: clamp(0.5rem, 0.58vw, 0.67rem);
+		font-weight: 600;
+		letter-spacing: 0.22em;
+		line-height: 1;
+		text-shadow: 0 2px 10px rgba(20, 59, 78, 0.36);
+	}
+
+	.garden-wordmark-kicker {
+		margin: 0 0 0.55rem 0.55rem;
+	}
+
+	.garden-wordmark-meta {
+		display: flex;
+		width: 96%;
+		align-items: center;
+		gap: 0.65rem;
+		margin: 0.55rem 0 0 0.5rem;
+		font-size: clamp(0.46rem, 0.5vw, 0.58rem);
+		letter-spacing: 0.16em;
+	}
+
+	.garden-wordmark-meta i {
+		display: block;
+		height: 1px;
+		flex: 1;
+		background: rgba(232, 247, 246, 0.48);
+		box-shadow: 0 0 12px rgba(171, 218, 219, 0.22);
+	}
+
+	.home-water-garden-name {
+		position: relative;
+		z-index: 6;
+		width: auto;
+		margin: 0;
+		isolation: isolate;
+		color: rgba(244, 247, 241, 0.95);
+		-webkit-text-stroke: 0.45px rgba(62, 103, 119, 0.22);
+		font-family: "Bodoni MT", Didot, "Times New Roman", Georgia, serif;
+		font-size: clamp(5.2rem, 6.7vw, 8.5rem);
+		font-weight: 600;
+		line-height: 0.82;
+		letter-spacing: -0.07em;
+		text-align: left;
+		text-shadow:
+			1px 1px 0 rgba(117, 186, 188, 0.3),
+			0 18px 34px rgba(15, 52, 77, 0.38);
+	}
+
+	.home-water-garden-name span {
+		position: relative;
+		z-index: 2;
+	}
+
+	.home-water-garden-name::before,
+	.home-water-garden-name::after {
+		content: attr(data-text);
+		position: absolute;
+		inset: 0;
+		z-index: 1;
+		pointer-events: none;
+	}
+
+	.home-water-garden-name::before {
+		color: transparent;
+		-webkit-text-stroke: 1px rgba(157, 213, 214, 0.68);
+		clip-path: polygon(0 0, 100% 0, 100% 48%, 0 58%);
+		transform: translate(4px, -4px);
+		opacity: 0.78;
+	}
+
+	.home-water-garden-name::after {
+		z-index: 0;
+		color: rgba(156, 211, 226, 0.38);
+		clip-path: polygon(0 55%, 100% 46%, 100% 100%, 0 100%);
+		transform: translate(-3px, 4px);
+		mix-blend-mode: screen;
+		opacity: 0.72;
+	}
+
+	:global(html.dark) .home-water-garden-name {
+		color: rgba(241, 247, 241, 0.96);
+		-webkit-text-stroke-color: rgba(174, 221, 222, 0.18);
+		text-shadow:
+			2px 2px 0 rgba(108, 192, 191, 0.24),
+			-2px -1px 0 rgba(151, 211, 226, 0.18),
+			0 0 24px rgba(119, 213, 211, 0.14),
+			0 16px 34px rgba(2, 19, 27, 0.34);
+	}
+
+	.garden-pool {
+		position: relative;
+		z-index: 4;
+		width: clamp(6.2rem, 7.8vw, 8.1rem);
+		flex: 0 0 auto;
+		aspect-ratio: 1;
+		border: 0;
+		background: none;
+		box-shadow: none;
+	}
+
+	:global(html.dark) .garden-pool {
+		background: none;
+		box-shadow: none;
+	}
+
+	.garden-pool::after {
+		content: "";
+		position: absolute;
+		z-index: 1;
+		inset: -8%;
+		border: 1px solid rgba(231, 247, 246, 0.22);
+		border-radius: 50%;
+		box-shadow: 0 0 26px rgba(160, 212, 214, 0.08);
+		transform: rotate(11deg) scaleY(0.84);
+		pointer-events: none;
+	}
+
+	.garden-jellyfish {
+		position: absolute;
+		z-index: 4;
+		width: 88%;
+		left: 6%;
+		top: 7%;
+		overflow: visible;
+		opacity: 1;
+		filter: drop-shadow(0 25px 30px rgba(30, 84, 105, 0.22));
+		animation: garden-float 6.8s ease-in-out infinite;
+	}
+
+	:global(html.dark) .garden-jellyfish {
+		filter: drop-shadow(0 0 24px rgba(142, 229, 224, 0.25)) drop-shadow(0 27px 40px rgba(9, 20, 48, 0.36));
+	}
+
+	.garden-bubble {
+		--bubble-size: 24px;
+		position: absolute;
+		z-index: 7;
+		width: var(--bubble-size);
+		height: var(--bubble-size);
+		aspect-ratio: 1;
+		left: var(--bubble-x);
+		top: var(--bubble-y);
+		border: 1.35px solid rgba(241, 253, 252, 0.84);
+		border-radius: 50%;
+		background:
+			radial-gradient(circle at 30% 24%, rgba(255, 255, 255, 0.66) 0 5%, transparent 8% 31%, rgba(255, 255, 255, 0.18) 33% 41%, transparent 44%),
+			radial-gradient(circle at 72% 78%, rgba(185, 219, 224, 0.25), transparent 48%),
+			rgba(218, 240, 243, 0.15);
+		box-shadow: inset -4px -5px 12px rgba(88, 142, 158, 0.12), inset 3px 3px 9px rgba(255, 255, 255, 0.3), 0 0 16px rgba(188, 231, 231, 0.2);
+		backdrop-filter: blur(1.5px);
+		-webkit-backdrop-filter: blur(1.5px);
+		animation: garden-rise var(--bubble-duration) ease-in-out infinite;
+		animation-delay: var(--bubble-delay);
+	}
+
+	.garden-bubble::after {
+		content: "";
+		position: absolute;
+		width: 24%;
+		height: 12%;
+		right: 17%;
+		bottom: 16%;
+		border-radius: 50%;
+		background: rgba(255, 255, 255, 0.62);
+		transform: rotate(-28deg);
+	}
+
+	.bubble-one { --bubble-size: 21px; --bubble-x: 1%; --bubble-y: 61%; --bubble-duration: 7.5s; --bubble-delay: -2s; }
+	.bubble-two { --bubble-size: 11px; --bubble-x: 19%; --bubble-y: 9%; --bubble-duration: 6.2s; --bubble-delay: -5s; }
+	.bubble-three { --bubble-size: 15px; --bubble-x: 78%; --bubble-y: 24%; --bubble-duration: 8.2s; --bubble-delay: -1s; }
+	.bubble-four { --bubble-size: 24px; --bubble-x: 79%; --bubble-y: 68%; --bubble-duration: 9s; --bubble-delay: -6s; }
+	.bubble-five { --bubble-size: 9px; --bubble-x: 64%; --bubble-y: 7%; --bubble-duration: 5.4s; --bubble-delay: -3s; }
+	.bubble-six { --bubble-size: 11px; --bubble-x: 29%; --bubble-y: 84%; --bubble-duration: 7s; --bubble-delay: -4s; }
+	.bubble-seven { --bubble-size: 14px; --bubble-x: -1%; --bubble-y: 30%; --bubble-duration: 7.8s; --bubble-delay: -1.5s; }
+	.bubble-eight { --bubble-size: 12px; --bubble-x: 89%; --bubble-y: 49%; --bubble-duration: 6.8s; --bubble-delay: -2.8s; }
+	.bubble-nine { --bubble-size: 8px; --bubble-x: 49%; --bubble-y: 90%; --bubble-duration: 8.6s; --bubble-delay: -4.7s; }
+
+	.garden-spark {
+		position: absolute;
+		z-index: 3;
+		left: var(--spark-x);
+		top: var(--spark-y);
+		color: rgba(255, 255, 255, 0.86);
+		font-size: var(--spark-size);
+		animation: garden-twinkle var(--spark-duration) ease-in-out infinite;
+	}
+
+	.spark-one { --spark-x: 17%; --spark-y: 40%; --spark-size: 18px; --spark-duration: 3s; }
+	.spark-two { --spark-x: 76%; --spark-y: 44%; --spark-size: 11px; --spark-duration: 4.2s; }
+
+	@keyframes garden-float {
+		0%, 100% { transform: translateY(4px) rotate(-1.4deg); }
+		50% { transform: translateY(-14px) rotate(1.5deg); }
+	}
+
+	@keyframes garden-rise {
+		0%, 100% { opacity: 0.56; transform: translateY(10px) scale(0.97); }
+		50% { opacity: 0.9; transform: translate(4px, -18px) scale(1.04); }
+	}
+
+	@keyframes garden-twinkle {
+		0%, 100% { opacity: 0.35; transform: scale(0.82); }
+		50% { opacity: 1; transform: scale(1.13) rotate(12deg); }
+	}
+
+	@keyframes garden-aurora {
+		from { transform: translate3d(-2%, 2%, 0) scale(0.96); }
+		to { transform: translate3d(5%, -3%, 0) scale(1.08); }
+	}
+
+	@keyframes celestial-twinkle {
+		0%, 100% { opacity: 0.38; filter: blur(0); }
+		48% { opacity: 0.94; filter: blur(0.2px); }
+		55% { opacity: 0.66; }
+	}
+
+	.garden-editorial-layer {
+		position: absolute;
+		z-index: 3;
+		inset: 0;
+		color: rgba(236, 248, 247, 0.5);
+		pointer-events: none;
+		mix-blend-mode: screen;
+	}
+
+	.garden-editorial-orbits {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 0.85;
+		opacity: 0.36;
+	}
+
+	.garden-editorial-orbits circle:nth-of-type(2),
+	.garden-editorial-orbits path:nth-of-type(2) {
+		stroke-dasharray: 5 10;
+		opacity: 0.65;
+	}
+
+	.editorial-label {
+		position: absolute;
+		font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+		font-size: clamp(0.45rem, 0.5vw, 0.58rem);
+		font-weight: 600;
+		letter-spacing: 0.2em;
+		text-shadow: 0 2px 10px rgba(10, 47, 70, 0.5);
+	}
+
+	.label-index { right: 10%; top: 18%; writing-mode: vertical-rl; }
+	.label-depth { left: 10%; bottom: 17%; }
+	.label-frame { right: 13%; top: 49%; }
+
+	.editorial-cross {
+		position: absolute;
+		font-family: ui-monospace, monospace;
+		font-size: clamp(0.8rem, 1.2vw, 1.35rem);
+		text-shadow: 0 0 15px rgba(215, 242, 240, 0.5);
+	}
+
+	.cross-a { left: 16%; top: 23%; }
+	.cross-b { right: 18%; top: 31%; }
+	.cross-c { right: 29%; bottom: 16%; }
+
+	@media (max-width: 900px) {
+		.home-water-garden-backdrop {
+			background: none !important;
+			box-shadow: none;
+		}
+
+		.home-water-garden-backdrop::before,
+		.home-water-garden-backdrop::after,
+		:is(
+			.garden-celestial-field,
+			.dark-starlight-layer,
+			.garden-editorial-layer
+		) {
+			display: none;
+		}
+
+		:global(.home-tilt-card-shell) {
+			display: none;
+		}
+
+		.mobile-home-art {
+			position: absolute;
+			z-index: 2;
+			inset: 0;
+			display: block;
+			pointer-events: none;
+		}
+
+		.mobile-home-art-image {
+			position: absolute;
+			inset: 0;
+			display: block;
+			background-position: center;
+			background-repeat: no-repeat;
+			background-size: cover;
+		}
+
+		.mobile-home-art-dark {
+			display: none;
+		}
+
+		:global(html.dark) .mobile-home-art-light {
+			display: none !important;
+		}
+
+		:global(html.dark) .mobile-home-art-dark {
+			display: block !important;
+		}
+
+		.garden-character {
+			left: 0;
+			right: 0;
+			top: 50%;
+			bottom: auto;
+			display: grid;
+			width: 100%;
+			grid-template-columns: 1fr auto 1fr;
+			align-items: center;
+			column-gap: 0.3rem;
+			transform: translateY(-50%);
+		}
+
+		.garden-character::before,
+		.garden-character::after {
+			display: none;
+		}
+
+		.garden-wordmark {
+			grid-column: 2;
+			grid-row: 1;
+			align-items: center;
+		}
+
+		.home-water-garden-name {
+			font-size: clamp(3.2rem, 13vw, 6rem);
+			text-align: center;
+		}
+
+		.home-water-garden-name::before {
+			transform: translate(3px, -3px);
+		}
+
+		.home-water-garden-name::after {
+			transform: translate(-2px, 3px);
+			opacity: 0.56;
+		}
+
+		:global(html:not(.dark)) .home-water-garden-name {
+			-webkit-text-stroke: 0.55px rgba(222, 126, 166, 0.66);
+			text-shadow:
+				1px 1px 0 rgba(233, 154, 188, 0.76),
+				0 5px 14px rgba(211, 103, 151, 0.58),
+				0 16px 30px rgba(173, 71, 126, 0.36);
+		}
+
+		:global(html:not(.dark)) .home-water-garden-name::before,
+		:global(html:not(.dark)) .home-water-garden-name::after {
+			color: transparent;
+			-webkit-text-stroke: 1px rgba(243, 185, 210, 0.88);
+			mix-blend-mode: normal;
+		}
+
+		:global(html:not(.dark)) .home-water-garden-name::before {
+			opacity: 0.86;
+		}
+
+		:global(html:not(.dark)) .home-water-garden-name span {
+			filter: drop-shadow(0 0 3px rgba(243, 185, 210, 0.6));
+		}
+
+		:global(html:not(.dark)) .home-water-garden-name::after {
+			mix-blend-mode: screen;
+			opacity: 0.56;
+		}
+
+		.garden-pool {
+			grid-column: 1;
+			grid-row: 1;
+			justify-self: end;
+			width: clamp(4.2rem, 17vw, 5.4rem);
+		}
+
+		.garden-bubble {
+			scale: 0.7;
+		}
+
+		.garden-wordmark-kicker,
+		.garden-wordmark-meta,
+		.garden-editorial-layer {
+			display: none;
+		}
+
+		.mobile-home-quote {
+			display: block;
+			position: absolute;
+			top: calc(100% + 0.8rem);
+			left: 50%;
+			width: min(94vw, 28rem);
+			min-height: 1.5em;
+			margin: 0;
+			color: rgba(255, 255, 255, 0.96);
+			font-size: clamp(0.88rem, 3.7vw, 1.08rem);
+			font-weight: 550;
+			line-height: 1.5;
+			text-align: center;
+			white-space: nowrap;
+			text-shadow: 0 2px 12px rgba(8, 31, 48, 0.9), 0 0 4px rgba(8, 31, 48, 0.72);
+			transform: translateX(-50%);
+		}
+
+		.celestial-label {
+			display: none;
+		}
+
+		.celestial-orbit {
+			width: 23rem;
+			opacity: 0.7;
+		}
+
+		.dark-constellation-map {
+			opacity: 0.42;
+		}
+
+		.dark-star-b,
+		.dark-star-c,
+		.dark-star-d,
+		.dark-star-e,
+		.dark-star-h,
+		.shooting-star-b,
+		.lantern-glyph-b {
+			display: none;
+		}
+	}
+
+	@media (max-width: 520px) {
+		.home-water-garden-name {
+			font-size: clamp(3rem, 13vw, 4.5rem);
+		}
+
+		.garden-jellyfish {
+			width: 88%;
+			left: 6%;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.garden-jellyfish,
+		.garden-bubble,
+		.garden-spark,
+		.celestial-star,
+		.dark-star,
+		.dark-shooting-star,
+		.dark-lantern-glyph,
+		.dark-constellation-map,
+		.home-water-garden-backdrop::before,
+		.home-water-garden-backdrop::after {
+			animation: none;
+		}
+
+		.celestial-orbit,
+		.celestial-bokeh,
+		.celestial-star {
+			transform: none;
+		}
+	}
+</style>

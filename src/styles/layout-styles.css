@@ -751,6 +751,13 @@ html[data-wallpaper-mode="fullscreen"] body:not(.sticky-navbar) #top-row {
 html[data-wallpaper-mode="fullscreen"] body.is-home #wallpaper-wrapper img {
     filter: blur(var(--fullscreen-blur, 0px)) !important;
 }
+
+/* Charloré 首页：竖屏时将画面焦点移到原图左侧两个人物。 */
+@media (max-width: 1023px) {
+    html[data-wallpaper-mode="fullscreen"] body.is-home #wallpaper-wrapper img {
+        object-position: 22% center !important;
+    }
+}
 body.is-home #wallpaper-wrapper.wallpaper-fullscreen img,
 body.is-home #wallpaper-wrapper.wallpaper-fullscreen img[class*="object-cover"] {
     filter: blur(var(--fullscreen-blur, 0px)) !important;
@@ -784,6 +791,30 @@ body:not(.is-home) #wallpaper-wrapper.wallpaper-fullscreen .scroll-down-indicato
 #wallpaper-wrapper.wallpaper-fullscreen #header-waves,
 #wallpaper-wrapper.wallpaper-fullscreen #wallpaper-gradient {
     display: none !important;
+}
+
+/* Charloré 手机首页：首屏参与页面滚动，波浪贴住首屏下沿并随首屏离开。
+   参考 Firefly 的 banner 结构，避免波浪跟随 fixed 壁纸钉在视口底部。 */
+@media (max-width: 900px) {
+    html[data-wallpaper-mode="fullscreen"] body.is-home #wallpaper-wrapper {
+        position: absolute !important;
+        inset: 0 0 auto !important;
+        height: 100vh !important;
+        min-height: 100vh !important;
+        max-height: none !important;
+    }
+
+    html[data-wallpaper-mode="fullscreen"]:not([data-waves-enabled="false"])
+        body.is-home
+        #wallpaper-wrapper
+        #header-waves.waves {
+        display: block !important;
+        position: absolute !important;
+        bottom: -1px !important;
+        height: 13vh !important;
+        min-height: 100px !important;
+        max-height: 176px !important;
+    }
 }
 
 /* Fullscreen 模式下滚动向下指示器 */

@@ -5,7 +5,6 @@ import { Icon } from "astro-icon/components";
 <div
   id="scroll-down-indicator"
   class="scroll-down-indicator"
-  onclick="document.getElementById('main-grid')?.scrollIntoView({ behavior: 'smooth' })"
 >
   <Icon name="material-symbols:keyboard-arrow-down-rounded" class="scroll-down-icon" />
 </div>
@@ -32,6 +31,16 @@ import { Icon } from "astro-icon/components";
       }
     }
 
+    function enterNextSection() {
+      var story = document.querySelector("[data-home-scroll-story]");
+      if (window.innerWidth > 900 && story) {
+        var storyStart = window.scrollY + story.getBoundingClientRect().top + 1;
+        window.scrollTo({ top: storyStart, behavior: "smooth" });
+        return;
+      }
+      document.getElementById("main-grid")?.scrollIntoView({ behavior: "smooth" });
+    }
+
     // 计算被浏览器工具栏遮挡的壁纸底部高度：wrapper 底超出可见视口底（visualViewport）的部分
     function getToolbarOverlap() {
       var el = document.getElementById("wallpaper-wrapper");
@@ -55,6 +64,8 @@ import { Icon } from "astro-icon/components";
       indicator.style.bottom = TARGET_CLEARANCE + overlap + "px";
     }
 
+    var indicator = document.getElementById("scroll-down-indicator");
+    if (indicator) indicator.addEventListener("click", enterNextSection);
     window.addEventListener("scroll", updateVisibility, { passive: true });
     window.addEventListener("resize", updatePosition, { passive: true });
     if (window.visualViewport) {

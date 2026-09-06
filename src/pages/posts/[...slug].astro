@@ -9,7 +9,6 @@ import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import MainGridLayout from "@layouts/MainGridLayout.astro";
 import {
-	getRelatedPosts,
 	getSeriesPosts,
 	getSortedPosts,
 } from "@utils/content-utils";
@@ -24,7 +23,6 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import CoverImage from "@/components/common/CoverImage.astro";
 import PostMetadata from "@/components/layout/PostMeta.astro";
-import RecommendedPost from "@/components/misc/RecommendedPost.astro";
 import SeriesNav from "@/components/misc/SeriesNav.astro";
 import SharePoster from "@/components/misc/SharePoster.svelte";
 import { coverImageConfig } from "@/config/coverImageConfig";
@@ -191,7 +189,6 @@ const jsonLd = {
 	],
 };
 
-const relatedPosts = await getRelatedPosts(entry, 5);
 const seriesData = await getSeriesPosts(entry);
 ---
 
@@ -653,41 +650,45 @@ const seriesData = await getSeriesPosts(entry);
     }
   </script>
 
-  <div
-    class="flex flex-col md:flex-row justify-between mb-4 gap-4 overflow-hidden w-full"
-  >
-    <a
-      href={entry.data.nextSlug ? getPostUrlBySlug(entry.data.nextSlug) : url("/")}
-      class="w-full font-bold overflow-hidden active:scale-95"
-    >
-      <div class="btn-card rounded-2xl w-full h-15 max-w-full px-4 flex items-center justify-start! gap-4">
-        <Icon
-          name="material-symbols:chevron-left-rounded"
-          class="text-[2rem] text-(--primary)"
-        />
-        <div class="overflow-hidden transition text-ellipsis whitespace-nowrap max-w-[calc(100%-3rem)] text-black/75 dark:text-white/75">
-          {entry.data.nextTitle || i18n(I18nKey.home)}
-        </div>
-      </div>
-    </a>
+  {
+    (entry.data.nextSlug || entry.data.prevSlug) && (
+      <div class="flex flex-col md:flex-row justify-between mb-4 gap-4 overflow-hidden w-full">
+        {entry.data.nextSlug && (
+          <a
+            href={getPostUrlBySlug(entry.data.nextSlug)}
+            class="w-full font-bold overflow-hidden active:scale-95"
+          >
+            <div class="btn-card rounded-2xl w-full h-15 max-w-full px-4 flex items-center justify-start! gap-4">
+              <Icon
+                name="material-symbols:chevron-left-rounded"
+                class="text-[2rem] text-(--primary)"
+              />
+              <div class="overflow-hidden transition text-ellipsis whitespace-nowrap max-w-[calc(100%-3rem)] text-black/75 dark:text-white/75">
+                {entry.data.nextTitle}
+              </div>
+            </div>
+          </a>
+        )}
 
-    <a
-      href={entry.data.prevSlug ? getPostUrlBySlug(entry.data.prevSlug) : url("/")}
-      class="w-full font-bold overflow-hidden active:scale-95"
-    >
-      <div class="btn-card rounded-2xl w-full h-15 max-w-full px-4 flex items-center justify-end! gap-4">
-        <div class="overflow-hidden transition text-ellipsis whitespace-nowrap max-w-[calc(100%-3rem)] text-black/75 dark:text-white/75">
-          {entry.data.prevTitle || i18n(I18nKey.home)}
-        </div>
-        <Icon
-          name="material-symbols:chevron-right-rounded"
-          class="text-[2rem] text-(--primary)"
-        />
+        {entry.data.prevSlug && (
+          <a
+            href={getPostUrlBySlug(entry.data.prevSlug)}
+            class="w-full font-bold overflow-hidden active:scale-95"
+          >
+            <div class="btn-card rounded-2xl w-full h-15 max-w-full px-4 flex items-center justify-end! gap-4">
+              <div class="overflow-hidden transition text-ellipsis whitespace-nowrap max-w-[calc(100%-3rem)] text-black/75 dark:text-white/75">
+                {entry.data.prevTitle}
+              </div>
+              <Icon
+                name="material-symbols:chevron-right-rounded"
+                class="text-[2rem] text-(--primary)"
+              />
+            </div>
+          </a>
+        )}
       </div>
-    </a>
-  </div>
-
-  <RecommendedPost relatedPosts={relatedPosts} currentPostId={entry.id} />
+    )
+  }
 
   <!-- 评论 -->
   {entry.data.comment && !entry.data.password && <Comment post={entry} />}

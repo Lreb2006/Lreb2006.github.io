@@ -8,7 +8,7 @@ export const spineModelConfig: SpineModelConfig = {
 	// Spine模型配置
 	model: {
 		// Spine模型文件路径
-		path: "/pio/models/spine/firefly/1310.json",
+		path: "",
 		// 模型缩放比例
 		scale: 1.0,
 		// X轴偏移
@@ -40,29 +40,13 @@ export const spineModelConfig: SpineModelConfig = {
 		// 交互功能开关
 		enabled: true,
 		// 点击时随机播放的动画列表
-		clickAnimations: [
-			"emoji_0",
-			"emoji_1",
-			"emoji_2",
-			"emoji_3",
-			"emoji_4",
-			"emoji_5",
-		],
+		clickAnimations: [],
 		// 点击时随机显示的文字消息
-		clickMessages: [
-			"你好呀！我是流萤~",
-			"今天也要加油哦！✨",
-			"想要一起去看星空吗？🌟",
-			"记得要好好休息呢~",
-			"有什么想对我说的吗？💫",
-			"让我们一起探索未知的世界吧！🚀",
-			"每一颗星星都有自己的故事~⭐",
-			"希望能带给你温暖和快乐！💖",
-		],
+		clickMessages: [],
 		// 文字显示时间（毫秒）
 		messageDisplayTime: 3000,
 		// 待机动画列表
-		idleAnimations: ["idle", "emoji_0", "emoji_1", "emoji_3", "emoji_4"],
+		idleAnimations: [],
 		// 待机动画切换间隔（毫秒）
 		idleInterval: 8000,
 	},
@@ -87,28 +71,7 @@ export const live2dWidgetConfig: Live2DWidgetConfig = {
 	// Live2D 看板娘开关
 	enable: false,
 	// 模型配置，支持单个模型或数组（多模型切换）
-	model: [
-		{
-			// Live2D模型本地文件路径
-			path: "/pio/models/live2d/snow_miku/model.json",
-			// 动作声音音量 范围0~1，默认 0（静音）
-			volume: 0,
-			// 模型缩放比例
-			scale: 1,
-			// X轴偏移，范围 -2~2，正值向右
-			x: 0,
-			// Y轴偏移，范围 -2~2，正值向上
-			y: 0,
-		},
-		{
-			// 外部直连模型
-			path: "https://model.hacxy.cn/cat-black/model.json",
-			volume: 0,
-			scale: 1,
-			x: 0,
-			y: 0,
-		},
-	],
+	model: [],
 	// 显示位置：bottom-left 或 bottom-right
 	position: "bottom-left" as const,
 	// 画布尺寸（px）
@@ -143,11 +106,6 @@ export const live2dWidgetConfig: Live2DWidgetConfig = {
 				label: "切换模型",
 				action: "switchModel",
 			},
-			{
-				icon: "mdi:github",
-				label: "GitHub",
-				action: "github",
-			},
 		],
 		// 菜单对齐方式
 		align: "right" as const,
@@ -155,16 +113,11 @@ export const live2dWidgetConfig: Live2DWidgetConfig = {
 	// 提示气泡配置
 	tips: {
 		// 气泡开关
-		enable: true,
+		enable: false,
 		// 初始欢迎消息
-		welcomeMessage: ["你好呀！", "欢迎来到我的世界！"],
+		welcomeMessage: [],
 		// 循环提示内容
-		messages: [
-			"有什么需要帮助的吗？",
-			"今天天气真不错呢！",
-			"要不要一起玩游戏？",
-			"记得按时休息哦！",
-		],
+		messages: [],
 		// 文字显示时间（ms）
 		duration: 3000,
 		// 提示气泡切换间隔（ms）

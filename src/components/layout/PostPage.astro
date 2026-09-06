@@ -4,13 +4,14 @@ import { getPostUrlBySlug } from "@utils/url-utils";
 import PostCard from "@/components/layout/PostCard.astro";
 import { siteConfig } from "@/config";
 
-const { page } = Astro.props;
+const { page, entries } = Astro.props;
 
 let delay = 0;
 const interval = 50;
 
 // 类型别名避免Fragment语法问题
 type PostEntry = CollectionEntry<"posts">;
+const postEntries: PostEntry[] = entries ?? page?.data ?? [];
 
 const masonryEnabled = siteConfig.postListLayout.grid.masonry;
 const columnWidth = siteConfig.postListLayout.grid.columnWidth || 280;
@@ -31,7 +32,7 @@ const coverPositionClass =
 
 <div
   id="post-list-container"
-  class={`transition-all duration-500 ease-in-out mb-4 ${initialLayoutClass}${coverPositionClass}`}
+  class={`charlore-post-feed transition-all duration-500 ease-in-out mb-4 ${initialLayoutClass}${coverPositionClass}`}
   data-default-layout={defaultLayout}
   data-mobile-default-layout={mobileDefaultLayout}
   data-masonry-enabled={masonryEnabled}
@@ -39,7 +40,7 @@ const coverPositionClass =
   style={`--post-card-min-width: ${columnWidth}px;`}
 >
   {
-    page.data.map((entry: PostEntry, index: number) => (
+    postEntries.map((entry: PostEntry, index: number) => (
       <PostCard
         entry={entry}
         title={entry.data.title}
@@ -67,8 +68,7 @@ const coverPositionClass =
     const savedLayout = localStorage.getItem('postListLayout');
     // 根据视口宽度确定有效的默认布局
     const effectiveDefault = window.innerWidth < 780 ? mobileDefaultLayout : defaultLayout;
-    // 低于380px强制网格模式
-    const effectiveLayout = window.innerWidth < 380 ? 'grid' : (savedLayout || effectiveDefault);
+    const effectiveLayout = savedLayout || effectiveDefault;
 
     if (effectiveLayout !== defaultLayout) {
       const container = document.getElementById('post-list-container');
@@ -109,12 +109,7 @@ const coverPositionClass =
 
     // 根据视口宽度确定有效的默认布局
     const effectiveDefault = window.innerWidth < 780 ? mobileDefaultLayout : defaultLayout;
-    let currentLayout = savedLayout || effectiveDefault;
-
-    // 低于380px强制网格模式
-    if (window.innerWidth < 380) {
-      currentLayout = "grid";
-    }
+    const currentLayout = savedLayout || effectiveDefault;
 
     // 应用布局
     updatePostListLayout(currentLayout);
@@ -360,6 +355,14 @@ const coverPositionClass =
 </style>
 
 <style>
+  #post-list-container.charlore-post-feed {
+    gap: clamp(1rem, 2vw, 1.45rem);
+  }
+
+  #post-list-container.charlore-post-feed.grid-mode {
+    gap: clamp(1rem, 2vw, 1.4rem);
+  }
+
   /* 布局切换动画 */
   #post-list-container {
     /* 限制过渡属性为 opacity 和 transform，避免响应父元素位置变化 */

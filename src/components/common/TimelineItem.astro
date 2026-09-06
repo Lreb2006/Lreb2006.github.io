@@ -43,8 +43,8 @@ const iconHtml = icon ? ICONS[icon] : undefined;
 <style>
 	/* 节点颜色：default 为主题色，其余对应提示框色板 */
 	.timeline-item {
-		--node-bg: var(--primary);
-		--node-ring: color-mix(in srgb, var(--primary) 22%, transparent);
+		--node-bg: var(--admonitions-color-note);
+		--node-ring: color-mix(in srgb, var(--admonitions-color-note) 22%, transparent);
 	}
 
 	.timeline-item[data-type="tip"] {
@@ -116,7 +116,7 @@ const iconHtml = icon ? ICONS[icon] : undefined;
 		border-radius: var(--radius-full);
 		background: var(--node-bg);
 		box-shadow: 0 0 0 3px var(--node-ring);
-		color: #fff;
+		color: var(--admonitions-marker-content);
 	}
 
 	.timeline-marker-icon :global(svg) {

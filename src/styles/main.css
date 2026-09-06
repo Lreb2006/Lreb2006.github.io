@@ -53,6 +53,13 @@
 /* 确保平滑滚动 */
 html {
     scroll-behavior: smooth;
+    font-size: 112.5%;
+}
+
+body { font-weight: 500; }
+
+@media (max-width: 900px) {
+    html { font-size: 106.25%; }
 }
 
 /* 全站键盘焦点基线；组件可以在更高的层中覆盖间距或形态。 */
@@ -282,7 +289,10 @@ html {
     }
  
     
-    .wallpaper-transparent #navbar > div {
+    html:not([data-wallpaper-mode="fullscreen"])
+        .wallpaper-transparent
+        #navbar
+        > div {
         background-color: var(--card-bg-transparent) !important;
     }
 
@@ -302,12 +312,18 @@ html {
     }
 
     /* Overlay 模式下，滚动后提高导航栏背景模糊度，增强与正文区分 */
-    .wallpaper-transparent #navbar.navbar-sticky-shadow > div {
+    html:not([data-wallpaper-mode="fullscreen"])
+        .wallpaper-transparent
+        #navbar.navbar-sticky-shadow
+        > div {
         --navbar-surface-blur: 20px !important;
 
     }
 
-    :root.dark .wallpaper-transparent #navbar.navbar-sticky-shadow > div {
+    :root.dark:not([data-wallpaper-mode="fullscreen"])
+        .wallpaper-transparent
+        #navbar.navbar-sticky-shadow
+        > div {
         --navbar-surface-blur: 20px !important;
     }
     
@@ -338,6 +354,17 @@ html {
     }
     .float-panel {
         @apply top-21 rounded-(--radius-large) overflow-hidden bg-(--card-bg) transition-colors duration-150 shadow-xl border border-black/5 dark:border-white/10
+    }
+
+    /* 全屏壁纸下，所有公共卡片与浮层统一继承导航栏的毛玻璃和字体体系。 */
+    html[data-wallpaper-mode="fullscreen"]
+        :is(.card-base, .card-base-transparent, .float-panel) {
+        background: var(--charlore-ui-glass-background) !important;
+        border: 1px solid var(--charlore-ui-glass-border) !important;
+        box-shadow: var(--charlore-ui-glass-shadow) !important;
+        backdrop-filter: var(--charlore-ui-glass-filter) !important;
+        -webkit-backdrop-filter: var(--charlore-ui-glass-filter) !important;
+        font-family: var(--charlore-ui-font);
     }
     .float-panel-closed {
         @apply -translate-y-1 opacity-0 pointer-events-none
@@ -636,4 +663,46 @@ html {
 /* 分页信息样式 */
 .pagination-info {
   @apply text-sm text-(--text-secondary) text-center mb-2;
+}
+
+/* 全屏壁纸的公共组件统一复用导航栏色板；颜色从根部继承，避免逐个组件覆盖。 */
+html[data-wallpaper-mode="fullscreen"],
+:root.dark[data-wallpaper-mode="fullscreen"] {
+  --primary: var(--charlore-nav-text);
+  --btn-content: var(--charlore-nav-text);
+  --btn-regular-bg: var(--charlore-nav-slider);
+  --btn-regular-bg-hover: var(--charlore-nav-hover);
+  --btn-regular-bg-active: color-mix(
+    in srgb,
+    var(--charlore-nav-text) 22%,
+    transparent
+  );
+  --btn-plain-bg-hover: var(--charlore-nav-hover);
+  --btn-plain-bg-active: var(--charlore-nav-slider);
+  --btn-card-bg-hover: var(--charlore-nav-hover);
+  --btn-card-bg-active: var(--charlore-nav-slider);
+  --toc-badge-bg: color-mix(in srgb, var(--charlore-nav-text) 14%, transparent);
+  --toc-btn-hover: color-mix(in srgb, var(--charlore-nav-text) 12%, transparent);
+  --toc-btn-active: color-mix(in srgb, var(--charlore-nav-text) 20%, transparent);
+  --toc-indicator-bg: color-mix(in srgb, var(--charlore-nav-text) 10%, transparent);
+  --toc-item-active: var(--charlore-nav-text);
+}
+
+html[data-wallpaper-mode="fullscreen"]
+  :is(.card-base, .card-base-transparent, .float-panel) {
+  color: var(--charlore-nav-text);
+  font-family: var(--charlore-ui-font);
+}
+
+html[data-wallpaper-mode="fullscreen"]
+  :is(.card-base, .card-base-transparent, .float-panel)
+  :where(div, h1, h2, h3, h4, h5, h6, p, a, span, strong, small, li, dt, dd, button, input, label, time, svg) {
+  color: var(--charlore-nav-text) !important;
+}
+
+html[data-wallpaper-mode="fullscreen"]
+  :is(.card-base, .card-base-transparent, .float-panel)
+  [class~="bg-(--primary)"] {
+  color: var(--charlore-nav-text) !important;
+  background-color: var(--charlore-nav-slider) !important;
 }

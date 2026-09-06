@@ -1,0 +1,12 @@
+---
+import HomeRecentPosts from "@/components/layout/HomeRecentPosts.astro";
+import MainGridLayout from "@/layouts/MainGridLayout.astro";
+import { getSortedPosts } from "@/utils/content-utils";
+import { selectRecentItems } from "@/utils/layout-utils";
+
+const recentPosts = selectRecentItems(await getSortedPosts(), 5);
+---
+
+<MainGridLayout>
+	<HomeRecentPosts posts={recentPosts} />
+</MainGridLayout>

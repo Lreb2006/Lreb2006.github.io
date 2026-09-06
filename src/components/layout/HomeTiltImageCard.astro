@@ -1,0 +1,498 @@
+---
+import type { ImageMetadata } from "astro";
+import aquariumImage from "@/assets/images/charlore/home-aquarium.webp";
+import starlightDarkImage from "@/assets/images/charlore/home-starlight-dark-wide.png";
+
+interface Props {
+	variant?: "hero" | "story";
+	image?: ImageMetadata;
+	darkImage?: ImageMetadata;
+	alt?: string;
+	imagePosition?: string;
+}
+
+const {
+	variant = "hero",
+	image,
+	darkImage,
+	alt = image ? "小糸侑与七海灯子牵手走向林间铁路" : "小糸侑与七海灯子",
+	imagePosition = "center",
+} = Astro.props;
+---
+
+<div
+	class:list={[
+		"home-tilt-card-shell",
+		variant === "story" && "home-tilt-card-shell--story",
+	]}
+>
+	<figure
+		class="home-tilt-card"
+		data-home-tilt-card
+		aria-label={alt}
+	>
+		<div class="home-tilt-card-frame">
+			{
+				image ? (
+					<>
+					<img
+						class:list={["home-tilt-card-image home-tilt-card-image-single", darkImage && "home-tilt-card-image-light"]}
+						src={image.src}
+						alt={alt}
+						width={image.width}
+						height={image.height}
+						style={`--home-card-image-position: ${imagePosition};`}
+						loading="eager"
+						decoding="async"
+					/>
+					{darkImage && <img
+						class="home-tilt-card-image home-tilt-card-image-dark home-tilt-card-image-single"
+						src={darkImage.src}
+						alt="星空下牵手的小糸侑与七海灯子"
+						width={darkImage.width}
+						height={darkImage.height}
+						style={`--home-card-image-position: ${imagePosition};`}
+						loading="eager"
+						decoding="async"
+					/>}
+					</>
+				) : (
+					<>
+						<img
+							class="home-tilt-card-image home-tilt-card-image-light"
+							src={aquariumImage.src}
+							alt="小糸侑与七海灯子"
+							width={aquariumImage.width}
+							height={aquariumImage.height}
+							loading="eager"
+							fetchpriority="high"
+						/>
+						<img
+							class="home-tilt-card-image home-tilt-card-image-dark"
+							src={starlightDarkImage.src}
+							alt="星灯下的小糸侑与七海灯子"
+							width={starlightDarkImage.width}
+							height={starlightDarkImage.height}
+							loading="eager"
+						/>
+					</>
+				)
+			}
+			{!image && <div class="home-cinematic-overlay" aria-hidden="true">
+				<span class="home-depth-vignette"></span>
+				<span class="home-light-shaft"></span>
+				<span class="home-depth-bokeh bokeh-near-left"></span>
+				<span class="home-depth-bokeh bokeh-near-right"></span>
+				<span class="home-depth-bokeh bokeh-distant"></span>
+				<span class="home-prism-flare"></span>
+			</div>}
+		</div>
+		<div class="home-tilt-card-sheen" aria-hidden="true"></div>
+	</figure>
+</div>
+
+<script>
+	import { calculateInverseTilt } from "@/utils/inverse-tilt";
+
+	type TiltState = ReturnType<typeof calculateInverseTilt>;
+
+	const restState: TiltState = {
+		rotateX: 0,
+		rotateY: 0,
+		shiftX: 0,
+		shiftY: 0,
+	};
+
+	const initHomeTiltCards = () => {
+		const canHover = window.matchMedia(
+			"(hover: hover) and (pointer: fine)",
+		).matches;
+		const reduceMotion = window.matchMedia(
+			"(prefers-reduced-motion: reduce)",
+		).matches;
+
+		document
+			.querySelectorAll<HTMLElement>("[data-home-tilt-card]")
+			.forEach((card) => {
+				if (card.dataset.tiltInitialized === "true") return;
+				card.dataset.tiltInitialized = "true";
+
+				if (!canHover || reduceMotion) return;
+
+				let current = { ...restState };
+				let target = { ...restState };
+				let animationFrame = 0;
+
+				const render = () => {
+					const smoothing = 0.14;
+					current = {
+						rotateX: current.rotateX + (target.rotateX - current.rotateX) * smoothing,
+						rotateY: current.rotateY + (target.rotateY - current.rotateY) * smoothing,
+						shiftX: current.shiftX + (target.shiftX - current.shiftX) * smoothing,
+						shiftY: current.shiftY + (target.shiftY - current.shiftY) * smoothing,
+					};
+
+					card.style.setProperty("--tilt-x", `${current.rotateX.toFixed(3)}deg`);
+					card.style.setProperty("--tilt-y", `${current.rotateY.toFixed(3)}deg`);
+					card.style.setProperty("--image-shift-x", `${current.shiftX.toFixed(3)}px`);
+					card.style.setProperty("--image-shift-y", `${current.shiftY.toFixed(3)}px`);
+
+					const remaining =
+						Math.abs(target.rotateX - current.rotateX) +
+						Math.abs(target.rotateY - current.rotateY) +
+						Math.abs(target.shiftX - current.shiftX) +
+						Math.abs(target.shiftY - current.shiftY);
+
+					if (remaining > 0.02) {
+						animationFrame = window.requestAnimationFrame(render);
+					} else {
+						current = { ...target };
+						animationFrame = 0;
+					}
+				};
+
+				const scheduleRender = () => {
+					if (animationFrame === 0) {
+						animationFrame = window.requestAnimationFrame(render);
+					}
+				};
+
+				card.addEventListener("pointermove", (event) => {
+					const bounds = card.getBoundingClientRect();
+					const pointerX = (event.clientX - bounds.left) / bounds.width;
+					const pointerY = (event.clientY - bounds.top) / bounds.height;
+
+					target = calculateInverseTilt(pointerX, pointerY, 2, 4);
+					card.style.setProperty("--pointer-x", `${pointerX * 100}%`);
+					card.style.setProperty("--pointer-y", `${pointerY * 100}%`);
+					scheduleRender();
+				});
+
+				card.addEventListener("pointerleave", () => {
+					target = { ...restState };
+					card.style.setProperty("--pointer-x", "50%");
+					card.style.setProperty("--pointer-y", "50%");
+					scheduleRender();
+				});
+			});
+	};
+
+	initHomeTiltCards();
+	document.addEventListener("astro:page-load", initHomeTiltCards);
+	document.addEventListener("swup:contentReplaced", initHomeTiltCards);
+</script>
+
+<style>
+	.home-tilt-card-shell {
+		position: absolute;
+		z-index: 2;
+
+		top: calc(clamp(2rem, 3vw, 3.5rem) + 20px);
+		bottom: calc(clamp(2rem, 3vw, 3.5rem) + 20px);
+
+		left: calc(clamp(2rem, 3vw, 3.5rem) + 100px);
+		right: calc(clamp(2rem, 3vw, 3.5rem) + 100px);
+
+		perspective: 1200px;
+		pointer-events: auto;
+	}
+
+	.home-tilt-card {
+		--tilt-x: 0deg;
+		--tilt-y: 0deg;
+		--image-shift-x: 0px;
+		--image-shift-y: 0px;
+		--pointer-x: 50%;
+		--pointer-y: 50%;
+		position: relative;
+		margin: 0;
+		width: 100%;
+		height: 100%;
+		border: 1px solid rgba(255, 255, 255, 0.78);
+		border-radius: var(--home-card-radius, clamp(1.25rem, 2.2vw, 2.5rem));
+		background: var(--home-card-background, rgba(220, 239, 244, 0.42));
+		box-shadow: var(--home-card-shadow,
+			0 30px 80px rgba(52, 99, 120, 0.22),
+			0 10px 30px rgba(68, 124, 146, 0.16),
+			inset 0 1px 0 rgba(255, 255, 255, 0.7));
+		transform: rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+		transform-style: preserve-3d;
+		transition: box-shadow 260ms ease, border-color 260ms ease;
+		will-change: transform;
+	}
+
+	.home-tilt-card::before {
+		content: "";
+		position: absolute;
+		z-index: -1;
+		inset: 7% 5% -6%;
+		border-radius: inherit;
+		background: rgba(88, 157, 177, 0.24);
+		filter: blur(32px);
+		opacity: var(--home-card-glow-opacity, 1);
+		transform: translate3d(
+			var(--image-shift-x),
+			var(--image-shift-y),
+			-24px
+		);
+	}
+
+	.home-tilt-card-frame {
+		position: absolute;
+		inset: var(--home-image-frame-inset);
+		overflow: hidden;
+		border: 1px solid var(--home-card-frame-border, rgba(255, 255, 255, 0.5));
+		border-radius: var(--home-card-frame-radius, calc(clamp(1.25rem, 2.2vw, 2.5rem) - 0.45rem));
+		background: #8ccce6;
+		box-shadow: var(--home-card-frame-shadow, inset 0 0 28px rgba(11, 76, 115, 0.16));
+		transform: none;
+	}
+
+	.home-cinematic-overlay {
+		position: absolute;
+		z-index: 2;
+		inset: 0;
+		overflow: hidden;
+		pointer-events: none;
+		background:
+			radial-gradient(circle at 76% 13%, rgba(255, 249, 223, 0.14), transparent 24%),
+			linear-gradient(112deg, transparent 19%, rgba(228, 247, 250, 0.035) 33%, rgba(255, 252, 239, 0.1) 43%, transparent 57%);
+		mix-blend-mode: normal;
+	}
+
+	.home-cinematic-overlay::after {
+		content: "";
+		position: absolute;
+		z-index: 8;
+		inset: 0;
+		opacity: 0.17;
+		pointer-events: none;
+		background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.52'/%3E%3C/svg%3E");
+		mix-blend-mode: soft-light;
+	}
+
+	.home-depth-vignette {
+		position: absolute;
+		z-index: 1;
+		inset: 0;
+		background:
+			radial-gradient(ellipse at 50% 42%, transparent 31%, rgba(8, 35, 65, 0.24) 100%),
+			linear-gradient(180deg, transparent 18%, transparent 36%, rgba(4, 29, 61, 0.17));
+		mix-blend-mode: multiply;
+		opacity: 0.9;
+	}
+
+	.home-light-shaft {
+		position: absolute;
+		z-index: 3;
+		width: 22%;
+		height: 138%;
+		left: 58%;
+		top: -24%;
+		border-radius: 50%;
+		background: linear-gradient(90deg, transparent, rgba(232, 249, 255, 0.14), rgba(255, 251, 230, 0.08), transparent);
+		filter: blur(18px);
+		mix-blend-mode: screen;
+		transform: rotate(13deg);
+		opacity: 0.58;
+	}
+
+	.home-depth-bokeh {
+		position: absolute;
+		z-index: 4;
+		display: block;
+		aspect-ratio: 1;
+		border-radius: 50%;
+		filter: blur(18px);
+		box-shadow: inset 0 0 24px rgba(255, 255, 255, 0.14);
+	}
+
+	.bokeh-near-left {
+		left: -2%;
+		bottom: 8%;
+		width: 23%;
+		background: rgba(123, 196, 206, 0.24);
+		opacity: 0.54;
+	}
+
+	.bokeh-near-right {
+		right: -3%;
+		bottom: 4%;
+		width: 27%;
+		background: rgba(231, 168, 188, 0.17);
+		filter: blur(26px);
+		opacity: 0.58;
+	}
+
+	.bokeh-distant {
+		right: 15%;
+		top: 15%;
+		width: 6%;
+		border: 2px solid rgba(255, 255, 255, 0.28);
+		background: rgba(207, 237, 238, 0.1);
+		filter: blur(4px);
+		opacity: 0.55;
+	}
+
+	.home-prism-flare {
+		position: absolute;
+		z-index: 5;
+		right: 7%;
+		top: 7%;
+		width: 16%;
+		aspect-ratio: 1;
+		border-radius: 50%;
+		background: conic-gradient(from 35deg, rgba(151, 211, 215, 0.08), rgba(240, 181, 199, 0.11), rgba(255, 255, 255, 0.1), rgba(151, 211, 215, 0.08));
+		filter: blur(14px);
+		mix-blend-mode: screen;
+		opacity: 0.58;
+	}
+
+	.home-tilt-card-image {
+		width: 100% !important;
+		height: 100% !important;
+		max-width: none !important;
+		object-fit: cover !important;
+		object-position: center !important;
+		filter: none !important;
+		opacity: 1 !important;
+		transform: none !important;
+		transition: filter 260ms ease;
+	}
+
+	.home-tilt-card-image-dark {
+		display: none;
+		object-position: center top !important;
+	}
+
+	.home-tilt-card-image-single {
+		object-position: var(--home-card-image-position, center) !important;
+	}
+
+	:global(html.dark) .home-tilt-card-image-light {
+		display: none;
+	}
+
+	:global(html.dark) .home-tilt-card-image-dark {
+		display: block;
+	}
+
+	.home-tilt-card-shell--story {
+		--home-image-frame-inset: clamp(0.22rem, 0.35vw, 0.38rem);
+		--home-card-radius: clamp(0.72rem, 1vw, 1.05rem);
+		--home-card-frame-radius: clamp(0.56rem, 0.82vw, 0.88rem);
+		--home-card-background: rgba(220, 239, 244, 0.24);
+		--home-card-shadow: 0 14px 38px rgba(52, 99, 120, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.58);
+		--home-card-hover-shadow: 0 18px 46px rgba(41, 91, 115, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.72);
+		--home-card-dark-background: rgba(21, 62, 78, 0.24);
+		--home-card-dark-shadow: 0 16px 44px rgba(1, 13, 27, 0.34), inset 0 1px 0 rgba(214, 247, 246, 0.18);
+		--home-card-frame-border: rgba(255, 255, 255, 0.38);
+		--home-card-frame-shadow: inset 0 0 14px rgba(11, 76, 115, 0.1);
+		--home-card-glow-opacity: 0.58;
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		perspective: 1200px;
+	}
+
+	.home-tilt-card-sheen {
+		position: absolute;
+		z-index: 3;
+		inset: 0;
+		pointer-events: none;
+		background: radial-gradient(
+			circle at var(--pointer-x) var(--pointer-y),
+			rgba(255, 255, 255, 0.28),
+			transparent 34%
+		);
+		mix-blend-mode: soft-light;
+		opacity: 0.72;
+	}
+
+	.home-tilt-card:hover {
+		border-color: rgba(255, 255, 255, 0.96);
+		box-shadow: var(--home-card-hover-shadow,
+			0 38px 95px rgba(41, 91, 115, 0.27),
+			0 14px 34px rgba(67, 128, 149, 0.2),
+			inset 0 1px 0 rgba(255, 255, 255, 0.82));
+	}
+
+	:global(html.dark) .home-tilt-card {
+		border-color: rgba(162, 222, 226, 0.46);
+		background: var(--home-card-dark-background, rgba(21, 62, 78, 0.42));
+		box-shadow: var(--home-card-dark-shadow,
+			0 34px 90px rgba(1, 13, 27, 0.48),
+			0 0 34px rgba(117, 193, 196, 0.14),
+			inset 0 1px 0 rgba(214, 247, 246, 0.24));
+	}
+
+
+
+	@media (max-width: 900px) {
+		.home-tilt-card-shell {
+			left: 50%;
+			top: 10%;
+			width: min(82vw, 600px);
+			pointer-events: none;
+			transform: translateX(-50%);
+		}
+	}
+
+	@media (max-width: 520px) {
+		.home-tilt-card-shell {
+			top: 11%;
+			width: 88vw;
+		}
+
+		.home-tilt-card {
+			border-radius: 1.35rem;
+			box-shadow: 0 18px 48px rgba(52, 99, 120, 0.2);
+		}
+
+		.home-tilt-card-frame {
+			inset: 0.38rem;
+			border-radius: 1rem;
+		}
+
+		.home-light-shaft {
+			left: 51%;
+			width: 32%;
+		}
+
+		.bokeh-near-left {
+			width: 34%;
+		}
+
+		.bokeh-near-right {
+			width: 42%;
+		}
+	}
+
+	@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+		.home-tilt-card-shell {
+			pointer-events: none;
+		}
+
+		.home-tilt-card,
+		:global(.home-tilt-card-image) {
+			transform: none;
+			transition: none;
+		}
+
+		:global(.home-tilt-card-image) {
+			width: 100%;
+			height: 100%;
+		}
+
+		.home-tilt-card-sheen {
+			display: none;
+		}
+
+		.home-light-shaft,
+		.home-depth-bokeh,
+		.home-prism-flare {
+			animation: none;
+		}
+	}
+</style>

@@ -215,4 +215,10 @@ body.wallpaper-transparent .custom-md {
     background-color: color-mix(in oklch, var(--btn-plain-bg-active) 68%, transparent);
   }
 }
+.custom-md mark {
+    color: inherit;
+    background: color-mix(in srgb, #ad9879 25%, transparent);
+    border-radius: 0.2em;
+    padding: 0.05em 0.15em;
+}
 

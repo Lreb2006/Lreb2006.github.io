@@ -18,6 +18,7 @@ import type { CoverImageConfig } from "../types/coverImageConfig";
  * ---
  */
 export const coverImageConfig: CoverImageConfig = {
+	defaultImage: "/assets/images/posts/default-cover.png",
 	// 是否在文章详情页显示封面图
 	enableInPost: true,
 

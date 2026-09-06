@@ -73,6 +73,16 @@ export function syncFullscreenBlur(): void {
 	const html = document.documentElement;
 	const wrapper = document.getElementById("wallpaper-wrapper");
 	if (!wrapper) return;
+	const isHome = pathsEqual(window.location.pathname, url("/"));
+	const hasHomeScrollStory = Boolean(
+		document.querySelector("[data-home-scroll-story]"),
+	);
+	// 桌面端滚动叙事会直接复用最底层壁纸。叙事存在时必须保持该层清晰，
+	// 否则封面交接阶段会产生先模糊、消失、再出现的假断层。
+	if (isHome && hasHomeScrollStory && window.innerWidth >= 901) {
+		setBlurIfChanged(wrapper, "0px");
+		return;
+	}
 	if (html.getAttribute("data-wallpaper-mode") !== "fullscreen") {
 		setBlurIfChanged(wrapper, "0px");
 		return;
@@ -84,7 +94,6 @@ export function syncFullscreenBlur(): void {
 	}
 	// 读取当前生效的模糊配置（跟随设置面板滑块 / overlay.blur），已缓存，仅加载/滑块变化时重读
 	const safeMax = cachedMaxBlur ?? readMaxBlur(wrapper);
-	const isHome = pathsEqual(window.location.pathname, url("/"));
 	if (!isHome) {
 		setBlurIfChanged(wrapper, `${safeMax}px`);
 		return;
