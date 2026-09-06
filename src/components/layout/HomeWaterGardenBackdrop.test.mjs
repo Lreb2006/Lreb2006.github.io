@@ -24,7 +24,12 @@ test("mobile homepage uses theme-specific artwork as the full background", async
 
 	assert.match(source, /mobile-home-art-light/);
 	assert.match(source, /mobile-home-art-dark/);
-	assert.match(source, /background-size:\s*cover/);
+	assert.match(source, /import ImageWrapper/);
+	assert.match(source, /widths=\{\[320, 480, 640, 828\]\}/);
+	assert.match(source, /loading="lazy"/);
+	assert.match(source, /fetchpriority="high"/);
+	assert.match(source, /object-fit:\s*cover/);
+	assert.doesNotMatch(source, /background-image:\s*url/);
 	assert.doesNotMatch(source, /<img[\s\S]*?mobile-home-art-image/);
 	assert.match(
 		source,

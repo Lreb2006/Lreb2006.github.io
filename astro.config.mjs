@@ -115,8 +115,10 @@ export default defineConfig({
 
 	// 图像优化配置
 	image: {
-		// 组件可自行传入 layout/widths；这里只控制 Markdown 正文图片
-		layout: "none",
+		// 组件可自行传入 layout/widths；Markdown 正文图片按设备宽度生成候选尺寸
+		layout: "constrained",
+		responsiveStyles: true,
+		breakpoints: [320, 480, 640, 828, 1024, 1280, 1536, 1920],
 	},
 
 	integrations: [

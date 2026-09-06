@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import type { ImageMetadata } from "astro";
 import { Icon } from "astro-icon/components";
 import finalStoryDarkImage from "@/assets/images/charlore/home-story-final-dark.png";
@@ -26,6 +27,7 @@ const carouselImages = sortHomeCarouselPaths(Object.keys(carouselModules)).map(
 	data-home-scroll-story
 	aria-label="Charloré 滚动影像叙事"
 >
+	<template data-home-story-media-template>
 	<div class="story-scenes-viewport" data-story-scenes-viewport>
 		<div class="story-cycle" data-story-cycle aria-hidden="true">
 			<div class="story-cycle-track" data-story-cycle-track>
@@ -41,11 +43,14 @@ const carouselImages = sortHomeCarouselPaths(Object.keys(carouselModules)).map(
 									style={`--story-cycle-ratio: ${image.width} / ${image.height};`}
 									data-carousel-source={path.split("/").at(-1)}
 								>
-									<img
-										src={image.src}
-										width={image.width}
-										height={image.height}
+									<Image
+										src={image}
 										alt=""
+										widths={[480, 720, 960]}
+										sizes="50vw"
+										layout="constrained"
+										format="webp"
+										quality={80}
 										loading="lazy"
 										decoding="async"
 									/>
@@ -109,23 +114,34 @@ const carouselImages = sortHomeCarouselPaths(Object.keys(carouselModules)).map(
 
 	<div class="story-finale-portal" data-story-finale-portal aria-hidden="true">
 		<div class="story-finale-art" data-story-finale-image>
-		<img
+		<Image
 			class="story-finale-light"
-			src={finalStoryImage.src}
-			width={finalStoryImage.width}
-			height={finalStoryImage.height}
+			src={finalStoryImage}
 			alt=""
+			widths={[768, 1280, 1920]}
+			sizes="100vw"
+			layout="full-width"
+			format="webp"
+			quality={82}
+			loading="lazy"
+			decoding="async"
 		/>
-		<img
+		<Image
 			class="story-finale-dark"
-			src={finalStoryDarkImage.src}
-			width={finalStoryDarkImage.width}
-			height={finalStoryDarkImage.height}
+			src={finalStoryDarkImage}
 			alt=""
+			widths={[768, 1220]}
+			sizes="100vw"
+			layout="full-width"
+			format="webp"
+			quality={82}
+			loading="lazy"
+			decoding="async"
 		/>
 		</div>
 		<span class="story-finale-edge" data-story-finale-edge></span>
 	</div>
+	</template>
 </section>
 
 <script>
@@ -167,11 +183,31 @@ const carouselImages = sortHomeCarouselPaths(Object.keys(carouselModules)).map(
 
 		const root = document.querySelector<HTMLElement>("[data-home-scroll-story]");
 		if (!root) return;
-		root.removeAttribute("aria-hidden");
 
 		const desktop = window.matchMedia("(min-width: 901px)");
 		const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-		if (!desktop.matches || reducedMotion.matches) return;
+		if (!desktop.matches) return;
+
+		const heroHost = document.querySelector<HTMLElement>(
+			"[data-home-desktop-hero]",
+		);
+		const heroTemplate = heroHost?.querySelector<HTMLTemplateElement>(
+			"[data-home-desktop-hero-template]",
+		);
+		if (heroHost && heroTemplate && !heroHost.querySelector(".home-tilt-card-shell")) {
+			heroHost.append(heroTemplate.content.cloneNode(true));
+			document.dispatchEvent(new Event("charlore:home-tilt-mounted"));
+		}
+		if (reducedMotion.matches) return;
+
+		const storyTemplate = root.querySelector<HTMLTemplateElement>(
+			"[data-home-story-media-template]",
+		);
+		if (storyTemplate && !root.querySelector("[data-story-scenes-viewport]")) {
+			root.append(storyTemplate.content.cloneNode(true));
+			document.dispatchEvent(new Event("charlore:home-tilt-mounted"));
+		}
+		root.removeAttribute("aria-hidden");
 
 		const viewport = root.querySelector<HTMLElement>("[data-story-scenes-viewport]");
 		const cycleLayer = root.querySelector<HTMLElement>("[data-story-cycle]");

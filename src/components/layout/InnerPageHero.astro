@@ -1,32 +1,61 @@
 ---
-import lightImage from "@/assets/images/charlore/home-aquarium.webp";
-import darkImage from "@/assets/images/charlore/home-starlight-dark-wide.png";
-import mobileLightImage from "@/assets/images/charlore/mobile-home-light.webp";
-import mobileDarkImage from "@/assets/images/charlore/mobile-home-dark.webp";
+import ImageWrapper from "@/components/common/ImageWrapper.astro";
 ---
 
 <!-- 常驻共享布局，由 body.is-home 控制显隐，兼容 Swup 往返导航。 -->
 <div class="inner-page-hero" aria-hidden="true">
-	<picture class="inner-page-hero-light">
-	<source media="(max-width: 900px)" srcset={mobileLightImage.src} />
-	<img
-		src={lightImage.src}
-		width={lightImage.width}
-		height={lightImage.height}
-		alt=""
-		decoding="async"
-	/>
-	</picture>
-	<picture class="inner-page-hero-dark">
-	<source media="(max-width: 900px)" srcset={mobileDarkImage.src} />
-	<img
-		src={darkImage.src}
-		width={darkImage.width}
-		height={darkImage.height}
-		alt=""
-		decoding="async"
-	/>
-	</picture>
+	<div class="inner-page-hero-light">
+		<ImageWrapper
+			class="inner-page-hero-desktop"
+			src="assets/images/charlore/home-aquarium.webp"
+			alt=""
+			width={1920}
+			widths={[828, 1280, 1920]}
+			sizes="100vw"
+			layout="full-width"
+			loading="lazy"
+			quality={82}
+			showOverlay={false}
+		/>
+		<ImageWrapper
+			class="inner-page-hero-mobile"
+			src="assets/images/charlore/mobile-home-light.webp"
+			alt=""
+			width={828}
+			widths={[320, 480, 640, 828]}
+			sizes="100vw"
+			layout="full-width"
+			loading="lazy"
+			quality={80}
+			showOverlay={false}
+		/>
+	</div>
+	<div class="inner-page-hero-dark">
+		<ImageWrapper
+			class="inner-page-hero-desktop"
+			src="assets/images/charlore/home-starlight-dark-wide.png"
+			alt=""
+			width={1448}
+			widths={[828, 1280, 1448]}
+			sizes="100vw"
+			layout="full-width"
+			loading="lazy"
+			quality={82}
+			showOverlay={false}
+		/>
+		<ImageWrapper
+			class="inner-page-hero-mobile"
+			src="assets/images/charlore/mobile-home-dark.webp"
+			alt=""
+			width={828}
+			widths={[320, 480, 640, 828]}
+			sizes="100vw"
+			layout="full-width"
+			loading="lazy"
+			quality={80}
+			showOverlay={false}
+		/>
+	</div>
 </div>
 
 <style>
@@ -52,9 +81,12 @@ import mobileDarkImage from "@/assets/images/charlore/mobile-home-dark.webp";
 		display: block;
 	}
 
-	.inner-page-hero picture { width: 100%; height: 100%; }
+	.inner-page-hero > div,
+	.inner-page-hero :global(picture),
+	.inner-page-hero :global(img) { width: 100%; height: 100%; }
 	.inner-page-hero-light { display: block; }
-	.inner-page-hero img {
+	:global(.inner-page-hero-mobile) { display: none; }
+	.inner-page-hero :global(img) {
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
@@ -62,7 +94,7 @@ import mobileDarkImage from "@/assets/images/charlore/mobile-home-dark.webp";
 	}
 
 	.inner-page-hero-dark { display: none; }
-	.inner-page-hero-dark img { object-position: center top; }
+	.inner-page-hero-dark :global(img) { object-position: center top; }
 	:global(html.dark) .inner-page-hero-light { display: none; }
 	:global(html.dark) .inner-page-hero-dark { display: block; }
 
@@ -74,6 +106,8 @@ import mobileDarkImage from "@/assets/images/charlore/mobile-home-dark.webp";
 		:global(:root) {
 			--inner-hero-height: clamp(25rem, 72svh, 38rem);
 		}
-		.inner-page-hero img { object-position: center top; }
+		:global(.inner-page-hero-desktop) { display: none; }
+		:global(.inner-page-hero-mobile) { display: block; }
+		.inner-page-hero :global(img) { object-position: center top; }
 	}
 </style>
