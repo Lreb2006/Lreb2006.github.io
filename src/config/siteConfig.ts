@@ -79,14 +79,12 @@ export const siteConfig: SiteConfig = {
 	// 如果启用了OpenGraph图片功能，数组中需要包含png格式的favicon图标
 	favicon: [
 		{
-			src: "/favicon/favicon-light-32.png",
-			theme: "light",
+			src: "/favicon/jellyfish-32.png",
 			sizes: "32x32",
 		},
 		{
-			src: "/favicon/favicon-dark-32.png",
-			theme: "dark",
-			sizes: "32x32",
+			src: "/favicon/jellyfish.svg",
+			sizes: "any",
 		},
 	],
 
