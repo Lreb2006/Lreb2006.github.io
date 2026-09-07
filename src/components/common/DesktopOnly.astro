@@ -1,0 +1,39 @@
+<!-- Template contents stay inert until the desktop breakpoint matches. -->
+<div data-desktop-only style="display: contents">
+	<template><slot /></template>
+</div>
+
+<script is:inline>
+	(() => {
+		if (!window.__charloreSyncDesktopContent) {
+			const desktop = window.matchMedia("(min-width: 901px)");
+			const sync = () => {
+				let changed = false;
+				for (const host of document.querySelectorAll("[data-desktop-only]")) {
+					const template = host.querySelector(":scope > template");
+					if (!template) continue;
+					if (desktop.matches && !host.__desktopMounted) {
+						host.insertBefore(template.content.cloneNode(true), template);
+						host.__desktopMounted = true;
+						changed = true;
+					} else if (!desktop.matches && host.__desktopMounted) {
+						for (const node of Array.from(host.childNodes)) {
+							if (node !== template) host.removeChild(node);
+						}
+						host.__desktopMounted = false;
+						changed = true;
+					}
+				}
+				if (changed) {
+					document.dispatchEvent(new Event("charlore:desktop-content-change"));
+				}
+			};
+			window.__charloreSyncDesktopContent = sync;
+			desktop.addEventListener("change", sync);
+			document.addEventListener("astro:page-load", sync);
+			document.addEventListener("swup:contentReplaced", sync);
+		}
+		// Inline execution mounts desktop images before deferred animation scripts run.
+		window.__charloreSyncDesktopContent();
+	})();
+</script>

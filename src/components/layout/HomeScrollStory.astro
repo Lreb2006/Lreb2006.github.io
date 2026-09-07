@@ -3,6 +3,7 @@ import type { ImageMetadata } from "astro";
 import { Icon } from "astro-icon/components";
 import finalStoryDarkImage from "@/assets/images/charlore/home-story-final-dark.png";
 import finalStoryImage from "@/assets/images/charlore/home-story-final-wide.png";
+import DesktopOnly from "@/components/common/DesktopOnly.astro";
 import HomeTiltImageCard from "@/components/layout/HomeTiltImageCard.astro";
 import { sortHomeCarouselPaths } from "@/utils/home-scroll-story";
 
@@ -21,6 +22,7 @@ const carouselImages = sortHomeCarouselPaths(Object.keys(carouselModules)).map(
 );
 ---
 
+<DesktopOnly>
 <section
 	class="home-scroll-story"
 	data-home-scroll-story
@@ -127,6 +129,7 @@ const carouselImages = sortHomeCarouselPaths(Object.keys(carouselModules)).map(
 		<span class="story-finale-edge" data-story-finale-edge></span>
 	</div>
 </section>
+</DesktopOnly>
 
 <script>
 	import {
@@ -718,9 +721,11 @@ const carouselImages = sortHomeCarouselPaths(Object.keys(carouselModules)).map(
 	};
 	storyWindow.__charloreHomeStoryCleanup?.();
 	const activateHomeScrollStory = () => void initHomeScrollStory();
+	document.addEventListener("charlore:desktop-content-change", activateHomeScrollStory);
 	storyWindow.__charloreHomeStoryDeactivate = deactivateHomeScrollStory;
 	storyWindow.__charloreHomeStoryActivate = activateHomeScrollStory;
 	storyWindow.__charloreHomeStoryCleanup = () => {
+		document.removeEventListener("charlore:desktop-content-change", activateHomeScrollStory);
 		deactivateHomeScrollStory();
 		if (
 			storyWindow.__charloreHomeStoryDeactivate === deactivateHomeScrollStory

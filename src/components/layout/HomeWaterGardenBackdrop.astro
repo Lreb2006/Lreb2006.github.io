@@ -1,6 +1,7 @@
 ---
 import mobileDarkImage from "@/assets/images/charlore/mobile-home-dark.webp";
 import mobileLightImage from "@/assets/images/charlore/mobile-home-light.webp";
+import DesktopOnly from "@/components/common/DesktopOnly.astro";
 import TypewriterText from "@/components/features/TypewriterText.astro";
 import HomeTiltImageCard from "@/components/layout/HomeTiltImageCard.astro";
 
@@ -12,9 +13,11 @@ const mobileQuotes = [
 ---
 
 <section class="home-water-garden-backdrop" aria-label="Charloré 水花园主页背景">
+	<DesktopOnly>
 	<div class="home-hero-card-layer">
 		<HomeTiltImageCard />
 	</div>
+	</DesktopOnly>
 
 	<div class="mobile-home-art" aria-hidden="true">
 		<div
