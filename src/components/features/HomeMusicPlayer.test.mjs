@@ -147,7 +147,20 @@ test("the local playlist references every converted audio file", async () => {
 	];
 
 	for (const audioUrl of audioUrls) {
-		assert.ok(configSource.includes(`url: "${audioUrl}"`));
+		const missingUploads = [
+			"suki-igai-no-kotoba-de",
+			"you-he-bu-ke",
+			"tsuki-no-ondo",
+		];
+		const playbackUrl = missingUploads.some((name) =>
+			audioUrl.endsWith(`${name}.mp3`),
+		)
+			? audioUrl
+			: audioUrl.replace(
+					"/assets/music/audio/",
+					"https://assets.charlore.cn/music/audio/",
+				);
+		assert.ok(configSource.includes(`url: "${playbackUrl}"`));
 		await access(new URL(`../../../public${audioUrl}`, import.meta.url));
 	}
 
@@ -156,7 +169,13 @@ test("the local playlist references every converted audio file", async () => {
 		"/assets/music/covers/infinite-times.jpg",
 	];
 	for (const coverUrl of replacementCovers) {
-		assert.ok(configSource.includes(`cover: "${coverUrl}"`));
+		const playbackCover = coverUrl.replace(
+			"/assets/music/covers/",
+			"https://assets.charlore.cn/music/cover/",
+		);
+		assert.ok(
+			configSource.replace(/\s+/g, " ").includes(`cover: "${playbackCover}"`),
+		);
 		await access(new URL(`../../../public${coverUrl}`, import.meta.url));
 	}
 });

@@ -39,7 +39,6 @@ interface Props {
 const {
 	id,
 	src,
-	alt,
 	position = "center",
 	basePath = "/",
 	loading = "lazy",
@@ -125,7 +124,7 @@ const lqipProps = isLocal
     {isLocal && img && usePicture && (
         <Picture
             src={img}
-            alt={alt || ""}
+            alt=""
             class={imageClass}
             style={imageStyle}
             loading={loading}
@@ -139,7 +138,7 @@ const lqipProps = isLocal
     {isLocal && img && !usePicture && (
         <Image
             src={img}
-            alt={alt || ""}
+            alt=""
             class={imageClass}
             style={imageStyle}
             loading={loading}
@@ -148,5 +147,5 @@ const lqipProps = isLocal
             {...responsiveProps}
         />
     )}
-    {!isLocal && <img src={isPublic ? url(src) : src} alt={alt || ""} class={imageClass} style={imageStyle} loading={loading} fetchpriority={fetchpriority} data-cover-img={dataCoverImg ? true : undefined} referrerpolicy={referrerPolicy} />}
+    {!isLocal && <img src={isPublic ? url(src) : src} alt="" class={imageClass} style={imageStyle} loading={loading} fetchpriority={fetchpriority} data-cover-img={dataCoverImg ? true : undefined} referrerpolicy={referrerPolicy} />}
 </div>

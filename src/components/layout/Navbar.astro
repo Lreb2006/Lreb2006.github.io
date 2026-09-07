@@ -208,7 +208,7 @@ const logoVariants = await Promise.all(
                                         logoVariants.map((variant) => variant.image ? (
                                             <Picture
                                                 src={variant.image}
-                                                alt={logoAlt}
+                                                alt=""
                                                 class={variant.class}
                                                 data-logo-theme={variant.theme}
                                                 formats={getImageFormats()}
@@ -218,7 +218,7 @@ const logoVariants = await Promise.all(
                                                 fetchpriority="high"
                                             />
                                         ) : (
-                                            <img src={variant.src} alt={logoAlt} class={variant.class} data-logo-theme={variant.theme} fetchpriority="high" />
+                                            <img src={variant.src} alt="" class={variant.class} data-logo-theme={variant.theme} fetchpriority="high" />
                                         ))
                                     ) : (
                                         <Icon name="material-symbols:home-pin-outline" is:inline class="navbar-logo text-[1.75rem] mb-1 mr-2" />

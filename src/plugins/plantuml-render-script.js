@@ -67,7 +67,7 @@
 				wrapper.innerHTML = "";
 				const newImg = new Image();
 				newImg.className = "plantuml-image";
-				newImg.alt = img.alt;
+				newImg.alt = "";
 				newImg.setAttribute(
 					"data-light-src",
 					img.getAttribute("data-light-src") || "",
@@ -252,7 +252,7 @@
 
 		const img = document.createElement("img");
 		img.src = sourceImg.src;
-		img.alt = sourceImg.alt;
+		img.alt = "";
 		img.draggable = false;
 		content.appendChild(img);
 

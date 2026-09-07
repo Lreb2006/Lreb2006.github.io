@@ -96,7 +96,7 @@ const managerConfigStr = JSON.stringify({
 
     // ── Audio element (persistent, attached to body) ────────
     var audio = document.createElement('audio');
-    audio.crossOrigin = 'anonymous';
+    // Plain audio playback does not require cross-origin data access.
     audio.style.display = 'none';
     audio.preload = 'none'; // 阻止浏览器预加载和自动恢复播放
     document.body.appendChild(audio);

@@ -61,7 +61,7 @@ function getTypeColor(seasonType: number): string {
 			<div class="lqip-placeholder absolute inset-0 pointer-events-none" style="background: var(--muted)" aria-hidden="true"></div>
 			<img
 				src={anime.poster}
-				alt={anime.title}
+				alt=""
 				class="h-full w-full object-cover transition-all duration-500 group-hover:scale-110 opacity-0"
 				loading="eager"
 				decoding="async"

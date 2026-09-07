@@ -91,7 +91,7 @@ function getQrLqipProps(qrCode: string) {
                             <div class="lqip-placeholder absolute inset-0 rounded-lg pointer-events-none" style={getQrLqipProps(method.qrCode).style} aria-hidden="true"></div>
                             <img
                               src={url(method.qrCode)}
-                              alt={`${method.name} ${i18n(I18nKey.scanToSponsor)}`}
+                              alt=""
                               class="relative w-full h-full object-contain opacity-0 transition-opacity duration-500 ease-out"
                               loading="lazy"
                             />
@@ -144,7 +144,7 @@ function getQrLqipProps(qrCode: string) {
                 {sponsor.avatar ? (
                   <img 
                     src={url(sponsor.avatar)}
-                    alt={sponsor.name}
+                    alt=""
                     class="w-9 h-9 rounded-full object-cover shrink-0"
                     loading="lazy"
                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
@@ -213,4 +213,3 @@ function getQrLqipProps(qrCode: string) {
     gap: 0.75rem;
   }
 </style>
-

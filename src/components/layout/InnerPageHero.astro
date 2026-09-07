@@ -1,8 +1,14 @@
 ---
-import lightImage from "@/assets/images/charlore/home-aquarium.webp";
-import darkImage from "@/assets/images/charlore/home-starlight-dark-wide.png";
-import mobileLightImage from "@/assets/images/charlore/mobile-home-light.webp";
-import mobileDarkImage from "@/assets/images/charlore/mobile-home-dark.webp";
+import { r2Image } from "@/utils/r2-assets";
+import lightImageSource from "@/assets/images/charlore/home-aquarium.webp";
+import darkImageSource from "@/assets/images/charlore/home-starlight-dark-wide.png";
+import mobileLightImageSource from "@/assets/images/charlore/mobile-home-light.webp";
+import mobileDarkImageSource from "@/assets/images/charlore/mobile-home-dark.webp";
+const lightImage = r2Image(lightImageSource, "home-aquarium.webp");
+const darkImage = r2Image(darkImageSource, "home-starlight-dark-wide.png");
+const mobileLightImage = r2Image(mobileLightImageSource, "mobile-home-light.webp");
+const mobileDarkImage = r2Image(mobileDarkImageSource, "mobile-home-dark.webp");
+
 ---
 
 <!-- 常驻共享布局，由 body.is-home 控制显隐，兼容 Swup 往返导航。 -->

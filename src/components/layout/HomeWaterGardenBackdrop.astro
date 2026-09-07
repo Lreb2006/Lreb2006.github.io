@@ -1,6 +1,7 @@
 ---
-import mobileDarkImage from "@/assets/images/charlore/mobile-home-dark.webp";
-import mobileLightImage from "@/assets/images/charlore/mobile-home-light.webp";
+import { r2Image } from "@/utils/r2-assets";
+import mobileDarkImageSource from "@/assets/images/charlore/mobile-home-dark.webp";
+import mobileLightImageSource from "@/assets/images/charlore/mobile-home-light.webp";
 import DesktopOnly from "@/components/common/DesktopOnly.astro";
 import TypewriterText from "@/components/features/TypewriterText.astro";
 import HomeTiltImageCard from "@/components/layout/HomeTiltImageCard.astro";
@@ -10,6 +11,9 @@ const mobileQuotes = [
 	"Don’t walk behind me, I may not lead.",
 	"Walk beside me, just be my friend.",
 ];
+const mobileDarkImage = r2Image(mobileDarkImageSource, "mobile-home-dark.webp");
+const mobileLightImage = r2Image(mobileLightImageSource, "mobile-home-light.webp");
+
 ---
 
 <section class="home-water-garden-backdrop" aria-label="Charloré 水花园主页背景">

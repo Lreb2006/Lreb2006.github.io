@@ -1,8 +1,9 @@
 ---
+import { r2Image } from "@/utils/r2-assets";
 import type { ImageMetadata } from "astro";
 import { Icon } from "astro-icon/components";
-import finalStoryDarkImage from "@/assets/images/charlore/home-story-final-dark.png";
-import finalStoryImage from "@/assets/images/charlore/home-story-final-wide.png";
+import finalStoryDarkImageSource from "@/assets/images/charlore/home-story-final-dark.png";
+import finalStoryImageSource from "@/assets/images/charlore/home-story-final-wide.png";
 import DesktopOnly from "@/components/common/DesktopOnly.astro";
 import HomeTiltImageCard from "@/components/layout/HomeTiltImageCard.astro";
 import { sortHomeCarouselPaths } from "@/utils/home-scroll-story";
@@ -17,9 +18,12 @@ const carouselModules = import.meta.glob<CarouselModule>(
 const carouselImages = sortHomeCarouselPaths(Object.keys(carouselModules)).map(
 	(path) => ({
 		path,
-		image: carouselModules[path].default,
+		image: r2Image(carouselModules[path].default, path.split("/").at(-1)!),
 	}),
 );
+const finalStoryDarkImage = r2Image(finalStoryDarkImageSource, "home-story-final-dark.png");
+const finalStoryImage = r2Image(finalStoryImageSource, "home-story-final-wide.png");
+
 ---
 
 <DesktopOnly>
@@ -91,7 +95,7 @@ const carouselImages = sortHomeCarouselPaths(Object.keys(carouselModules)).map(
 					image={finalStoryImage}
 					darkImage={finalStoryDarkImage}
 					imagePosition="center top"
-					alt="小糸侑与七海灯子牵手走向林间铁路"
+					alt=""
 				/>
 			</button>
 		</div>

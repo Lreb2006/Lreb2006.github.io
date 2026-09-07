@@ -1,7 +1,8 @@
 ---
+import { r2Image } from "@/utils/r2-assets";
 import type { ImageMetadata } from "astro";
-import aquariumImage from "@/assets/images/charlore/home-aquarium.webp";
-import starlightDarkImage from "@/assets/images/charlore/home-starlight-dark-wide.png";
+import aquariumImageSource from "@/assets/images/charlore/home-aquarium.webp";
+import starlightDarkImageSource from "@/assets/images/charlore/home-starlight-dark-wide.png";
 
 interface Props {
 	variant?: "hero" | "story";
@@ -15,9 +16,11 @@ const {
 	variant = "hero",
 	image,
 	darkImage,
-	alt = image ? "小糸侑与七海灯子牵手走向林间铁路" : "小糸侑与七海灯子",
 	imagePosition = "center",
 } = Astro.props;
+const aquariumImage = r2Image(aquariumImageSource, "home-aquarium.webp");
+const starlightDarkImage = r2Image(starlightDarkImageSource, "home-starlight-dark-wide.png");
+
 ---
 
 <div
@@ -29,7 +32,6 @@ const {
 	<figure
 		class="home-tilt-card"
 		data-home-tilt-card
-		aria-label={alt}
 	>
 		<div class="home-tilt-card-frame">
 			{
@@ -38,7 +40,7 @@ const {
 					<img
 						class:list={["home-tilt-card-image home-tilt-card-image-single", darkImage && "home-tilt-card-image-light"]}
 						src={image.src}
-						alt={alt}
+						alt=""
 						width={image.width}
 						height={image.height}
 						style={`--home-card-image-position: ${imagePosition};`}
@@ -48,7 +50,7 @@ const {
 					{darkImage && <img
 						class="home-tilt-card-image home-tilt-card-image-dark home-tilt-card-image-single"
 						src={darkImage.src}
-						alt="星空下牵手的小糸侑与七海灯子"
+						alt=""
 						width={darkImage.width}
 						height={darkImage.height}
 						style={`--home-card-image-position: ${imagePosition};`}
@@ -61,7 +63,7 @@ const {
 						<img
 							class="home-tilt-card-image home-tilt-card-image-light"
 							src={aquariumImage.src}
-							alt="小糸侑与七海灯子"
+							alt=""
 							width={aquariumImage.width}
 							height={aquariumImage.height}
 							loading="eager"
@@ -70,7 +72,7 @@ const {
 						<img
 							class="home-tilt-card-image home-tilt-card-image-dark"
 							src={starlightDarkImage.src}
-							alt="星灯下的小糸侑与七海灯子"
+							alt=""
 							width={starlightDarkImage.width}
 							height={starlightDarkImage.height}
 							loading="eager"

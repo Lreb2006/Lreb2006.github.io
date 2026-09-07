@@ -140,7 +140,7 @@ function handleError(e: Event) {
       <img
         src={loadImage ? initialSrc : undefined}
         data-src={loadImage ? undefined : initialSrc}
-        alt={title}
+        alt=""
         class="w-full h-full object-cover pointer-events-none opacity-0 transition-all duration-500 ease-out group-hover:scale-105"
         loading="lazy"
         decoding="async"

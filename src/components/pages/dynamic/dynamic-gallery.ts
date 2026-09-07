@@ -60,7 +60,7 @@ export function registerDynamicGallery(): void {
 					element.closest<HTMLElement>("center") ??
 					element.closest<HTMLElement>("figure") ??
 					element;
-				element.alt = alt;
+				element.alt = "";
 				button.append(element);
 				if (index === 5 && this.images.length > 6) {
 					const more = document.createElement("span");
@@ -99,7 +99,7 @@ export function registerDynamicGallery(): void {
 				);
 				button.addEventListener("click", () => this.select(index));
 				const thumbnail = element.cloneNode(true) as HTMLImageElement;
-				thumbnail.alt = alt;
+				thumbnail.alt = "";
 				thumbnail.removeAttribute("id");
 				button.append(thumbnail);
 				thumbnails.append(button);
@@ -172,7 +172,7 @@ export function registerDynamicGallery(): void {
 			const main = this.querySelector<HTMLImageElement>("[data-gallery-main]");
 			if (!main) return;
 			main.src = image.src;
-			main.alt = image.alt;
+			main.alt = "";
 			main.dataset.galleryIndex = String(this.activeIndex);
 			this.querySelector<HTMLElement>("[data-gallery-lightbox]")?.setAttribute(
 				"data-src",

@@ -29,7 +29,6 @@ interface Props {
 const {
 	id,
 	src,
-	alt,
 	position = "center",
 	basePath = "/",
 	preview = false,
@@ -108,7 +107,7 @@ const remoteReferrerPolicy =
 		<ImageWrapper
 			src={src}
 			basePath={basePath}
-			alt={alt || ""}
+			alt=""
 			class="w-full h-full"
 			position={position}
 			loading={loading}
@@ -128,7 +127,7 @@ const remoteReferrerPolicy =
 	{!isLocal && (
 		<img
 			src={isPublic ? url(src) : src}
-			alt={alt || ""}
+			alt=""
 			class={imageClass}
 			style={imageStyle}
 			loading={loading}

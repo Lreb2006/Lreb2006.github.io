@@ -233,11 +233,11 @@ const viewConfigStr = JSON.stringify({
             if (track.pic) {
                 ui.cover.classList.add('opacity-0');
                 ui.cover.src = track.pic;
-                ui.cover.alt = track.name + ' - ' + track.artist;
+                ui.cover.alt = "";
             } else {
                 ui.cover.src = '';
                 ui.cover.classList.add('opacity-0');
-                ui.cover.alt = cfg.i18n.noCover;
+                ui.cover.alt = "";
             }
 
             // Reset cover rotation
@@ -297,7 +297,7 @@ const viewConfigStr = JSON.stringify({
             var artist = clone.querySelector('.item-artist');
 
             img.src = track.pic || '';
-            img.alt = track.name + ' - ' + track.artist;
+            img.alt = "";
             title.innerText = track.name;
             artist.innerText = track.artist;
 

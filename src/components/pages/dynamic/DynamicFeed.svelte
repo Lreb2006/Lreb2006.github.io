@@ -205,7 +205,7 @@ function createItem(entry: DynamicData) {
 		for (const image of entry.images) {
 			const element = document.createElement("img");
 			element.src = image.src;
-			element.alt = image.alt;
+			element.alt = "";
 			element.loading = "lazy";
 			if (image.title) element.title = image.title;
 			content.append(element);

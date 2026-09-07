@@ -93,7 +93,7 @@ const useContentPadding = !adConfig.padding;
           >
             <img
               src={adConfig.image.src.startsWith("/") ? url(adConfig.image.src) : adConfig.image.src}
-              alt={adConfig.image.alt || "Advertisement"}
+              alt=""
               class="w-full h-auto"
               loading="lazy"
             />
@@ -101,7 +101,7 @@ const useContentPadding = !adConfig.padding;
         ) : (
           <img
             src={adConfig.image.src.startsWith("/") ? url(adConfig.image.src) : adConfig.image.src}
-            alt={adConfig.image.alt || "Advertisement"}
+            alt=""
             class="w-full h-auto rounded-lg"
             loading="lazy"
           />

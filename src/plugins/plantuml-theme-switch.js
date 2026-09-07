@@ -47,7 +47,7 @@
 				wrapper.innerHTML = "";
 				const newImg = new Image();
 				newImg.className = "plantuml-image";
-				newImg.alt = img.alt;
+				newImg.alt = "";
 				newImg.setAttribute(
 					"data-light-src",
 					img.getAttribute("data-light-src") || "",

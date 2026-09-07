@@ -72,7 +72,7 @@ export function rehypePlantuml() {
 
 			const img = h("img", {
 				class: PLANTUML_IMAGE,
-				alt: altText || "PlantUML diagram",
+				alt: "",
 				src: lightSrc,
 				"data-light-src": lightSrc,
 				"data-dark-src": darkSrc,
