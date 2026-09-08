@@ -74,6 +74,15 @@ const processedLinks = Astro.props.links;
 <style>
     @reference "../../styles/main.css";
 
+    #nav-menu-panel {
+        --charlore-ui-glass-background: rgba(255, 255, 255, 0.82);
+        --charlore-ui-glass-filter: blur(28px) saturate(120%);
+    }
+
+    :global(.dark) #nav-menu-panel {
+        --charlore-ui-glass-background: rgba(30, 30, 35, 0.86);
+    }
+
     .mobile-submenu {
         @apply max-h-0 overflow-hidden transition-all duration-300 ease-in-out;
     }

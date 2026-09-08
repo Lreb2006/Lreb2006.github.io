@@ -302,6 +302,17 @@ function loadButtonScript() {
     }
 
     let menuBtn = document.getElementById("nav-menu-switch");
+    const menuPanel = document.getElementById("nav-menu-panel");
+    if (menuPanel) {
+        menuPanel.onclick = function (event) {
+            if (event.target instanceof Element && event.target.closest("a[href]")) {
+                menuPanel.classList.add("float-panel-closed");
+                menuPanel.inert = true;
+                menuPanel.setAttribute("aria-hidden", "true");
+                menuBtn?.setAttribute("aria-expanded", "false");
+            }
+        };
+    }
     if (menuBtn) {
         menuBtn.onclick = function () {
             let menuPanel = document.getElementById("nav-menu-panel");
