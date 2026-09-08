@@ -2,7 +2,7 @@
 
 Hi！我是 **Charlore**，也可以是 **路人蛃**。
 
-一名还在不断探索方向的24级大学生，目前主要关注 **Computer Science、AI / LLM、AI Infra**。
+一名还在不断探索方向的24级本科生，目前主要关注 **Computer Science、AI / LLM、AI Infra**。
 
 ## What I'm doing
 
@@ -12,13 +12,13 @@ Hi！我是 **Charlore**，也可以是 **路人蛃**。
 - 探索 AI Infra 模型推理与性能优化
 - 阅读、写作，以及偶尔研究一些感兴趣的美好事物
 
-技术足够重要，但文学、设计、游戏和哲学同样构成了我理解世界的方式。
+技术足够重要，但文学、游戏和哲学同样构成了我理解世界的方式。
 
 ## Things I like
 
 **Technology**
 
-C++ · Java · Python · Linux · Backend · DL · LLM · AI Infra · Open Source
+C++ · Java · Python · Linux · Backend · DL · LLM · AI Infra · NLP · Open Source
 
 **Literature**
 
@@ -28,11 +28,11 @@ C++ · Java · Python · Linux · Backend · DL · LLM · AI Infra · Open Sourc
 
 Minecraft · 杀戮尖塔2 · Fiding Paradise · To The Moon · 文明6 · VRChat
 
-同时我也对游戏开发、世界设计和视觉表达感兴趣，欢迎与我交流~
+同时我也对游戏开发感兴趣，欢迎与我交流~
 
 **Others**
 
-Yuri · 写作 · 视觉设计 · VOCALOID · 编曲 · Miku · Internet Culture · 绘画
+Yuri · 写作 · 视觉设计 · VOCALOID · 编曲 · Miku · 诗歌 · Internet Culture · 绘画 · 动漫
 
 ## Elsewhere
 
