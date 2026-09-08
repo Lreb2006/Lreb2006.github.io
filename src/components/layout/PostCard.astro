@@ -304,8 +304,8 @@ const minutes = remarkPluginFrontmatter.minutes;
   }
 
   .post-card-image {
-    border: 1px solid rgb(255 255 255 / 0.34);
-    box-shadow: 0 10px 28px rgb(59 107 131 / 0.14);
+    border: 0;
+    box-shadow: none;
   }
 
   @media (hover: hover) and (pointer: fine) {
@@ -347,11 +347,11 @@ const minutes = remarkPluginFrontmatter.minutes;
   :global(.list-mode) .has-cover .post-card-image {
     position: relative !important;
     inset: auto !important;
-    width: calc(100% - 1.5rem) !important;
+    width: 100% !important;
     aspect-ratio: 16 / 9 !important;
     flex-shrink: 0;
-    margin: 0.75rem 0.75rem 0;
-    border-radius: 0.75rem !important;
+    margin: 0;
+    border-radius: 0 !important;
   }
 
   :global(.list-mode) .post-card-title {
@@ -392,20 +392,20 @@ const minutes = remarkPluginFrontmatter.minutes;
     :global(.list-mode) .has-cover .post-card-content {
       width: auto !important;
       flex: 1;
-      padding: 1.75rem 0.5rem 1.75rem 2.25rem !important;
+      padding: 1.75rem 1.5rem 1.75rem 2.25rem !important;
     }
 
     :global(.list-mode) .has-cover .post-card-image {
-      align-self: center;
+      align-self: stretch;
       aspect-ratio: 4 / 3 !important;
-      margin: 1rem;
+      margin: 0;
       width: var(--coverWidth) !important;
-      border-radius: 0.75rem !important;
+      border-radius: 0 !important;
     }
 
-    /* 封面在左侧：内边距完全镜像右侧模式（靠封面那侧 0.5rem，靠卡片边缘那侧 2.25rem） */
+    /* 封面在左侧：内边距完全镜像右侧模式（靠封面那侧 1.5rem，靠卡片边缘那侧 2.25rem） */
     :global(.list-mode.cover-left) .has-cover .post-card-content {
-      padding: 1.75rem 2.25rem 1.75rem 0.5rem !important;
+      padding: 1.75rem 2.25rem 1.75rem 1.5rem !important;
     }
 
     :global(.list-mode.cover-left) .has-cover .post-card-image {
