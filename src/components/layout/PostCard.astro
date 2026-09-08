@@ -34,7 +34,6 @@ const {
 	tags,
 	category,
 	image,
-	description,
 	pinned,
 	password,
 	style,
@@ -50,16 +49,11 @@ const hasCover =
 	processedImage !== null &&
 	processedImage !== "";
 
-const coverWidth = "30%";
+const coverWidth = "34%";
 
 // 网格模式封面是否撑满卡片贴边，false 则按卡片内容区的内边距内缩（间距随断点变化）
 const gridCoverFullWidth =
 	siteConfig.postListLayout.grid.coverFullWidth ?? false;
-
-const descriptionLines = Math.max(
-	0,
-	Math.trunc(siteConfig.postListLayout.descriptionLines ?? 2),
-);
 
 // PostMeta 配置
 const metaConfig = siteConfig.postListLayout.meta ?? {};
@@ -86,8 +80,6 @@ const showTagsAtBottom = metaShowTags && tagsPosition === "bottom";
 // 底部标签样式："chip" 按钮样式，"text" 纯文字无底色
 const bottomTagsAsText =
 	(siteConfig.postListLayout.tagsBottomStyle ?? "chip") === "text";
-const descriptionClampLines = String(descriptionLines);
-const shouldClampDescription = descriptionLines > 0;
 
 // 底部标签：超出 tagCount 的部分折叠成一个 +N 提示，tagCount 为 0 时不限制
 const tagList = tags ?? [];
@@ -96,7 +88,6 @@ const hiddenTags = tagList.slice(bottomTags.length);
 const hiddenTagCount = hiddenTags.length;
 
 const { remarkPluginFrontmatter } = await render(entry);
-const descriptionText = description || remarkPluginFrontmatter.excerpt || "";
 const words = remarkPluginFrontmatter.words;
 const minutes = remarkPluginFrontmatter.minutes;
 ---
@@ -168,17 +159,6 @@ const minutes = remarkPluginFrontmatter.minutes;
       className="mb-4 post-meta card-header-meta"
     />
 
-    <!-- description -->
-    <div
-      class:list={[
-        "transition text-75 md:pr-4 description grow",
-        { "description-clamped": shouldClampDescription },
-      ]}
-      title={descriptionText}
-    >
-      {descriptionText}
-    </div>
-
     <!-- bottom tags（与 stats 二选一） -->
     {showTagsAtBottom && bottomTags.length > 0 && (
       <div
@@ -198,12 +178,12 @@ const minutes = remarkPluginFrontmatter.minutes;
                 : "tag-item px-2.5 py-1",
             ]}
           >
-            #{tag.trim()}
+            {tag.trim()}
           </a>
         ))}
         {hiddenTagCount > 0 && (
           <span
-            title={hiddenTags.map((tag) => `#${tag.trim()}`).join(" ")}
+            title={hiddenTags.map((tag) => tag.trim()).join(" ")}
             class:list={[
               "text-xs font-medium",
               bottomTagsAsText
@@ -288,7 +268,7 @@ const minutes = remarkPluginFrontmatter.minutes;
 </div>
 </div>
 
-<style define:vars={{ coverWidth, descriptionClampLines }}>
+<style define:vars={{ coverWidth }}>
   .post-card-item-shell {
     width: 100%;
     will-change: auto;
@@ -303,7 +283,6 @@ const minutes = remarkPluginFrontmatter.minutes;
   }
 
   .post-card-wrapper {
-    --mobile-cover-width: clamp(5.5rem, 28vw, 8rem);
     border: 1px solid var(--charlore-card-border);
     background: var(--charlore-card-surface);
     box-shadow: var(--charlore-card-shadow);
@@ -353,44 +332,26 @@ const minutes = remarkPluginFrontmatter.minutes;
     }
   }
 
-  .description-clamped {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    -webkit-line-clamp: var(--descriptionClampLines);
-    line-clamp: var(--descriptionClampLines);
-  }
-
-  /* === List Mode Mobile Styles === */
-  /* 移动端列表模式：封面在右侧，内容缩小 */
+  /* 手机端采用上图下文，封面不再随文字高度拉伸。 */
   :global(.list-mode) .post-card-wrapper {
-    flex-direction: row !important;
+    flex-direction: column-reverse !important;
   }
 
   :global(.list-mode) .has-cover .post-card-content {
-    width: calc(100% - var(--mobile-cover-width) - 0.75rem) !important;
-    padding: 0.75rem 0.5rem 0.75rem 0.75rem !important;
+    width: 100% !important;
+    height: auto;
+    min-width: 0;
+    padding: 1rem !important;
   }
 
   :global(.list-mode) .has-cover .post-card-image {
-    position: absolute !important;
-    top: 0.5rem !important;
-    bottom: 0.5rem !important;
-    right: 0.5rem !important;
-    width: var(--mobile-cover-width) !important;
-    aspect-ratio: auto !important;
+    position: relative !important;
+    inset: auto !important;
+    width: calc(100% - 1.5rem) !important;
+    aspect-ratio: 16 / 9 !important;
+    flex-shrink: 0;
+    margin: 0.75rem 0.75rem 0;
     border-radius: 0.75rem !important;
-  }
-
-  /* 封面在左侧：封面改钉左边，内容用 margin-left:auto 推到右边并镜像内边距 */
-  :global(.list-mode.cover-left) .has-cover .post-card-content {
-    margin-left: auto !important;
-    padding: 0.75rem 0.75rem 0.75rem 0.5rem !important;
-  }
-
-  :global(.list-mode.cover-left) .has-cover .post-card-image {
-    right: auto !important;
-    left: 0.5rem !important;
   }
 
   :global(.list-mode) .post-card-title {
@@ -429,14 +390,15 @@ const minutes = remarkPluginFrontmatter.minutes;
     }
 
     :global(.list-mode) .has-cover .post-card-content {
-      width: calc(100% - var(--coverWidth) - 1.5rem) !important;
+      width: auto !important;
+      flex: 1;
       padding: 1.75rem 0.5rem 1.75rem 2.25rem !important;
     }
 
     :global(.list-mode) .has-cover .post-card-image {
-      top: 1rem !important;
-      bottom: 1rem !important;
-      right: 1rem !important;
+      align-self: center;
+      aspect-ratio: 4 / 3 !important;
+      margin: 1rem;
       width: var(--coverWidth) !important;
       border-radius: 0.75rem !important;
     }
@@ -447,8 +409,7 @@ const minutes = remarkPluginFrontmatter.minutes;
     }
 
     :global(.list-mode.cover-left) .has-cover .post-card-image {
-      right: auto !important;
-      left: 1rem !important;
+      order: -1;
     }
 
     /* 标题装饰条是贴着卡片左边缘的设计，封面移到左侧后不再成立，直接隐藏 */
@@ -466,10 +427,6 @@ const minutes = remarkPluginFrontmatter.minutes;
       display: block !important;
       top: 2.25rem !important;
       height: 1rem !important;
-    }
-
-    :global(.list-mode) .description {
-      font-size: inherit !important;
     }
 
     :global(.list-mode) .stats a {
@@ -518,10 +475,6 @@ const minutes = remarkPluginFrontmatter.minutes;
     width: calc(100% - var(--grid-card-padding, 1rem) * 2) !important;
     margin: var(--grid-card-padding, 1rem) var(--grid-card-padding, 1rem) 0 !important;
     border-radius: 0.75rem !important;
-  }
-
-  :global(.grid-mode) .description {
-    flex-grow: 0 !important;
   }
 
   :global(.grid-mode) .stats {
