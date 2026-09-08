@@ -34,6 +34,7 @@ const {
 	tags,
 	category,
 	image,
+	description,
 	pinned,
 	password,
 	style,
@@ -49,11 +50,16 @@ const hasCover =
 	processedImage !== null &&
 	processedImage !== "";
 
-const coverWidth = "34%";
+const coverWidth = "30%";
 
 // 网格模式封面是否撑满卡片贴边，false 则按卡片内容区的内边距内缩（间距随断点变化）
 const gridCoverFullWidth =
 	siteConfig.postListLayout.grid.coverFullWidth ?? false;
+
+const descriptionLines = Math.max(
+	0,
+	Math.trunc(siteConfig.postListLayout.descriptionLines ?? 2),
+);
 
 // PostMeta 配置
 const metaConfig = siteConfig.postListLayout.meta ?? {};
@@ -88,6 +94,9 @@ const hiddenTags = tagList.slice(bottomTags.length);
 const hiddenTagCount = hiddenTags.length;
 
 const { remarkPluginFrontmatter } = await render(entry);
+const descriptionText = description || remarkPluginFrontmatter.excerpt || "";
+const descriptionClampLines = String(descriptionLines);
+const shouldClampDescription = descriptionLines > 0;
 const words = remarkPluginFrontmatter.words;
 const minutes = remarkPluginFrontmatter.minutes;
 ---
@@ -159,6 +168,17 @@ const minutes = remarkPluginFrontmatter.minutes;
       className="mb-4 post-meta card-header-meta"
     />
 
+    <!-- description -->
+    <div
+      class:list={[
+        "transition text-75 md:pr-4 description grow",
+        { "description-clamped": shouldClampDescription },
+      ]}
+      title={descriptionText}
+    >
+      {descriptionText}
+    </div>
+
     <!-- bottom tags（与 stats 二选一） -->
     {showTagsAtBottom && bottomTags.length > 0 && (
       <div
@@ -170,7 +190,7 @@ const minutes = remarkPluginFrontmatter.minutes;
         {bottomTags.map((tag) => (
           <a
             href={getTagUrl(tag)}
-            aria-label={`View all posts with the ${tag.trim()} tag`}
+            aria-label={`View all posts with the $<span class="desktop-tag-prefix">#</span>{tag.trim()} tag`}
             class:list={[
               "transition text-xs font-medium",
               bottomTagsAsText
@@ -268,7 +288,27 @@ const minutes = remarkPluginFrontmatter.minutes;
 </div>
 </div>
 
-<style define:vars={{ coverWidth }}>
+<style define:vars={{ coverWidth, descriptionClampLines }}>
+  .description, .desktop-tag-prefix { display: none; }
+
+  @media (min-width: 768px) {
+    .description { display: block; }
+    .desktop-tag-prefix { display: inline; }
+    .description-clamped {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      -webkit-line-clamp: var(--descriptionClampLines);
+      line-clamp: var(--descriptionClampLines);
+    }
+    :global(html:not(.dark)) .post-card-wrapper {
+      --charlore-card-surface: rgba(255, 255, 255, 0.78);
+    }
+    .post-card-image {
+      border: 1px solid rgb(255 255 255 / 0.34) !important;
+      box-shadow: 0 10px 28px rgb(59 107 131 / 0.14) !important;
+    }
+  }
   .post-card-item-shell {
     width: 100%;
     will-change: auto;
@@ -390,26 +430,29 @@ const minutes = remarkPluginFrontmatter.minutes;
     }
 
     :global(.list-mode) .has-cover .post-card-content {
-      width: auto !important;
-      flex: 1;
-      padding: 1.75rem 1.5rem 1.75rem 2.25rem !important;
+      width: calc(100% - var(--coverWidth) - 1.5rem) !important;
+      padding: 1.75rem 0.5rem 1.75rem 2.25rem !important;
     }
 
     :global(.list-mode) .has-cover .post-card-image {
-      align-self: stretch;
-      aspect-ratio: 4 / 3 !important;
+      position: absolute !important;
+      aspect-ratio: auto !important;
       margin: 0;
+      top: 1rem !important;
+      bottom: 1rem !important;
+      right: 1rem !important;
       width: var(--coverWidth) !important;
-      border-radius: 0 !important;
+      border-radius: 0.75rem !important;
     }
 
-    /* 封面在左侧：内边距完全镜像右侧模式（靠封面那侧 1.5rem，靠卡片边缘那侧 2.25rem） */
+    /* 封面在左侧：内边距完全镜像右侧模式（靠封面那侧 0.5rem，靠卡片边缘那侧 2.25rem） */
     :global(.list-mode.cover-left) .has-cover .post-card-content {
-      padding: 1.75rem 2.25rem 1.75rem 1.5rem !important;
+      padding: 1.75rem 2.25rem 1.75rem 0.5rem !important;
     }
 
     :global(.list-mode.cover-left) .has-cover .post-card-image {
-      order: -1;
+      right: auto !important;
+      left: 1rem !important;
     }
 
     /* 标题装饰条是贴着卡片左边缘的设计，封面移到左侧后不再成立，直接隐藏 */
@@ -427,6 +470,10 @@ const minutes = remarkPluginFrontmatter.minutes;
       display: block !important;
       top: 2.25rem !important;
       height: 1rem !important;
+    }
+
+    :global(.list-mode) .description {
+      font-size: inherit !important;
     }
 
     :global(.list-mode) .stats a {
@@ -475,6 +522,10 @@ const minutes = remarkPluginFrontmatter.minutes;
     width: calc(100% - var(--grid-card-padding, 1rem) * 2) !important;
     margin: var(--grid-card-padding, 1rem) var(--grid-card-padding, 1rem) 0 !important;
     border-radius: 0.75rem !important;
+  }
+
+  :global(.grid-mode) .description {
+    flex-grow: 0 !important;
   }
 
   :global(.grid-mode) .stats {
