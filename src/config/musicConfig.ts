@@ -1,4 +1,5 @@
 import type { MusicPlayerConfig } from "../types/musicConfig";
+import { resolveImageUrl } from "../utils/image-manifest";
 
 // 音乐播放器配置
 export const musicPlayerConfig: MusicPlayerConfig = {
@@ -54,64 +55,81 @@ export const musicPlayerConfig: MusicPlayerConfig = {
 				name: "让我一直陪着你",
 				artist: "冰心",
 				url: "https://assets.charlore.cn/music/audio/let-me-stay-with-you.mp3",
-				cover:
+				cover: resolveImageUrl(
 					"https://assets.charlore.cn/music/cover/let-me-stay-with-you.jpg",
+				),
 			},
 			{
 				name: "好き、以外の言葉で",
 				artist: "高田憂希 / 寿美菜子",
 				url: "/assets/music/audio/suki-igai-no-kotoba-de.mp3",
-				cover:
+				cover: resolveImageUrl(
 					"https://assets.charlore.cn/music/cover/suki-igai-no-kotoba-de.jpg",
+				),
 			},
 			{
 				name: "∞ TIMEs",
 				artist: "洛天依Official / 星葵77",
 				url: "https://assets.charlore.cn/music/audio/infinite-times.mp3",
-				cover: "https://assets.charlore.cn/music/cover/infinite-times.jpg",
+				cover: resolveImageUrl(
+					"https://assets.charlore.cn/music/cover/infinite-times.jpg",
+				),
 			},
 			{
 				name: "有何不可",
 				artist: "许嵩",
 				url: "/assets/music/audio/you-he-bu-ke.mp3",
-				cover: "https://assets.charlore.cn/music/cover/you-he-bu-ke.jpg",
+				cover: resolveImageUrl(
+					"https://assets.charlore.cn/music/cover/you-he-bu-ke.jpg",
+				),
 			},
 			{
 				name: "Shut Up and Dance (Acoustic)",
 				artist: "Jada Facer",
 				url: "https://assets.charlore.cn/music/audio/shut-up-and-dance-acoustic.mp3",
-				cover:
+				cover: resolveImageUrl(
 					"https://assets.charlore.cn/music/cover/shut-up-and-dance-acoustic.jpg",
+				),
 			},
 			{
 				name: "月の温度",
 				artist: "JELEE",
 				url: "/assets/music/audio/tsuki-no-ondo.mp3",
-				cover: "https://assets.charlore.cn/music/cover/tsuki-no-ondo.jpg",
+				cover: resolveImageUrl(
+					"https://assets.charlore.cn/music/cover/tsuki-no-ondo.jpg",
+				),
 			},
 			{
 				name: "Sleep Tight (feat. まこと)",
 				artist: "Neko Hacker / まこと",
 				url: "https://assets.charlore.cn/music/audio/sleep-tight.mp3",
-				cover: "https://assets.charlore.cn/music/cover/sleep-tight.jpg",
+				cover: resolveImageUrl(
+					"https://assets.charlore.cn/music/cover/sleep-tight.jpg",
+				),
 			},
 			{
 				name: "oh my girl",
 				artist: "鎖那",
 				url: "https://assets.charlore.cn/music/audio/oh-my-girl.mp3",
-				cover: "https://assets.charlore.cn/music/cover/oh-my-girl.jpg",
+				cover: resolveImageUrl(
+					"https://assets.charlore.cn/music/cover/oh-my-girl.jpg",
+				),
 			},
 			{
 				name: "Undress",
 				artist: "Adib Sin/Violieu/Napp-Chan",
 				url: "/assets/music/audio/undress.mp3",
-				cover: "https://assets.charlore.cn/music/cover/undress.jpg",
+				cover: resolveImageUrl(
+					"https://assets.charlore.cn/music/cover/undress.jpg",
+				),
 			},
 			{
 				name: "Cherish Your Life",
 				artist: "Delos",
 				url: "https://assets.charlore.cn/music/audio/cherish-your-life.mp3",
-				cover: "https://assets.charlore.cn/music/cover/cherish-your-life.jpg",
+				cover: resolveImageUrl(
+					"https://assets.charlore.cn/music/cover/cherish-your-life.jpg",
+				),
 			},
 		],
 	},

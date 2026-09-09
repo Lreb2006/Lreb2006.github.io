@@ -7,6 +7,9 @@
   },
   "packageManager": "pnpm@11.22.0",
   "scripts": {
+    "images:sync": "node scripts/image-pipeline.mjs --all",
+    "images:migrate-r2": "node scripts/image-pipeline.mjs --existing",
+    "images:check": "node scripts/image-pipeline.mjs --check",
     "dev": "astro dev",
     "start": "astro dev",
     "check": "astro check",
@@ -95,6 +98,7 @@
   },
   "devDependencies": {
     "@astrojs/ts-plugin": "^1.10.11",
+    "@aws-sdk/client-s3": "^3.1127.0",
     "@biomejs/biome": "2.5.10",
     "@iconify-json/mdi": "^1.2.3",
     "@iconify-json/svg-spinners": "^1.2.4",
@@ -106,6 +110,8 @@
     "postcss-import": "^16.1.1",
     "postcss-nesting": "^14.0.1",
     "rehype-callouts": "^2.2.0",
-    "subset-font": "^2.5.0"
+    "remark-parse": "^11.0.0",
+    "subset-font": "^2.5.0",
+    "unified": "^11.0.5"
   }
 }

@@ -1,4 +1,5 @@
 import type { CoverImageConfig } from "../types/coverImageConfig";
+import { resolveImageUrl } from "../utils/image-manifest";
 
 /**
  * 文章封面图配置
@@ -18,7 +19,9 @@ import type { CoverImageConfig } from "../types/coverImageConfig";
  * ---
  */
 export const coverImageConfig: CoverImageConfig = {
-	defaultImage: "https://assets.charlore.cn/images/posts/default-cover.png",
+	defaultImage: resolveImageUrl(
+		"https://assets.charlore.cn/images/posts/default-cover.png",
+	),
 	// 是否在文章详情页显示封面图
 	enableInPost: true,
 

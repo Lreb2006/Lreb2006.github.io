@@ -2,6 +2,7 @@ import { defineCollection } from "astro:content";
 import type { CollectionConfig } from "astro/content/config";
 import { glob } from "astro/loaders";
 import { type ZodType, z } from "astro/zod";
+import { resolveImageUrl } from "./utils/image-manifest";
 
 type PostData = {
 	title: string;
@@ -48,7 +49,7 @@ const postsCollection: ContentCollection<PostData> = defineCollection({
 		updated: z.date().optional(),
 		draft: z.boolean().optional().default(false),
 		description: z.string().optional().default(""),
-		image: z.string().optional().default(""),
+		image: z.string().optional().default("").transform(resolveImageUrl),
 		tags: z.array(z.string()).optional().default([]),
 		category: z.string().optional().nullable().default(""),
 		lang: z.string().optional().default(""),

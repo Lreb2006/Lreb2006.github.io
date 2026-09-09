@@ -43,6 +43,7 @@ import { rehypeDiagramPanZoom } from "./src/plugins/rehype-diagram-panzoom.mjs";
 import rehypeEmailProtection from "./src/plugins/rehype-email-protection.mjs";
 import rehypeExternalLinks from "./src/plugins/rehype-external-links.mjs";
 import rehypeFigure from "./src/plugins/rehype-figure.mjs";
+import remarkR2Images from "./src/plugins/remark-r2-images.mjs";
 import rehypeImageReferrerPolicy from "./src/plugins/rehype-image-referrerpolicy.mjs";
 import { rehypeMermaid } from "./src/plugins/rehype-mermaid.mjs";
 import { rehypePlantuml } from "./src/plugins/rehype-plantuml.mjs";
@@ -289,6 +290,7 @@ export default defineConfig({
 	markdown: {
 		processor: unified({
 			remarkPlugins: [
+				remarkR2Images,
 				...(siteConfig.post.rehypeCallouts.enablePythonMarkdownAdmonitions !==
 				false
 					? [remarkAdmonitionToBlockquoteCallout]
@@ -305,6 +307,7 @@ export default defineConfig({
 				[remarkPlantuml, plantumlConfig],
 			],
 			rehypePlugins: [
+				remarkR2Images,
 				[rehypeKatex, { katex }],
 				[rehypeCallouts, { theme: siteConfig.post.rehypeCallouts.theme }],
 				rehypeSlug,
