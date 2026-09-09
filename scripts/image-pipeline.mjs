@@ -15,6 +15,14 @@ import remarkParse from "remark-parse";
 import { visit } from "unist-util-visit";
 
 const manifestPath = "src/data/image-manifest.json";
+const LOSSLESS_HOMEPAGE_IMAGES = new Set([
+	"https://assets.charlore.cn/images/charlore/home-story-final-dark.png",
+	"https://assets.charlore.cn/images/charlore/home-story-final-wide.png",
+]);
+const policyFor = (source) =>
+	LOSSLESS_HOMEPAGE_IMAGES.has(source)
+		? "lossless-home-if-smaller-v2"
+		: "lossy-q90-always-v1";
 const git = (...args) => execFileSync("git", args, { encoding: "utf8" });
 const hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const args = new Set(process.argv.slice(2));
@@ -81,27 +89,30 @@ async function migrate(source, bytes, etag) {
 	const metadata = await sharp(bytes, { animated: true }).metadata();
 	if (!["jpeg", "png", "webp"].includes(metadata.format))
 		throw new Error("Only JPEG, PNG and WebP supported");
-	const output = await sharp(bytes, { animated: true })
-		.rotate()
-		.keepIccProfile()
-		.webp({ lossless: true, effort: 5 })
+	const policy = policyFor(source);
+	const lossless = policy.startsWith("lossless-");
+	const pipeline = sharp(bytes, { animated: true }).rotate().keepIccProfile();
+	const output = await pipeline
+		.webp(lossless ? { lossless: true, effort: 5 } : { quality: 90, effort: 5 })
 		.toBuffer();
-	const originalPixels = await sharp(bytes, { animated: true })
-		.rotate()
-		.ensureAlpha()
-		.raw()
-		.toBuffer();
-	const convertedPixels = await sharp(output, { animated: true })
-		.ensureAlpha()
-		.raw()
-		.toBuffer();
-	if (!originalPixels.equals(convertedPixels))
-		throw new Error("Lossless pixel verification failed");
-	const useWebp = output.length < bytes.length;
+	if (lossless) {
+		const originalPixels = await sharp(bytes, { animated: true })
+			.rotate()
+			.ensureAlpha()
+			.raw()
+			.toBuffer();
+		const convertedPixels = await sharp(output, { animated: true })
+			.ensureAlpha()
+			.raw()
+			.toBuffer();
+		if (!originalPixels.equals(convertedPixels))
+			throw new Error("Lossless pixel verification failed");
+	}
+	const useWebp = lossless ? output.length < bytes.length : true;
 	const selected = useWebp ? output : bytes;
 	const digest = hash(selected);
 	const format = useWebp ? "webp" : metadata.format;
-	const key = `images/optimized/${digest}.${format === "jpeg" ? "jpg" : format}`;
+	const key = `images/optimized/${policy}/${digest}.${format === "jpeg" ? "jpg" : format}`;
 	const retainR2Original = !useWebp && source.startsWith(`${base}/`);
 	if (!retainR2Original) {
 		await client.send(
@@ -131,14 +142,15 @@ async function migrate(source, bytes, etag) {
 		width: metadata.autoOrient?.width ?? metadata.width,
 		height: metadata.autoOrient?.height ?? metadata.height,
 		format,
-		lossless: true,
-		pixelVerified: true,
-		policy: "lossless-if-smaller-v1",
+		lossless: lossless || !useWebp,
+		pixelVerified: lossless || !useWebp,
+		policy,
 	};
 	await save();
-	console.log(
-		`${useWebp ? "Lossless WebP" : "Kept original"}: ${bytes.length} -> ${selected.length} bytes`,
-	);
+	const result = useWebp
+		? `${lossless ? "Lossless" : "Lossy q90"} WebP`
+		: "Kept original";
+	console.log(`${result}: ${bytes.length} -> ${selected.length} bytes`);
 }
 function extract(text) {
 	const parsed = matter(text);
@@ -180,7 +192,7 @@ async function main() {
 				const source = publicUrl(object.Key);
 				if (
 					manifest[source]?.sourceEtag === object.ETag &&
-					manifest[source]?.policy === "lossless-if-smaller-v1"
+					manifest[source]?.policy === policyFor(source)
 				)
 					continue;
 				const file = await client.send(
@@ -219,7 +231,7 @@ async function main() {
 		for (const url of extract(text)) urls.add(url);
 	}
 	const pending = [...urls].filter(
-		(url) => manifest[url]?.policy !== "lossless-if-smaller-v1",
+		(url) => manifest[url]?.policy !== policyFor(url),
 	);
 	// A working-tree mapping must not suppress upload when it is missing from
 	// the actual commit (including a retry after a partially failed migration).
