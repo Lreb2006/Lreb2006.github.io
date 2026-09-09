@@ -83,20 +83,38 @@ async function migrate(source, bytes, etag) {
 		throw new Error("Only JPEG, PNG and WebP supported");
 	const output = await sharp(bytes, { animated: true })
 		.rotate()
-		.webp({ quality: 90, effort: 5 })
+		.keepIccProfile()
+		.webp({ lossless: true, effort: 5 })
 		.toBuffer();
-	const digest = hash(output);
-	const key = `images/optimized/${digest}.webp`;
-	await client.send(
-		new PutObjectCommand({
-			Bucket: process.env.R2_BUCKET,
-			Key: key,
-			Body: output,
-			ContentType: "image/webp",
-			CacheControl: "public, max-age=31536000, immutable",
-		}),
-	);
-	const url = publicUrl(key);
+	const originalPixels = await sharp(bytes, { animated: true })
+		.rotate()
+		.ensureAlpha()
+		.raw()
+		.toBuffer();
+	const convertedPixels = await sharp(output, { animated: true })
+		.ensureAlpha()
+		.raw()
+		.toBuffer();
+	if (!originalPixels.equals(convertedPixels))
+		throw new Error("Lossless pixel verification failed");
+	const useWebp = output.length < bytes.length;
+	const selected = useWebp ? output : bytes;
+	const digest = hash(selected);
+	const format = useWebp ? "webp" : metadata.format;
+	const key = `images/optimized/${digest}.${format === "jpeg" ? "jpg" : format}`;
+	const retainR2Original = !useWebp && source.startsWith(`${base}/`);
+	if (!retainR2Original) {
+		await client.send(
+			new PutObjectCommand({
+				Bucket: process.env.R2_BUCKET,
+				Key: key,
+				Body: selected,
+				ContentType: `image/${format}`,
+				CacheControl: "public, max-age=31536000, immutable",
+			}),
+		);
+	}
+	const url = retainR2Original ? source : publicUrl(key);
 	const response = await fetch(url, { signal: AbortSignal.timeout(60000) });
 	if (
 		!response.ok ||
@@ -109,13 +127,18 @@ async function migrate(source, bytes, etag) {
 		sourceSha256: hash(bytes),
 		sourceEtag: etag,
 		originalBytes: bytes.length,
-		bytes: output.length,
+		bytes: selected.length,
 		width: metadata.autoOrient?.width ?? metadata.width,
 		height: metadata.autoOrient?.height ?? metadata.height,
-		format: "webp",
+		format,
+		lossless: true,
+		pixelVerified: true,
+		policy: "lossless-if-smaller-v1",
 	};
 	await save();
-	console.log(`Converted ${bytes.length} -> ${output.length} bytes`);
+	console.log(
+		`${useWebp ? "Lossless WebP" : "Kept original"}: ${bytes.length} -> ${selected.length} bytes`,
+	);
 }
 function extract(text) {
 	const parsed = matter(text);
@@ -155,7 +178,11 @@ async function main() {
 				count++;
 				if (mode === "--check") continue;
 				const source = publicUrl(object.Key);
-				if (manifest[source]?.sourceEtag === object.ETag) continue;
+				if (
+					manifest[source]?.sourceEtag === object.ETag &&
+					manifest[source]?.policy === "lossless-if-smaller-v1"
+				)
+					continue;
 				const file = await client.send(
 					new GetObjectCommand({
 						Bucket: process.env.R2_BUCKET,
@@ -191,7 +218,9 @@ async function main() {
 				: await readFile(file, "utf8");
 		for (const url of extract(text)) urls.add(url);
 	}
-	const pending = [...urls].filter((url) => !manifest[url]);
+	const pending = [...urls].filter(
+		(url) => manifest[url]?.policy !== "lossless-if-smaller-v1",
+	);
 	// A working-tree mapping must not suppress upload when it is missing from
 	// the actual commit (including a retry after a partially failed migration).
 	if (mode === "--staged" && urls.size) {
