@@ -16,6 +16,7 @@ seriesOrder: 1
 
 import {
 	Badge,
+	Highlight,
 	StepItem,
 	Steps,
 	TabGroup,
@@ -279,6 +280,16 @@ participant Renderer as 内容渲染器
 组件可以像普通段落一样参与叙述。下面先测试所有徽章色型：
 
 <Badge>默认</Badge> <Badge type="tip">提示</Badge> <Badge type="note">笔记</Badge> <Badge type="important">重要</Badge> <Badge type="warning">警告</Badge> <Badge type="caution">谨慎</Badge>
+
+### 无标题重点框
+
+<Highlight>
+
+冻结原始大模型参数，不直接更新原来的权重矩阵，而是在部分线性层中加入两个小的低秩矩阵，只训练这两个小矩阵。
+
+</Highlight>
+
+这个重点框只显示水母图标和正文，不需要填写标题。使用时导入 `Highlight`，再用 `<Highlight>` 和 `</Highlight>` 包住内容即可。
 
 ### 步骤条
 
