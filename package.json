@@ -28,9 +28,9 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",
-    "@astrojs/cloudflare": "^14.2.3",
-    "@astrojs/markdown-remark": "^7.2.4",
-    "@astrojs/markdown-satteri": "^0.3.7",
+    "@astrojs/cloudflare": "^14.3.0",
+    "@astrojs/markdown-remark": "^7.3.0",
+    "@astrojs/markdown-satteri": "^0.4.0",
     "@astrojs/mdx": "^7.0.7",
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.3",
@@ -53,7 +53,7 @@
     "@tailwindcss/typography": "^0.5.20",
     "@types/hast": "^3.0.5",
     "@types/mdast": "^4.0.4",
-    "astro": "7.2.4",
+    "astro": "7.3.1",
     "astro-expressive-code": "^0.44.1",
     "astro-icon": "^1.2.0",
     "ci-info": "^4.4.0",
@@ -85,16 +85,16 @@
     "remark-math": "^6.0.0",
     "remark-sectionize": "^2.1.0",
     "sanitize-html": "^2.17.6",
-    "satteri": "^0.9.5",
+    "satteri": "^0.10.5",
     "sharp": "^0.35.3",
     "stylus": "^0.64.0",
-    "svelte": "^5.56.10",
+    "svelte": "^5.57.0",
     "tailwindcss": "^4.3.3",
-    "takumi-js": "^2.12.0",
+    "takumi-js": "^2.13.7",
     "tsx": "^4.23.12",
     "typescript": "^6.0.3",
     "unist-util-visit": "^5.1.0",
-    "wrangler": "^4.124.0"
+    "wrangler": "^4.129.1"
   },
   "devDependencies": {
     "@astrojs/ts-plugin": "^1.10.11",
@@ -111,7 +111,7 @@
     "postcss-nesting": "^14.0.1",
     "rehype-callouts": "^2.2.0",
     "remark-parse": "^11.0.0",
-    "subset-font": "^2.5.0",
+    "subset-font": "^2.7.0",
     "unified": "^11.0.5"
   }
 }
