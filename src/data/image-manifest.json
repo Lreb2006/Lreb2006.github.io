@@ -431,5 +431,18 @@
     "lossless": false,
     "pixelVerified": false,
     "policy": "lossy-q90-always-v1"
+  },
+  "https://raw.githubusercontent.com/Lreb2006/charlore-images/main/images/20260910214255679.png": {
+    "url": "https://assets.charlore.cn/images/optimized/lossy-q90-always-v1/ea1ceb76a8c16ba22e637a828bd9eeac472590f8b1f90c7bec6b6d53d3040b98.webp",
+    "sha256": "ea1ceb76a8c16ba22e637a828bd9eeac472590f8b1f90c7bec6b6d53d3040b98",
+    "sourceSha256": "e9c994371030f41ec0e5cdbe0f17e386a31c5c4986900708f995833cae9a90df",
+    "originalBytes": 11387654,
+    "bytes": 2173364,
+    "width": 3840,
+    "height": 2160,
+    "format": "webp",
+    "lossless": false,
+    "pixelVerified": false,
+    "policy": "lossy-q90-always-v1"
   }
 }
