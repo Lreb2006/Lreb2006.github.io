@@ -31,6 +31,14 @@ export const friendsConfig: FriendLink[] = [
 		weight: 1,
 		enabled: true,
 	},
+	{
+		title: "Trevor's Blog",
+		imgurl: "https://trevoewu.github.io/favicon.png",
+		desc: "Trevor's personal blog.",
+		siteurl: "https://trevoewu.github.io",
+		weight: 1,
+		enabled: true,
+	},
 ];
 
 // 获取启用的友链并进行排序
