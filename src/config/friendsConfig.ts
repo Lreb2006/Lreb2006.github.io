@@ -39,6 +39,14 @@ export const friendsConfig: FriendLink[] = [
 		weight: 1,
 		enabled: true,
 	},
+	{
+		title: 'Milox"s Blog',
+		imgurl: "https://milox.dpdns.org/profiles/avatar.avif",
+		desc: "Well done is better than well said.",
+		siteurl: "https://milox.dpdns.org",
+		weight: 1,
+		enabled: true,
+	},
 ];
 
 // 获取启用的友链并进行排序
