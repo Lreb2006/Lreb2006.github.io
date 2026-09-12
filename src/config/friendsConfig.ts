@@ -40,7 +40,7 @@ export const friendsConfig: FriendLink[] = [
 		enabled: true,
 	},
 	{
-		title: 'Milox"s Blog',
+		title: "Milox's Blog",
 		imgurl: "https://milox.dpdns.org/profiles/avatar.avif",
 		desc: "Well done is better than well said.",
 		siteurl: "https://milox.dpdns.org",
