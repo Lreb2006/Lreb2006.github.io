@@ -217,14 +217,14 @@
   border-color: color-mix(in oklch, var(--tk-accent) 86%, #000 14%);
 }
 
-/* 主按钮禁用态：降低饱和和透明度 */
+/* 主按钮禁用态：使用实色底，避免透明壁纸降低文字对比度 */
 .twikoo .el-button--primary.is-disabled,
 .twikoo .el-button--primary.is-disabled:hover,
 .twikoo .el-button--primary.is-disabled:focus,
 .twikoo .el-button--primary.is-disabled:active {
-  color: color-mix(in oklch, #fff 70%, transparent);
-  background-color: color-mix(in oklch, var(--tk-accent) 55%, transparent);
-  border-color: color-mix(in oklch, var(--tk-accent) 55%, transparent);
+  color: #fff;
+  background-color: #64747c;
+  border-color: #64747c;
 }
 
 /* 其他语义按钮：success/warning/danger/info 统一主题化 */

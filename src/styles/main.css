@@ -696,7 +696,7 @@ html[data-wallpaper-mode="fullscreen"]
 
 html[data-wallpaper-mode="fullscreen"]
   :is(.card-base, .card-base-transparent, .float-panel)
-  :where(div, h1, h2, h3, h4, h5, h6, p, a, span, strong, small, li, dt, dd, button, input, label, time, svg) {
+  :where(div, h1, h2, h3, h4, h5, h6, p, a, span, strong, small, li, dt, dd, button, input, label, time, svg):not(:where(.twikoo .el-button, .twikoo .el-button *)) {
   color: var(--charlore-nav-text) !important;
 }
 
