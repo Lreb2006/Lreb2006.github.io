@@ -4,6 +4,34 @@
  * Firefly 主题专用：https://github.com/CuteLeaf/Firefly
  */
 
+/* 移动端仅调整字号，保留原有控件尺寸与排列。 */
+@media (width < 768px) {
+  #tcomment .tk-content,
+  #tcomment .tk-preview-container,
+  #tcomment .tk-nick,
+  #tcomment .el-input,
+  #tcomment .el-input__inner,
+  #tcomment .el-input-group__prepend,
+  #tcomment .el-textarea__inner,
+  #tcomment .el-button {
+    font-size: 14px;
+  }
+
+  #tcomment .tk-comments-count {
+    font-size: 16px;
+  }
+
+  #tcomment .tk-time,
+  #tcomment .tk-extras,
+  #tcomment .tk-extra-text,
+  #tcomment .tk-action-count,
+  #tcomment .tk-comments-sort .tk-sort-item,
+  #tcomment .el-input__count,
+  #tcomment .tk-footer {
+    font-size: 12px;
+  }
+}
+
 /* 主题变量：定义主色、背景、边框、正文和次要文字颜色 */
 .twikoo {
   --tk-accent: var(--primary);
