@@ -6,7 +6,6 @@
 
 /* 移动端仅调整字号，保留原有控件尺寸与排列。 */
 @media (width < 768px) {
-  #tcomment .tk-content,
   #tcomment .tk-preview-container,
   #tcomment .tk-nick,
   #tcomment .el-input,
@@ -15,6 +14,12 @@
   #tcomment .el-textarea__inner,
   #tcomment .el-button {
     font-size: 14px;
+  }
+
+  #tcomment .tk-content,
+  #tcomment .tk-content p,
+  #tcomment .tk-content li {
+    font-size: 13px;
   }
 
   #tcomment .tk-comments-count {
