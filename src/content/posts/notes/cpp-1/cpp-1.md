@@ -14,16 +14,6 @@ series: "C++笔记"
 seriesOrder: 1
 ---
 
-import {
-	Badge,
-	Highlight,
-	StepItem,
-	Steps,
-	TabGroup,
-	Timeline,
-	TimelineItem,
-} from "@/components/firefly-mdx";
-
 ## 1.1
 
 ### 1 `main` 有返回值表示程序状态
@@ -127,7 +117,7 @@ cl       /EHsc       prog1.cpp
 
 ### 8 要求编译器报告更多警告
 
-**GNU 编译器：**​`-Wall`
+**GNU 编译器：** `-Wall`
 
 > 例如：
 >
@@ -135,7 +125,7 @@ cl       /EHsc       prog1.cpp
 > g++ -Wall -o prog1 prog1.cc
 > ```
 
-**Microsoft 编译器：**​`/W4`
+**Microsoft 编译器：** `/W4`
 
 > 例如：
 >
@@ -352,7 +342,7 @@ public:
 
 ### 6 如何使用文件重定向修改输入输出流？
 
-`std::cin`​本质是程序的**标准输入通道，**​`std::cout`​本质是程序的**标准输出通道。**
+`std::cin`​本质是程序的**标准输入通道，** `std::cout`​本质是程序的**标准输出通道。**
 
 平时运行时：`std::cin`​ 从键盘获取内容；`std::cout` 把内容显示到终端窗口。
 
