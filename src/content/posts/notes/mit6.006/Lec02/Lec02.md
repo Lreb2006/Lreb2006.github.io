@@ -1,6 +1,6 @@
 ---
 title: "MIT6.006 notes(2)"
-published: 2026-09-17
+published: 2026-09-17T17:25:18+08:00
 description: "Study notes of MIT6.006"
 image: "https://raw.githubusercontent.com/Lreb2006/charlore-images/main/images/20260917171119691.png"
 tags: ["study", "mit6.006", "notes"]

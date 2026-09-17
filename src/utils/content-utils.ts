@@ -18,7 +18,7 @@ async function getRawSortedPosts() {
 		// 如果置顶状态相同，则按发布日期排序
 		const dateA = new Date(a.data.published);
 		const dateB = new Date(b.data.published);
-		return dateA > dateB ? -1 : 1;
+		return dateB.getTime() - dateA.getTime() || a.id.localeCompare(b.id);
 	});
 	return sorted;
 }
