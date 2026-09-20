@@ -423,7 +423,7 @@ html[data-wallpaper-mode="fullscreen"] {
     --charlore-ui-glass-border: rgba(255, 255, 255, 0.82);
     --charlore-ui-glass-shadow: 0 12px 34px rgba(47, 94, 111, 0.16), 0 2px 8px rgba(72, 119, 135, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.9), inset 0 -1px 0 rgba(91, 148, 168, 0.14);
     --charlore-ui-glass-filter: blur(28px) saturate(142%) brightness(1.04);
-    --charlore-ui-font: var(--font-zen-maru-gothic, var(--font-sans));
+    --charlore-ui-font: var(--font-chill-round-f, var(--font-sans));
     --charlore-nav-surface: var(--charlore-ui-glass-surface);
     --charlore-nav-highlight: var(--charlore-ui-glass-highlight);
     --charlore-nav-border: var(--charlore-ui-glass-border);

@@ -65,10 +65,10 @@ test("navbar exposes flat article archive and musings destinations in order", ()
 });
 
 test("round sans font is selected for the body and named interface regions", () => {
-	assert.deepEqual(fontConfig.selected, ["--font-zen-maru-gothic"]);
-	assert.equal(fontConfig.bannerTitleFont, "--font-zen-maru-gothic");
-	assert.equal(fontConfig.bannerSubtitleFont, "--font-zen-maru-gothic");
-	assert.equal(fontConfig.navbarTitleFont, "--font-zen-maru-gothic");
+	assert.deepEqual(fontConfig.selected, ["--font-chill-round-f"]);
+	assert.equal(fontConfig.bannerTitleFont, "--font-chill-round-f");
+	assert.equal(fontConfig.bannerSubtitleFont, "--font-chill-round-f");
+	assert.equal(fontConfig.navbarTitleFont, "--font-chill-round-f");
 });
 
 test("fullscreen glass interface inherits the same rounded font", async () => {
@@ -77,7 +77,7 @@ test("fullscreen glass interface inherits the same rounded font", async () => {
 		readFile(navbarStyleUrl, "utf8"),
 	]);
 	const roundedFontAlias =
-		/--charlore-ui-font:\s*var\(--font-zen-maru-gothic,\s*var\(--font-sans\)\)/;
+		/--charlore-ui-font:\s*var\(--font-chill-round-f,\s*var\(--font-sans\)\)/;
 
 	assert.match(variablesSource, roundedFontAlias);
 	assert.match(navbarStyleSource, roundedFontAlias);
