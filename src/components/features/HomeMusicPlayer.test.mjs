@@ -147,21 +147,15 @@ test("the local playlist references every converted audio file", async () => {
 	];
 
 	for (const audioUrl of audioUrls) {
-		const missingUploads = [
-			"suki-igai-no-kotoba-de",
-			"you-he-bu-ke",
-			"tsuki-no-ondo",
-		];
-		const playbackUrl = missingUploads.some((name) =>
-			audioUrl.endsWith(`${name}.mp3`),
-		)
-			? audioUrl
-			: audioUrl.replace(
-					"/assets/music/audio/",
-					"https://assets.charlore.cn/music/audio/",
-				);
+		const playbackUrl = audioUrl.replace(
+			"/assets/music/audio/",
+			"https://assets.charlore.cn/music/audio/",
+		);
 		assert.ok(configSource.includes(`url: "${playbackUrl}"`));
-		await access(new URL(`../../../public${audioUrl}`, import.meta.url));
+		await assert.rejects(
+			access(new URL(`../../../public${audioUrl}`, import.meta.url)),
+			{ code: "ENOENT" },
+		);
 	}
 
 	const replacementCovers = [
@@ -173,9 +167,10 @@ test("the local playlist references every converted audio file", async () => {
 			"/assets/music/covers/",
 			"https://assets.charlore.cn/music/cover/",
 		);
-		assert.ok(
-			configSource.replace(/\s+/g, " ").includes(`cover: "${playbackCover}"`),
+		assert.ok(configSource.includes(`"${playbackCover}"`));
+		await assert.rejects(
+			access(new URL(`../../../public${coverUrl}`, import.meta.url)),
+			{ code: "ENOENT" },
 		);
-		await access(new URL(`../../../public${coverUrl}`, import.meta.url));
 	}
 });

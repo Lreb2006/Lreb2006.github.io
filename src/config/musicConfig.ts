@@ -62,7 +62,7 @@ export const musicPlayerConfig: MusicPlayerConfig = {
 			{
 				name: "好き、以外の言葉で",
 				artist: "高田憂希 / 寿美菜子",
-				url: "/assets/music/audio/suki-igai-no-kotoba-de.mp3",
+				url: "https://assets.charlore.cn/music/audio/suki-igai-no-kotoba-de.mp3",
 				cover: resolveImageUrl(
 					"https://assets.charlore.cn/music/cover/suki-igai-no-kotoba-de.jpg",
 				),
@@ -78,7 +78,7 @@ export const musicPlayerConfig: MusicPlayerConfig = {
 			{
 				name: "有何不可",
 				artist: "许嵩",
-				url: "/assets/music/audio/you-he-bu-ke.mp3",
+				url: "https://assets.charlore.cn/music/audio/you-he-bu-ke.mp3",
 				cover: resolveImageUrl(
 					"https://assets.charlore.cn/music/cover/you-he-bu-ke.jpg",
 				),
@@ -94,7 +94,7 @@ export const musicPlayerConfig: MusicPlayerConfig = {
 			{
 				name: "月の温度",
 				artist: "JELEE",
-				url: "/assets/music/audio/tsuki-no-ondo.mp3",
+				url: "https://assets.charlore.cn/music/audio/tsuki-no-ondo.mp3",
 				cover: resolveImageUrl(
 					"https://assets.charlore.cn/music/cover/tsuki-no-ondo.jpg",
 				),
@@ -118,7 +118,7 @@ export const musicPlayerConfig: MusicPlayerConfig = {
 			{
 				name: "Undress",
 				artist: "Adib Sin/Violieu/Napp-Chan",
-				url: "/assets/music/audio/undress.mp3",
+				url: "https://assets.charlore.cn/music/audio/undress.mp3",
 				cover: resolveImageUrl(
 					"https://assets.charlore.cn/music/cover/undress.jpg",
 				),
