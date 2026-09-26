@@ -1,6 +1,6 @@
 .expressive-code {
   .frame {
-    @apply shadow-none!;
+    box-shadow: 0 6px 20px rgb(45 95 125 / 9%) !important;
   }
 
   .title {
@@ -93,13 +93,94 @@ body.wallpaper-transparent .expressive-code .frame .ec-code__inner {
 }
 
 body.wallpaper-transparent .expressive-code .frame {
-  background-color: var(--card-bg-transparent) !important;
-  background: var(--card-bg-transparent) !important;
+  background: var(--ff-code-bg) !important;
 }
 
 /* 透明模式下折叠遮罩改淡入半透明卡片背景，避免底部糊出一条不透明色块 */
 body.wallpaper-transparent .expressive-code .ec-collapse__gradient {
-  --ec-collapse-bg-color: var(--card-bg-transparent);
+  --ec-collapse-bg-color: var(--ff-code-bg);
+}
+
+/* macOS 窗口外观，普通代码与终端共用标题栏。 */
+.expressive-code {
+  --ff-code-bg: #f4faff;
+  --ff-code-header: #e5f1fa;
+  --ff-code-border: #cbdfea;
+  --ff-code-title: #486579;
+  --ec-frm-edBg: var(--ff-code-bg) !important;
+  --ec-frm-trmBg: var(--ff-code-bg) !important;
+}
+
+:root.dark .expressive-code {
+  --ff-code-bg: #142333;
+  --ff-code-header: #1d3247;
+  --ff-code-border: #304a61;
+  --ff-code-title: #bdd2e3;
+}
+
+.expressive-code figure.frame.frame.frame {
+  --code-background: var(--ff-code-bg);
+  --header-border-radius: 14px;
+  --button-spacing: 3rem;
+  border-radius: 14px;
+}
+
+.expressive-code figure.frame.frame.frame .header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-height: 40px;
+  padding: 8px 76px;
+  background: var(--ff-code-header);
+  color: var(--ff-code-title);
+  border: 1px solid var(--ff-code-border);
+  border-radius: 14px 14px 0 0;
+}
+
+.expressive-code figure.frame.frame.frame .header::before {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 18px;
+  width: 10px;
+  height: 10px;
+  transform: translateY(-50%);
+  border: none;
+  border-radius: 50%;
+  background: #ff5f57;
+  box-shadow: 16px 0 #febc2e, 32px 0 #28c840;
+  opacity: 1;
+  -webkit-mask-image: none;
+  mask-image: none;
+  pointer-events: none;
+}
+
+.expressive-code figure.frame.frame.frame .header::after,
+.expressive-code figure.frame.frame.frame .header .title::after {
+  display: none;
+}
+
+.expressive-code figure.frame.frame.frame .header .title {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.expressive-code figure.frame.frame.frame pre {
+  border-color: var(--ff-code-border);
+  border-top: none;
+  border-radius: 0 0 14px 14px;
+}
+
+.expressive-code figure.frame.frame.frame code {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
 }
 
 /* ===== Tab 代码块（rehype-code-group） ===== */
@@ -282,11 +363,11 @@ body.wallpaper-transparent .expressive-code .ec-collapse__gradient {
    * 这里用 `figure.frame` 多带一个元素选择器压过插件的 `.frame`，
    * 不必堆 !important。
    */
-  .expressive-code figure.frame [data-language]::before {
+  .expressive-code figure.frame.frame.frame [data-language]::before {
     margin-right: 0;
   }
 
-  .expressive-code figure.frame.ff-copy-revealed [data-language]::before {
+  .expressive-code figure.frame.frame.frame.ff-copy-revealed [data-language]::before {
     opacity: var(--opacity-0);
   }
 }
