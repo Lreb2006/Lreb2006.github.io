@@ -1,6 +1,6 @@
 ---
 title: "Deep Learning notes(2)"
-published: 2026-09-27
+published: 2026-09-27T08:04:00+08:00
 description: "Study notes of Deep Learning: 损失函数、成本函数与Logistic回归训练"
 image: "https://raw.githubusercontent.com/Lreb2006/charlore-images/main/images/927-20260927014623-8bd0zqb.png"
 tags: ["study", "deep-learning", "notes"]

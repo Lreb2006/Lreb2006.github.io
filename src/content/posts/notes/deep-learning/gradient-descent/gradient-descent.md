@@ -1,6 +1,6 @@
 ---
 title: "Deep Learning notes(3)"
-published: 2026-09-27
+published: 2026-09-27T08:05:00+08:00
 description: "Study notes of Deep Learning: 梯度下降、学习率与参数更新"
 image: "https://raw.githubusercontent.com/Lreb2006/charlore-images/main/images/20260927014729478.png"
 tags: ["study", "deep-learning", "notes"]
@@ -18,7 +18,7 @@ seriesOrder: 3
 
 ### 3.1 什么是梯度下降？
 
-**定义：** 梯度下降（Gradient Descent）是一种最常用的优化算法，目标是通过不断调整模型参数（权重 $w$ 和偏置 $b$），让损失函数 $L$ 尽可能小，从而使模型预测更准确。
+**定义**： 梯度下降（Gradient Descent）是一种最常用的优化算法，目标是通过不断调整模型参数（权重 $w$ 和偏置 $b$），让损失函数 $L$ 尽可能小，从而使模型预测更准确。
 
 对于 Logistic 回归，我们的目标是找到一组 $w,b$，使成本函数 $J(w,b)$ 尽可能小。
 
