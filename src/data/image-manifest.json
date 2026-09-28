@@ -575,6 +575,19 @@
     "pixelVerified": false,
     "policy": "lossy-q90-always-v1"
   },
+  "https://raw.githubusercontent.com/Lreb2006/charlore-images/main/images/20260928211749334.png": {
+    "url": "https://assets.charlore.cn/images/optimized/lossy-q90-always-v1/1a1b5079407d449f78766600bbec8fac6b6654617ef0e55aa0f7441841271616.webp",
+    "sha256": "1a1b5079407d449f78766600bbec8fac6b6654617ef0e55aa0f7441841271616",
+    "sourceSha256": "7ffcf8515643c10e50d4b9199ae8d8b7cc89330f8116335cefbc39b771c89975",
+    "originalBytes": 3352195,
+    "bytes": 338982,
+    "width": 2000,
+    "height": 1125,
+    "format": "webp",
+    "lossless": false,
+    "pixelVerified": false,
+    "policy": "lossy-q90-always-v1"
+  },
   "https://raw.githubusercontent.com/Lreb2006/charlore-images/main/images/826090df7951e8002daa24fb25af9f74-20260913185300-59gues7.jpeg": {
     "url": "https://assets.charlore.cn/images/optimized/lossy-q90-always-v1/e6cf1e8032af77e5cf5849cee36674584d4d9ed52dcbdbaffae4042fc5bc22f3.webp",
     "sha256": "e6cf1e8032af77e5cf5849cee36674584d4d9ed52dcbdbaffae4042fc5bc22f3",
