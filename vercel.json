@@ -1,5 +1,5 @@
 {
-  "buildCommand": "pnpm build",
+  "buildCommand": "sh scripts/build-vercel.sh",
   "outputDirectory": "dist",
   "installCommand": "pnpm install",
   "framework": "astro",

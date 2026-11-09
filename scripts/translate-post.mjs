@@ -271,7 +271,7 @@ async function loadArticles(path) {
 
 function installLanguages(source, targets) {
 	const result = spawnSync(
-		"python",
+		process.env.TRANSLATION_PYTHON || "python",
 		[localScript, "install", source, ...targets],
 		{
 			stdio: "inherit",
