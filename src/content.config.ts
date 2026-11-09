@@ -34,6 +34,7 @@ type DynamicData = {
 	published: Date;
 	pinned: boolean;
 	location: string;
+	lang: string;
 };
 
 type ContentCollection<T> = CollectionConfig<
@@ -84,6 +85,7 @@ const dynamicCollection: ContentCollection<DynamicData> = defineCollection({
 		published: z.date(),
 		pinned: z.boolean().optional().default(false),
 		location: z.string().optional().default(""),
+		lang: z.string().optional().default("zh-CN"),
 	}),
 });
 

@@ -40,6 +40,8 @@ Firefly-docs/
 Firefly-Lite/
 
 cache/
+src/data/post-translations/
+src/data/dynamic-translations/
 package/
 .obsidian/
 

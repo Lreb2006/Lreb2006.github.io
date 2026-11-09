@@ -16,6 +16,8 @@ type DynamicData = {
 	id: string;
 	published: number;
 	html: string;
+	lang?: string;
+	machine?: boolean;
 	images: DynamicImage[];
 	searchText: string;
 	pinned?: boolean;
@@ -201,6 +203,7 @@ function createItem(entry: DynamicData) {
 	const content = root.querySelector<HTMLElement>("[data-dynamic-content]");
 	if (content) {
 		content.id = `${anchorId}-content`;
+		if (entry.lang) content.lang = entry.lang;
 		content.innerHTML = entry.html;
 		for (const image of entry.images) {
 			const element = document.createElement("img");
@@ -213,6 +216,8 @@ function createItem(entry: DynamicData) {
 		const gallery = root.querySelector<HTMLElement>("dynamic-gallery");
 		if (gallery) gallery.dataset.sourceId = content.id;
 	}
+	const machineNote = root.querySelector<HTMLElement>("[data-dynamic-machine]");
+	if (machineNote) machineNote.hidden = !entry.machine;
 
 	// 置顶标识
 	const pinned = root.querySelector<HTMLElement>("[data-dynamic-pinned]");

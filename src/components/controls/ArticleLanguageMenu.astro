@@ -1,5 +1,5 @@
 ---
-import { type ArticleTranslation } from "@/i18n/article-translation";
+import { type ArticleTranslation, machineTranslationLabels } from "@/i18n/article-translation";
 import { siteConfig } from "@/config/siteConfig";
 import { activeLocale } from "@/i18n/locale-routes";
 
@@ -11,31 +11,35 @@ const translations = Object.values(import.meta.glob<ArticleTranslation>(
 	"/src/data/post-translations/*.json",
 	{ eager: true, import: "default" },
 )).filter((translation) => translation.postId === Astro.props.postId);
+const uiLocale = activeLocale(siteConfig.lang);
 const [label, original] = {
 	zh_CN: ["文章译文", "原文"], zh_TW: ["文章譯文", "原文"], en: ["Article translation", "Original"],
 	ru: ["Перевод статьи", "Оригинал"], fr: ["Traduction de l’article", "Original"], es: ["Traducción del artículo", "Original"],
 	de: ["Artikelübersetzung", "Original"], ja: ["記事の翻訳", "原文"], ko: ["글 번역", "원문"],
-}[activeLocale(siteConfig.lang)];
+}[uiLocale];
 ---
 
 {translations.length > 0 && (
-	<article-language-menu hidden data-translations={JSON.stringify(translations)} class="mb-4">
+	<article-language-menu hidden data-translations={JSON.stringify(translations)} data-ui-locale={uiLocale} class="mb-4">
 		<label class="inline-flex items-center gap-2 text-sm font-medium">
 			<span>{label}</span>
 			<select class="rounded-lg bg-(--btn-plain-bg-hover) px-2 py-1 text-sm">
 				<option value="">{original}</option>
 			</select>
 		</label>
+		<span hidden data-machine-translation-note class="ms-2 text-xs opacity-70">{machineTranslationLabels[uiLocale]}</span>
 	</article-language-menu>
 )}
 
 <script>
-	import { type ArticleTranslation, isArticleText, skipArticleElement } from "@/i18n/article-translation";
+	import { type ArticleTranslation, isArticleText, replaceTextValue, skipArticleElement } from "@/i18n/article-translation";
 	import { languageNames } from "@/i18n/locale-routes";
+	import { normalizeSiteLang } from "@/utils/site-config-utils";
 
 	class ArticleLanguageMenu extends HTMLElement {
 		connectedCallback() {
 			const select = this.querySelector("select");
+			const machineNote = this.querySelector<HTMLElement>("[data-machine-translation-note]");
 			const body = document.querySelector<HTMLElement>("[data-article-translation-id]");
 			const title = document.querySelector<HTMLElement>("[data-article-translation-title]");
 			if (!select || !(body instanceof HTMLElement) || !title) return;
@@ -58,8 +62,10 @@ const [label, original] = {
 			const nodes = [...collect(title), ...collect(body)];
 			const originals = nodes.map((node) => node.data);
 			const originalLang = body.lang;
+			const originalLocale = normalizeSiteLang(originalLang);
 			const translations: ArticleTranslation[] = JSON.parse(this.dataset.translations ?? "[]");
-			const available = translations.filter(({ source, translated }) =>
+			const available = translations.filter(({ locale, originalLocale: savedLocale, source, translated }) =>
+				locale !== originalLocale && (savedLocale ?? "zh_CN") === originalLocale &&
 				source.length === nodes.length && translated.length === nodes.length &&
 				source.every((text, index) => text === originals[index].trim()),
 			);
@@ -70,15 +76,21 @@ const [label, original] = {
 				option.lang = locale.replace("_", "-");
 				select.append(option);
 			}
-			select.onchange = () => {
+			const applySelection = () => {
 				const translation = available.find(({ locale }) => locale === select.value);
 				for (const [index, node] of nodes.entries()) {
 					node.data = translation
-						? originals[index].replace(/\S[\s\S]*\S|\S/, () => translation.translated[index])
+						? replaceTextValue(originals[index], translation.translated[index])
 						: originals[index];
 				}
 				body.lang = title.lang = translation?.locale.replace("_", "-") ?? originalLang;
+				if (machineNote) machineNote.hidden = !translation?.machine;
 			};
+			select.onchange = applySelection;
+			if (available.some(({ locale }) => locale === this.dataset.uiLocale)) {
+				select.value = this.dataset.uiLocale ?? "";
+			}
+			applySelection();
 			this.hidden = false;
 		}
 	}

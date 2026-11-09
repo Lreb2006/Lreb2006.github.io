@@ -7,7 +7,7 @@ import I18nKey from "@/i18n/i18nKey";
 import { i18n } from "@/i18n/translation";
 import MainGridLayout from "@/layouts/MainGridLayout.astro";
 import "@/styles/dynamic.css";
-import { url } from "@/utils/url-utils";
+import { getDynamicApiUrl } from "@/utils/dynamic-api-url";
 
 if (!siteConfig.pages.dynamic) {
 	return Astro.redirect("/404/");
@@ -22,9 +22,7 @@ const showInlineComments = Boolean(
 		commentConfig.type &&
 		commentConfig.type !== "none",
 );
-const dataUrl = dynamicConfig.apiUrl?.startsWith("http")
-	? dynamicConfig.apiUrl
-	: url(dynamicConfig.apiUrl || "/api/dynamic.json");
+const dataUrl = getDynamicApiUrl();
 const memos = dynamicConfig.memos;
 ---
 

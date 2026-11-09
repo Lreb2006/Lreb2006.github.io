@@ -178,7 +178,28 @@ const SITE_LANG = resolveSiteLang("zh_CN");
 
 ### 生成文章译文
 
-文章译文单独生成。先运行 `pnpm build`，再在本地 `.env` 中设置：
+先运行 `pnpm build`。译文生成后，检查内容并重新构建，文章正文上方就会出现语言选择。
+
+#### 免费离线机翻
+
+本地使用 Argos Translate，简繁转换由 OpenCC 处理。需要 Python 3.11 或 3.12。首次安装需要联网下载语言包，之后可以离线翻译。
+
+```sh
+python scripts/translate-local.py install zh_CN de
+pnpm translate:post dist/posts/deep-learning-notes-3/index.html de --offline
+```
+
+安装时第一个语言是原文语言，后面可以列多个目标语言，例如 `zh_CN en de ja`。其他目标语言使用上面的界面语言代码。缺少直接语言包时，Argos 会用英语中转。简体中文和繁体中文互转只需要安装程序依赖。文章的 `lang` 决定原文语言，文章里的代码、公式和链接地址会保留。
+
+批量更新所有已安装语言的译文时，把单篇 HTML 路径换成文章目录即可。例如 `pnpm translate:post dist/posts de --offline` 会更新缺少德语译文或原文已修改的文章。装齐语言包后，用 `all` 生成所有目标语言。
+
+GitHub Pages 发布时会自动为公开文章和本站动态生成译文。它会复用原文未改动的译文。读者切换界面语言后会自动看到对应译文，文章可以单独切回原文。使用第三方接口或 Memos 实时加载的动态继续显示数据源提供的内容。
+
+本地可以用同样的流程预览。先运行 `pnpm astro build`，再运行 `pnpm translate:post dist all --offline --setup`，最后重新构建。
+
+#### 用模型接口翻译
+
+在本地 `.env` 中设置：
 
 ```dotenv
 POST_TRANSLATION_URL=https://your-provider.example/v1/chat/completions
@@ -192,7 +213,7 @@ POST_TRANSLATION_API_KEY=your-api-key
 pnpm translate:post dist/posts/deep-learning-notes-3/index.html de
 ```
 
-译文保存在 `src/data/post-translations/`。检查译文后重新构建，文章正文上方会出现译文选择。翻译只处理标题和正文里的可读文本，代码、公式、链接地址和原始文章文件都保留。草稿和密码保护文章会跳过。文章修改后，可重新运行命令更新译文。
+文章和动态的译文分别生成在 `src/data/post-translations/` 和 `src/data/dynamic-translations/`，由发布流程缓存。翻译只处理标题和正文里的可读文本。草稿和密码保护文章会跳过。
 
 ### 配置文件结构
 
