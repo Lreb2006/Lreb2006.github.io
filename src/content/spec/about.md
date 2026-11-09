@@ -1,6 +1,6 @@
 # About
 
-Hi！我是 **Charlore**，也可以是 **路人蛃**。
+Hi！我是 **<span translate="no">Charlore</span>**，也可以是 **<span translate="no">路人蛃</span>**。
 
 一名还在不断探索方向的24级本科生，目前主要关注 **Computer Science、AI / LLM、AI Infra**。
 

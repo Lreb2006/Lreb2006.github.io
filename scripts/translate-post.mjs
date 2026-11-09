@@ -41,9 +41,9 @@ async function loadArticle(path) {
 		if (Object.hasOwn(node.properties, "dataArticleTranslationId")) body = node;
 	});
 	const postId = body?.properties.dataArticleTranslationId;
-	if (!title || !body || typeof postId !== "string") return null;
+	if (!body || typeof postId !== "string") return null;
 	const source = [
-		...collectHtmlTextNodes(title),
+		...(title ? collectHtmlTextNodes(title) : []),
 		...collectHtmlTextNodes(body),
 	].map((node) => node.value.trim());
 	return {
@@ -349,6 +349,11 @@ if ((await stat(page)).isDirectory()) {
 	const dynamicPath = join(page, "api", "dynamic.json");
 	const isSite = existsSync(dynamicPath);
 	const articles = await loadArticles(isSite ? join(page, "posts") : page);
+	const aboutPath = join(page, "about", "index.html");
+	if (isSite && existsSync(aboutPath)) {
+		const about = await loadArticle(aboutPath);
+		if (about?.source.length) articles.push(about);
+	}
 	await translateEntries(
 		isSite ? [...articles, ...(await loadDynamics(dynamicPath))] : articles,
 	);
@@ -360,7 +365,7 @@ if ((await stat(page)).isDirectory()) {
 	const article = await loadArticle(page);
 	if (!article) {
 		throw new Error(
-			"The file must be a built, public article. Drafts and password-protected posts are excluded.",
+			"The file must be a built, public content page with translation enabled.",
 		);
 	}
 	if (article.originalLocale === locale)

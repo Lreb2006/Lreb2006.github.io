@@ -193,7 +193,7 @@ pnpm translate:post dist/posts/deep-learning-notes-3/index.html de --offline
 
 批量更新所有已安装语言的译文时，把单篇 HTML 路径换成文章目录即可。例如 `pnpm translate:post dist/posts de --offline` 会更新缺少德语译文或原文已修改的文章。装齐语言包后，用 `all` 生成所有目标语言。
 
-GitHub Pages 发布时会自动为公开文章和本站动态生成译文。它会复用原文未改动的译文。读者切换界面语言后会自动看到对应译文，文章可以单独切回原文。使用第三方接口或 Memos 实时加载的动态继续显示数据源提供的内容。
+GitHub Pages 发布时会自动为公开文章、关于我正文和本站动态生成译文。它会复用原文未改动的译文。读者切换界面语言后会自动看到对应译文，文章和关于我可以单独切回原文。使用第三方接口或 Memos 实时加载的动态继续显示数据源提供的内容。
 
 本地可以用同样的流程预览。先运行 `pnpm astro build`，再运行 `pnpm translate:post dist all --offline --setup`，最后重新构建。
 

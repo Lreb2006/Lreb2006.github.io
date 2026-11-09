@@ -13,9 +13,9 @@ const translations = Object.values(import.meta.glob<ArticleTranslation>(
 )).filter((translation) => translation.postId === Astro.props.postId);
 const uiLocale = activeLocale(siteConfig.lang);
 const [label, original] = {
-	zh_CN: ["文章译文", "原文"], zh_TW: ["文章譯文", "原文"], en: ["Article translation", "Original"],
-	ru: ["Перевод статьи", "Оригинал"], fr: ["Traduction de l’article", "Original"], es: ["Traducción del artículo", "Original"],
-	de: ["Artikelübersetzung", "Original"], ja: ["記事の翻訳", "原文"], ko: ["글 번역", "원문"],
+	zh_CN: ["译文", "原文"], zh_TW: ["譯文", "原文"], en: ["Translation", "Original"],
+	ru: ["Перевод", "Оригинал"], fr: ["Traduction", "Original"], es: ["Traducción", "Original"],
+	de: ["Übersetzung", "Original"], ja: ["翻訳", "原文"], ko: ["번역", "원문"],
 }[uiLocale];
 ---
 
@@ -42,7 +42,7 @@ const [label, original] = {
 			const machineNote = this.querySelector<HTMLElement>("[data-machine-translation-note]");
 			const body = document.querySelector<HTMLElement>("[data-article-translation-id]");
 			const title = document.querySelector<HTMLElement>("[data-article-translation-title]");
-			if (!select || !(body instanceof HTMLElement) || !title) return;
+			if (!select || !body) return;
 
 			const collect = (root: HTMLElement) => {
 				const walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT, {
@@ -59,13 +59,13 @@ const [label, original] = {
 				while (walker.nextNode()) nodes.push(walker.currentNode as Text);
 				return nodes;
 			};
-			const nodes = [...collect(title), ...collect(body)];
+			const nodes = title ? [...collect(title), ...collect(body)] : collect(body);
 			const originals = nodes.map((node) => node.data);
 			const originalLang = body.lang;
 			const originalLocale = normalizeSiteLang(originalLang);
 			const translations: ArticleTranslation[] = JSON.parse(this.dataset.translations ?? "[]");
 			const available = translations.filter(({ locale, originalLocale: savedLocale, source, translated }) =>
-				locale !== originalLocale && (savedLocale ?? "zh_CN") === originalLocale &&
+				locale !== originalLocale && (!savedLocale || savedLocale === originalLocale) &&
 				source.length === nodes.length && translated.length === nodes.length &&
 				source.every((text, index) => text === originals[index].trim()),
 			);
@@ -83,7 +83,8 @@ const [label, original] = {
 						? replaceTextValue(originals[index], translation.translated[index])
 						: originals[index];
 				}
-				body.lang = title.lang = translation?.locale.replace("_", "-") ?? originalLang;
+				body.lang = translation?.locale.replace("_", "-") ?? originalLang;
+				if (title) title.lang = body.lang;
 				if (machineNote) machineNote.hidden = !translation?.machine;
 			};
 			select.onchange = applySelection;
