@@ -13,18 +13,26 @@ for kind in post dynamic; do
 	fi
 done
 
-if command -v python3.12 >/dev/null 2>&1; then
-	TRANSLATION_PYTHON="$(command -v python3.12)"
-else
+if ! command -v uv >/dev/null 2>&1; then
 	if [ ! -x "$cache_dir/uv" ]; then
 		curl -fsSL https://astral.sh/uv/0.8.12/install.sh -o "$cache_dir/install-uv.sh"
 		UV_UNMANAGED_INSTALL="$cache_dir" sh "$cache_dir/install-uv.sh"
 	fi
+	export PATH="$cache_dir:$PATH"
+fi
+if command -v python3.12 >/dev/null 2>&1; then
+	TRANSLATION_PYTHON="$(command -v python3.12)"
+else
 	export UV_PYTHON_INSTALL_DIR="$cache_dir/python"
-	"$cache_dir/uv" python install 3.12
-	TRANSLATION_PYTHON="$("$cache_dir/uv" python find 3.12)"
+	uv python install 3.12
+	TRANSLATION_PYTHON="$(uv python find 3.12)"
 fi
 export TRANSLATION_PYTHON
+
+# Vercel's Python may omit ensurepip. Seed pip from PyPI instead.
+if [ ! -x cache/offline-translation/venv/bin/python ]; then
+	uv venv --python "$TRANSLATION_PYTHON" --seed --system-site-packages cache/offline-translation/venv
+fi
 
 pnpm astro build --outDir cache/translation-source
 pnpm translate:post cache/translation-source all --offline --setup
