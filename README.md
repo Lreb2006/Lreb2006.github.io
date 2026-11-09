@@ -77,7 +77,7 @@
 - [x] **Astro + Tailwind CSS** - 基于现代技术栈的超快静态站点生成
 - [x] **流畅动画** - Swup 页面过渡动画，提供丝滑的浏览体验
 - [x] **响应式设计** - 完美适配桌面端、平板和移动设备
-- [x] **多语言支持** - i18n 国际化，UI 支持简体中文、繁体中文、英文、日文、俄语、韩文
+- [x] **多语言支持** - 界面内置简体中文、繁體中文、英语、俄语、法语、西班牙语、德语、日语和韩语
 - [x] **全文搜索** - 基于 Pagefind 的客户端搜索，支持文章内容索引
 
 ### 个性化
@@ -154,20 +154,45 @@
 
 ### 设置网站语言
 
-要设置博客的默认语言，请编辑 `src/config/siteConfig.ts` 文件：
+读者可以点击右上角配色按钮旁的地球图标切换界面语言。网站会在当前浏览器记住手动选择。语言包随站点一起发布。
+
+可以在 `src/config/siteConfig.ts` 里设置默认语言，也可以在构建时设置 `PUBLIC_SITE_LANG`：
 
 ```typescript
 // 定义站点语言
-const SITE_LANG = "zh_CN";
+const SITE_LANG = resolveSiteLang("zh_CN");
 ```
 
 **支持的语言代码：**
-- `zh_CN` - 简体中文
-- `zh_TW` - 繁体中文
-- `en` - 英文
-- `ja` - 日文
-- `ru` - 俄文
-- `ko` - 韩文
+- `zh_CN` 简体中文
+- `zh_TW` 繁體中文
+- `en` 英语
+- `ru` 俄语
+- `fr` 法语
+- `es` 西班牙语
+- `de` 德语
+- `ja` 日语
+- `ko` 韩语
+
+首次访问普通网址时，网站可以按 IP 所在国家或地区选择语言。构建时设置 `PUBLIC_COUNTRY_LOOKUP_URL`，指向一个返回两位国家或地区代码的接口，例如响应正文为 `DE`。如果站点经过 Cloudflare 代理，也可以填写 `/cdn-cgi/trace`。如果查询不可用或地区没有明确的对应语言，网站按浏览器语言选择。带语言的网址和读者的手动选择优先。
+
+### 生成文章译文
+
+文章译文单独生成。先运行 `pnpm build`，再在本地 `.env` 中设置：
+
+```dotenv
+POST_TRANSLATION_URL=https://your-provider.example/v1/chat/completions
+POST_TRANSLATION_MODEL=your-translation-model
+POST_TRANSLATION_API_KEY=your-api-key
+```
+
+接口使用 Chat Completions 兼容格式。如果使用本地模型，密钥可省略。以下命令为一篇公开文章生成德语译文：
+
+```sh
+pnpm translate:post dist/posts/deep-learning-notes-3/index.html de
+```
+
+译文保存在 `src/data/post-translations/`。检查译文后重新构建，文章正文上方会出现译文选择。翻译只处理标题和正文里的可读文本，代码、公式、链接地址和原始文章文件都保留。草稿和密码保护文章会跳过。文章修改后，可重新运行命令更新译文。
 
 ### 配置文件结构
 

@@ -1,6 +1,12 @@
 import { siteConfig } from "../config";
+import type { SiteConfig } from "../types/siteConfig";
+import { normalizeSiteLang } from "../utils/site-config-utils";
 import type I18nKey from "./i18nKey";
+import { activeLocale } from "./locale-routes";
+import { de } from "./languages/de";
 import { en } from "./languages/en";
+import { es } from "./languages/es";
+import { fr } from "./languages/fr";
 import { ja } from "./languages/ja";
 import { ko } from "./languages/ko";
 import { ru } from "./languages/ru";
@@ -13,27 +19,25 @@ export type Translation = {
 
 const defaultTranslation = en;
 
-const map: { [key: string]: Translation } = {
-	en: en,
-	en_us: en,
-	en_gb: en,
-	en_au: en,
-	zh_cn: zh_CN,
-	zh_tw: zh_TW,
-	ja: ja,
-	ja_jp: ja,
-	ru: ru,
-	ru_ru: ru,
-	ko: ko,
-	ko_kr: ko,
+const map: Record<SiteConfig["lang"], Translation> = {
+	de,
+	en,
+	es,
+	fr,
+	ja,
+	ko,
+	ru,
+	zh_CN,
+	zh_TW,
 };
 
 export function getTranslation(lang: string): Translation {
-	return map[lang.toLowerCase()] || defaultTranslation;
+	const language = normalizeSiteLang(lang);
+	return language ? map[language] : defaultTranslation;
 }
 
 export function i18n(key: I18nKey): string {
-	const lang = siteConfig.lang || "en";
+	const lang = activeLocale(siteConfig.lang);
 	const currentLang = getTranslation(lang);
 	const value = currentLang[key];
 

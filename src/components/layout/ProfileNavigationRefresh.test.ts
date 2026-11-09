@@ -77,7 +77,7 @@ test("fullscreen glass interface inherits the same rounded font", async () => {
 		readFile(navbarStyleUrl, "utf8"),
 	]);
 	const roundedFontAlias =
-		/--charlore-ui-font:\s*var\(--font-chill-round-f,\s*var\(--font-sans\)\)/;
+		/--charlore-ui-font:\s*var\(--font-charlore-rounded,\s*var\(--font-sans\)\)/;
 
 	assert.match(variablesSource, roundedFontAlias);
 	assert.match(navbarStyleSource, roundedFontAlias);

@@ -1,6 +1,7 @@
 ---
 import { render } from "astro:content";
 import Comment from "@components/comment/index.astro";
+import ArticleLanguageMenu from "@/components/controls/ArticleLanguageMenu.astro";
 import Markdown from "@components/common/Markdown.astro";
 import EncryptedPost from "@components/features/EncryptedPost.astro";
 import KatexManager from "@components/features/KatexManager.astro";
@@ -58,6 +59,8 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
+const articleLanguage = (entry.data.lang || "zh-CN").replace("_", "-");
+const canTranslate = !entry.data.password && !entry.data.draft;
 const { Content, headings } = await render(entry);
 
 const { remarkPluginFrontmatter } = await render(entry);
@@ -179,9 +182,7 @@ const jsonLd = {
 				: {}),
 			mainEntityOfPage: { "@type": "WebPage", "@id": Astro.url.toString() },
 			url: Astro.url.toString(),
-			inLanguage: entry.data.lang
-				? entry.data.lang.replace("_", "-")
-				: siteConfig.lang.replace("_", "-"),
+			inLanguage: articleLanguage,
 		},
 		authorPerson,
 		publisher,
@@ -195,7 +196,7 @@ const seriesData = await getSeriesPosts(entry);
 <MainGridLayout
   title={entry.data.title}
   description={entry.data.description}
-  lang={entry.data.lang}
+  lang={articleLanguage}
   setOGTypeArticle={true}
   postSlug={entry.id}
   postCoverImage={coverImage?.url}
@@ -261,6 +262,8 @@ const seriesData = await getSeriesPosts(entry);
                 data-pagefind-body
                 data-pagefind-weight="10"
                 data-pagefind-meta="title"
+                lang={articleLanguage}
+                data-article-translation-title={canTranslate ? "" : undefined}
                 class="mb-2 text-xl md:text-2xl font-bold leading-tight text-white"
               >
                 {entry.data.title}
@@ -338,6 +341,8 @@ const seriesData = await getSeriesPosts(entry);
               data-pagefind-body
               data-pagefind-weight="10"
               data-pagefind-meta="title"
+              lang={articleLanguage}
+              data-article-translation-title={canTranslate ? "" : undefined}
               class="transition w-full block font-bold mb-3
                         text-2xl md:text-[2.25rem]/[2.75rem]
                         text-black/90 dark:text-white/90
@@ -399,7 +404,7 @@ const seriesData = await getSeriesPosts(entry);
 
       {entry.data.password ? (
         <EncryptedPost password={entry.data.password} slug={entry.id} hint={entry.data.passwordHint}>
-          <Markdown class="mb-6 markdown-content onload-animation">
+          <Markdown class="mb-6 markdown-content onload-animation" lang={articleLanguage}>
             <Content />
           </Markdown>
 
@@ -489,7 +494,8 @@ const seriesData = await getSeriesPosts(entry);
         </EncryptedPost>
       ) : (
         <>
-          <Markdown class="mb-6 markdown-content onload-animation">
+          {canTranslate && <ArticleLanguageMenu postId={entry.id} />}
+          <Markdown class="mb-6 markdown-content onload-animation" lang={articleLanguage} translationId={canTranslate ? entry.id : undefined}>
             <Content />
           </Markdown>
 

@@ -2,6 +2,10 @@
 import type { CollectionEntry } from "astro:content";
 import { Icon } from "astro-icon/components";
 import PostPage from "@/components/layout/PostPage.astro";
+import { siteConfig } from "@/config/siteConfig";
+import I18nKey from "@/i18n/i18nKey";
+import { activeLocale } from "@/i18n/locale-routes";
+import { i18n } from "@/i18n/translation";
 import { url } from "@/utils/url-utils";
 
 interface Props {
@@ -10,15 +14,27 @@ interface Props {
 
 const { posts } = Astro.props;
 const articlesUrl = url("/articles/");
+const count = Math.min(posts.length, 5);
+const [countLabel, empty, more] = {
+	zh_CN: [`最新 ${count} 篇`, "暂时还没有文章", "查看更多文章"],
+	zh_TW: [`最新 ${count} 篇`, "暫時還沒有文章", "查看更多文章"],
+	en: [`Latest ${count}`, "No posts yet", "More articles"],
+	ru: [`Последние публикации (${count})`, "Публикаций пока нет", "Больше статей"],
+	fr: [`Dernières publications (${count})`, "Aucun article pour le moment", "Plus d’articles"],
+	es: [`Últimas publicaciones (${count})`, "Todavía no hay entradas", "Más artículos"],
+	de: [`Neueste Beiträge (${count})`, "Noch keine Beiträge", "Weitere Artikel"],
+	ja: [`最新 ${count} 件`, "まだ記事はありません", "ほかの記事を見る"],
+	ko: [`최신 글 ${count}개`, "아직 글이 없습니다", "글 더 보기"],
+}[activeLocale(siteConfig.lang)];
 ---
 
 <section class="home-recent-posts" data-home-recent-posts aria-labelledby="home-recent-title">
 	<header class="home-recent-header">
 		<div>
 			<p class="home-recent-kicker">RECENT STORIES</p>
-			<h2 id="home-recent-title">近期文章</h2>
+			<h2 id="home-recent-title">{i18n(I18nKey.recentPosts)}</h2>
 		</div>
-		<span class="home-recent-count">最新 {Math.min(posts.length, 5)} 篇</span>
+		<span class="home-recent-count">{countLabel}</span>
 	</header>
 
 	{
@@ -28,15 +44,14 @@ const articlesUrl = url("/articles/");
 			<div class="home-recent-empty card-base">
 				<Icon name="material-symbols:article" aria-hidden="true" />
 				<div>
-					<strong>暂时还没有文章</strong>
-					<p>新的记录会从这里开始出现。</p>
+					<strong>{empty}</strong>
 				</div>
 			</div>
 		)
 	}
 
 	<a class="home-recent-more btn-card" href={articlesUrl} data-home-recent-more>
-		<span>查看更多文章</span>
+		<span>{more}</span>
 		<Icon name="material-symbols:arrow-forward-rounded" aria-hidden="true" />
 	</a>
 </section>

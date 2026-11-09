@@ -17,6 +17,7 @@ import {
 } from "@/config";
 import { musicPlayerConfig } from "@/config/musicConfig";
 import I18nKey from "@/i18n/i18nKey";
+import LanguageMenu from "@/components/controls/LanguageMenu.astro";
 import { i18n } from "@/i18n/translation";
 import type { NavBarLink } from "@/types/config";
 import { getLocalSearchEntries } from "@/utils/content-utils";
@@ -262,13 +263,14 @@ const logoVariants = await Promise.all(
                     </button>
                 )}
                 {hasDisplaySettings && (
-                        <button aria-label="Display Settings" aria-controls="display-setting" aria-expanded="false" class="btn-plain scale-animation rounded-lg h-9 w-9 md:h-11 md:w-11 active:scale-90" id="display-settings-switch">
+                        <button aria-label={i18n(I18nKey.settingsTabAppearance)} aria-controls="display-setting" aria-expanded="false" class="btn-plain scale-animation rounded-lg h-9 w-9 md:h-11 md:w-11 active:scale-90" id="display-settings-switch">
                             <Icon name="material-symbols:palette-outline" is:inline class="text-[1.25rem]"></Icon>
                         </button>
                 )}
                 {/* @ts-ignore */}
                 <LightDarkSwitch client:load></LightDarkSwitch>
-                <button aria-label="Menu" aria-controls="nav-menu-panel" aria-expanded="false" name="Nav Menu" class="btn-plain scale-animation rounded-lg w-9 h-9 md:w-11 md:h-11 active:scale-90 lg:hidden!" id="nav-menu-switch">
+                <LanguageMenu />
+                <button aria-label={i18n(I18nKey.navLinks)} aria-controls="nav-menu-panel" aria-expanded="false" name="Nav Menu" class="btn-plain scale-animation rounded-lg w-9 h-9 md:w-11 md:h-11 active:scale-90 lg:hidden!" id="nav-menu-switch">
                     <Icon name="material-symbols:menu-rounded" is:inline class="text-[1.25rem]"></Icon>
                 </button>
             </div>

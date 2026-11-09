@@ -1,4 +1,5 @@
 import { backgroundWallpaper } from "../config";
+import { stripLocale } from "../i18n/locale-routes";
 
 export type BackgroundImages = {
 	desktop: string[];
@@ -68,6 +69,7 @@ export const getDefaultBackground = (): string => {
 
 // 检查是否为首页
 export const isHomePage = (pathname: string): boolean => {
+	pathname = stripLocale(pathname);
 	// 获取 base URL
 	const baseUrl = import.meta.env.BASE_URL || "/";
 	const baseUrlNoSlash = baseUrl.endsWith("/") ? baseUrl.slice(0, -1) : baseUrl;

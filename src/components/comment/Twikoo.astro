@@ -26,7 +26,8 @@ const config = {
   function getCurrentPath() {
     const requestedPath = new URLSearchParams(window.location.search).get("path");
     if (requestedPath) return requestedPath;
-    const pathname = window.location.pathname;
+    const canonical = document.querySelector('link[rel="canonical"]');
+    const pathname = canonical?.href ? new URL(canonical.href).pathname : window.location.pathname;
     return pathname.endsWith("/") && pathname.length > 1
       ? pathname.slice(0, -1)
       : pathname;

@@ -1,0 +1,42 @@
+---
+import { Icon } from "astro-icon/components";
+import { siteConfig } from "@/config/siteConfig";
+import { activeLocale, languageNames, languages, localizedPath } from "@/i18n/locale-routes";
+
+const locale = activeLocale(siteConfig.lang);
+const labels = {
+	zh_CN: "切换语言", zh_TW: "切換語言", en: "Change language",
+	ru: "Выбрать язык", fr: "Changer de langue", es: "Cambiar idioma",
+	de: "Sprache wechseln", ja: "言語を切り替える", ko: "언어 변경",
+};
+---
+
+<details class="language-menu relative" data-language-menu>
+	<summary class="btn-plain rounded-lg h-9 w-9 md:h-11 md:w-11 cursor-pointer list-none" aria-label={labels[locale]} title={labels[locale]}>
+		<Icon name="material-symbols:language" is:inline class="text-[1.25rem]" />
+	</summary>
+	<ul class="absolute right-0 top-full mt-2 z-50 min-w-40 max-h-[70vh] overflow-auto rounded-xl p-1.5 shadow-lg backdrop-blur-lg bg-(--card-bg)">
+		{languages.map((language) => (
+			<li>
+				<a
+					class:list={["block rounded-lg px-3 py-1.5 text-sm whitespace-nowrap hover:bg-(--btn-plain-bg-hover)", language === locale && "font-bold text-(--primary)"]}
+					href={localizedPath(Astro.url.pathname, language, siteConfig.lang)}
+					lang={language.replace("_", "-")}
+					aria-current={language === locale ? "true" : undefined}
+					data-site-language={language}
+					data-no-swup
+				>{languageNames[language]}</a>
+			</li>
+		))}
+	</ul>
+</details>
+
+<style>
+	summary::-webkit-details-marker { display: none; }
+
+	@media (min-width: 1024px) {
+		:global(html[data-wallpaper-mode="fullscreen"] #navbar.scrolled) .language-menu {
+			display: none;
+		}
+	}
+</style>

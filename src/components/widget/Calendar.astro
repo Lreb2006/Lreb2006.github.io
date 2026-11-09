@@ -3,6 +3,7 @@ import { Icon } from "astro-icon/components";
 import WidgetLayout from "@/components/common/WidgetLayout.astro";
 import { siteConfig } from "@/config/siteConfig";
 import I18nKey from "@/i18n/i18nKey";
+import { activeLocale } from "@/i18n/locale-routes";
 import { i18n } from "@/i18n/translation";
 import type { WidgetComponentConfig } from "@/types/config";
 import { url } from "@/utils/url-utils";
@@ -52,7 +53,7 @@ const yearText = i18n(I18nKey.year);
 const heatmapWeekTemplate = i18n(I18nKey.calendarHeatmapWeek);
 
 // 获取当前语言
-const currentLang = siteConfig.lang || "en";
+const currentLang = activeLocale(siteConfig.lang);
 
 const calendarDataUrl = url("/api/allPostMeta.json");
 const postUrlPrefix = url("/posts/");

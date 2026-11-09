@@ -1,0 +1,88 @@
+---
+import { type ArticleTranslation } from "@/i18n/article-translation";
+import { siteConfig } from "@/config/siteConfig";
+import { activeLocale } from "@/i18n/locale-routes";
+
+interface Props {
+	postId: string;
+}
+
+const translations = Object.values(import.meta.glob<ArticleTranslation>(
+	"/src/data/post-translations/*.json",
+	{ eager: true, import: "default" },
+)).filter((translation) => translation.postId === Astro.props.postId);
+const [label, original] = {
+	zh_CN: ["文章译文", "原文"], zh_TW: ["文章譯文", "原文"], en: ["Article translation", "Original"],
+	ru: ["Перевод статьи", "Оригинал"], fr: ["Traduction de l’article", "Original"], es: ["Traducción del artículo", "Original"],
+	de: ["Artikelübersetzung", "Original"], ja: ["記事の翻訳", "原文"], ko: ["글 번역", "원문"],
+}[activeLocale(siteConfig.lang)];
+---
+
+{translations.length > 0 && (
+	<article-language-menu hidden data-translations={JSON.stringify(translations)} class="mb-4">
+		<label class="inline-flex items-center gap-2 text-sm font-medium">
+			<span>{label}</span>
+			<select class="rounded-lg bg-(--btn-plain-bg-hover) px-2 py-1 text-sm">
+				<option value="">{original}</option>
+			</select>
+		</label>
+	</article-language-menu>
+)}
+
+<script>
+	import { type ArticleTranslation, isArticleText, skipArticleElement } from "@/i18n/article-translation";
+	import { languageNames } from "@/i18n/locale-routes";
+
+	class ArticleLanguageMenu extends HTMLElement {
+		connectedCallback() {
+			const select = this.querySelector("select");
+			const body = document.querySelector<HTMLElement>("[data-article-translation-id]");
+			const title = document.querySelector<HTMLElement>("[data-article-translation-title]");
+			if (!select || !(body instanceof HTMLElement) || !title) return;
+
+			const collect = (root: HTMLElement) => {
+				const walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT, {
+					acceptNode(node) {
+						if (node instanceof Element) {
+							const skip = node.getAttribute("translate") === "no" ||
+								skipArticleElement(node.localName, node.classList);
+							return skip ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_SKIP;
+						}
+						return isArticleText(node.textContent ?? "") ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP;
+					},
+				});
+				const nodes: Text[] = [];
+				while (walker.nextNode()) nodes.push(walker.currentNode as Text);
+				return nodes;
+			};
+			const nodes = [...collect(title), ...collect(body)];
+			const originals = nodes.map((node) => node.data);
+			const originalLang = body.lang;
+			const translations: ArticleTranslation[] = JSON.parse(this.dataset.translations ?? "[]");
+			const available = translations.filter(({ source, translated }) =>
+				source.length === nodes.length && translated.length === nodes.length &&
+				source.every((text, index) => text === originals[index].trim()),
+			);
+			if (!available.length) return;
+
+			for (const { locale } of available) {
+				const option = new Option(languageNames[locale], locale);
+				option.lang = locale.replace("_", "-");
+				select.append(option);
+			}
+			select.onchange = () => {
+				const translation = available.find(({ locale }) => locale === select.value);
+				for (const [index, node] of nodes.entries()) {
+					node.data = translation
+						? originals[index].replace(/\S[\s\S]*\S|\S/, () => translation.translated[index])
+						: originals[index];
+				}
+				body.lang = title.lang = translation?.locale.replace("_", "-") ?? originalLang;
+			};
+			this.hidden = false;
+		}
+	}
+	if (!customElements.get("article-language-menu")) {
+		customElements.define("article-language-menu", ArticleLanguageMenu);
+	}
+</script>

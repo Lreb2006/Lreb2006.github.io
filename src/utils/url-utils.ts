@@ -1,5 +1,11 @@
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
+import { siteConfig } from "@/config/siteConfig";
+import {
+	activeLocale,
+	isLocalizablePage,
+	localizedPath,
+} from "@/i18n/locale-routes";
 
 /**
  * 移除文件扩展名（.md, .mdx, .markdown）
@@ -96,5 +102,8 @@ export function url(path: string): string {
 	}
 
 	// 只有本地相对路径才添加BASE_URL
-	return joinUrl("", import.meta.env.BASE_URL, path);
+	const localUrl = joinUrl("", import.meta.env.BASE_URL, path);
+	return isLocalizablePage(localUrl)
+		? localizedPath(localUrl, activeLocale(siteConfig.lang), siteConfig.lang)
+		: localUrl;
 }

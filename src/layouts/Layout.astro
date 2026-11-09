@@ -35,6 +35,7 @@ import { isHomePage } from "@/utils/layout-utils";
 import { getAuthorAvatarUrl, getSiteLogo } from "@/utils/schema-image";
 import { buildSiteGraph, toAbsoluteUrl } from "@/utils/schema-utils";
 import { url } from "@/utils/url-utils";
+import { activeLocale, stripLocale } from "@/i18n/locale-routes";
 
 import "@/styles/main.css";
 import "@/styles/variables.styl";
@@ -111,7 +112,9 @@ const favicons: Favicon[] =
 if (!lang) {
 	lang = `${siteConfig.lang}`;
 }
+const uiLanguage = activeLocale(siteConfig.lang).replace("_", "-");
 const siteLang = lang.replace("_", "-");
+const canonical = new URL(stripLocale(Astro.url.pathname), Astro.url);
 
 // 首页站点级结构化数据用的作者头像 URL（Person.image），经 toAbsoluteImageUrl 三分解析
 const avatarUrl = await getAuthorAvatarUrl();
@@ -125,7 +128,7 @@ const siteLogo = await getSiteLogo();
 ---
 
 <!doctype html>
-<html lang={siteLang} class="bg-(--page-bg) text-[14px] md:text-[16px]" data-wallpaper-mode={backgroundWallpaper.mode} data-has-wallpaper={hasWallpaper ? "" : undefined} data-tag-style={siteConfig.tagStyle ?? "pill"} data-category-style={siteConfig.categoryStyle ?? "rectangle"}>
+<html lang={uiLanguage} class="bg-(--page-bg) text-[14px] md:text-[16px]" data-wallpaper-mode={backgroundWallpaper.mode} data-has-wallpaper={hasWallpaper ? "" : undefined} data-tag-style={siteConfig.tagStyle ?? "pill"} data-category-style={siteConfig.categoryStyle ?? "rectangle"}>
   <head>
     <meta charset="UTF-8" />
     <style is:inline>
@@ -170,7 +173,9 @@ const siteLogo = await getSiteLogo();
     }
     <meta name="author" content={profileConfig.name} />
 
-    <link rel="canonical" href={Astro.url} />
+    <link rel="canonical" href={canonical} />
+    {stripLocale(Astro.url.pathname) !== Astro.url.pathname && <meta name="robots" content="noindex, follow" />}
+    <script>import "@/i18n/locale-preference";</script>
     <meta property="og:site_name" content={siteConfig.title} />
     <meta property="og:url" content={Astro.url} />
     <meta property="og:title" content={pageTitle} />

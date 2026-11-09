@@ -1,4 +1,6 @@
 import I18nKey from "@/i18n/i18nKey";
+import { siteConfig } from "@/config/siteConfig";
+import { activeLocale, stripLocale } from "@/i18n/locale-routes";
 import { i18n } from "@/i18n/translation";
 import type { NavBarLink } from "@/types/navBarConfig";
 
@@ -33,6 +35,9 @@ const NAVBAR_DEFAULT_NAMES: Record<string, I18nKey> = {
 };
 
 export function resolveNavbarName(name: string): string {
+	if (name === "碎碎念" && !activeLocale(siteConfig.lang).startsWith("zh_")) {
+		return i18n(I18nKey.dynamic);
+	}
 	const key = NAVBAR_DEFAULT_NAMES[name];
 	return key ? i18n(key) : name;
 }
@@ -55,7 +60,7 @@ export function isNavbarLinkActive(
 	linkPath: string,
 ): boolean {
 	const normalizePath = (value: string): string => {
-		const pathname = new URL(value, "https://charlore.local").pathname;
+		const pathname = stripLocale(new URL(value, "https://charlore.local").pathname);
 		const normalized = pathname === "/" ? "/" : pathname.replace(/\/$/, "");
 		return normalized.toLocaleLowerCase();
 	};

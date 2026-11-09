@@ -35,9 +35,12 @@ const SYSTEM_FONT_STACK =
 const MONO_FONT_STACK =
 	'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace';
 const selectedFontVars = selectedIds.filter((v) => v !== "system");
+const roundFont = "--font-chill-round-f";
+const fontVariable = (variable: string) =>
+	variable === roundFont ? "--font-charlore-rounded" : variable;
 const bodyFontFamily =
 	selectedFontVars.length > 0
-		? [...selectedFontVars.map((v) => `var(${v})`), SYSTEM_FONT_STACK].join(
+		? [...selectedFontVars.map((v) => `var(${fontVariable(v)})`), SYSTEM_FONT_STACK].join(
 				", ",
 			)
 		: SYSTEM_FONT_STACK;
@@ -74,9 +77,10 @@ const codeFontFamily = codeFontVar
   set:html={`
   :root {
     --font-code: ${codeFontFamily};
-    ${bannerTitleFontVar ? `--font-banner-title: var(${bannerTitleFontVar}, inherit);` : ""}
-    ${bannerSubtitleFontVar ? `--font-banner-subtitle: var(${bannerSubtitleFontVar}, inherit);` : ""}
-    ${navbarTitleFontVar ? `--font-navbar-title: var(${navbarTitleFontVar}, inherit);` : ""}
+    ${allCssVars.has(roundFont) ? '--font-charlore-rounded: "Charlore Cyrillic", "Charlore Hangul", var(--font-chill-round-f);' : ""}
+    ${bannerTitleFontVar ? `--font-banner-title: var(${fontVariable(bannerTitleFontVar)}, inherit);` : ""}
+    ${bannerSubtitleFontVar ? `--font-banner-subtitle: var(${fontVariable(bannerSubtitleFontVar)}, inherit);` : ""}
+    ${navbarTitleFontVar ? `--font-navbar-title: var(${fontVariable(navbarTitleFontVar)}, inherit);` : ""}
   }
 
   ${
@@ -92,6 +96,22 @@ const codeFontFamily = codeFontVar
 	}
 `}
 />
+
+<style is:global>
+  @font-face {
+    font-family: "Charlore Cyrillic";
+    src: url("/assets/fonts/Charlore-Cyrillic.woff2") format("woff2");
+    font-display: swap;
+    unicode-range: U+0400-052F, U+1C80-1C8F, U+2DE0-2DFF, U+A640-A69F;
+  }
+
+  @font-face {
+    font-family: "Charlore Hangul";
+    src: url("/assets/fonts/Charlore-Hangul.woff2") format("woff2");
+    font-display: swap;
+    unicode-range: U+1100-11FF, U+3130-318F, U+A960-A97F, U+AC00-D7FF;
+  }
+</style>
 
 <script>
   // 字体加载完成事件

@@ -17,26 +17,24 @@ function readSiteLangEnv(): string | undefined {
 }
 
 // 规整成 SiteConfig.lang 的合法取值，无法识别时返回 undefined（回退到默认值）
-function normalizeSiteLang(
+export function normalizeSiteLang(
 	value: string | undefined,
 ): SiteConfig["lang"] | undefined {
 	if (!value) return undefined;
-	const v = value.toLowerCase();
-	if (v === "zh_cn" || v === "zh-cn") return "zh_CN";
-	if (v === "zh_tw" || v === "zh-tw") return "zh_TW";
-	if (v === "ja" || v === "ja_jp" || v === "ja-jp") return "ja";
-	if (v === "ru" || v === "ru_ru" || v === "ru-ru") return "ru";
-	if (v === "ko" || v === "ko_kr" || v === "ko-kr") return "ko";
-	if (
-		v === "en" ||
-		v === "en_us" ||
-		v === "en_gb" ||
-		v === "en-us" ||
-		v === "en-gb"
-	) {
-		return "en";
+	const code = value.trim().toLowerCase().replaceAll("_", "-");
+	if (["zh", "zh-cn", "zh-hans", "zh-sg"].includes(code)) return "zh_CN";
+	if (["zh-tw", "zh-hant", "zh-hk", "zh-mo"].includes(code)) return "zh_TW";
+	const language = code.match(/^([a-z]{2})(?:-[a-z]{2})?$/)?.[1];
+	switch (language) {
+		case "de":
+		case "en":
+		case "es":
+		case "fr":
+		case "ja":
+		case "ko":
+		case "ru":
+			return language;
 	}
-	return undefined;
 }
 
 // 站点语言，环境变量 PUBLIC_SITE_LANG 优先，未设置或无法识别时使用默认值

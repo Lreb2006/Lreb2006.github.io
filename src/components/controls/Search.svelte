@@ -14,7 +14,7 @@ import {
 	searchLocalPosts,
 	shouldShowNoResults,
 } from "@/utils/search-utils";
-import { getSearchUrl } from "@/utils/url-utils";
+import { getSearchUrl, url } from "@/utils/url-utils";
 
 export let localEntries: LocalSearchEntry[] = [];
 
@@ -84,10 +84,10 @@ const cancelPendingSearch = (): void => {
 	isSearching = false;
 };
 
-const handleResultClick = (event: Event, url: string): void => {
+const handleResultClick = (event: Event, resultUrl: string): void => {
 	event.preventDefault();
 	closeSearchPanel();
-	navigateToPage(url);
+	navigateToPage(url(resultUrl));
 };
 
 // --- Core Search Logic ---
@@ -191,14 +191,14 @@ $: if (initialized && (keywordMobile || keywordMobile === "")) {
 </script>
 
 <!-- compact search control for desktop view -->
-<button on:click={togglePanel} aria-label="Search" aria-controls="search-panel" aria-expanded="false"
+<button on:click={togglePanel} aria-label={i18n(I18nKey.search)} aria-controls="search-panel" aria-expanded="false"
 		id="search-bar" class="nav-search-btn btn-plain hidden lg:inline-flex h-9 items-center gap-1.5 rounded-lg px-2 active:scale-95">
 	<span class="nav-search-btn__shortcut" aria-hidden="true">⌘ K</span>
 	<Icon icon="material-symbols:search" class="text-[1.25rem]"></Icon>
 </button>
 
 <!-- toggle btn for phone/tablet view -->
-<button on:click={togglePanel} aria-label="Search Panel" aria-controls="search-panel" aria-expanded="false" id="search-switch"
+<button on:click={togglePanel} aria-label={i18n(I18nKey.search)} aria-controls="search-panel" aria-expanded="false" id="search-switch"
 		class="btn-plain scale-animation lg:hidden! rounded-lg w-9 h-9 md:w-11 md:h-11 active:scale-90">
     <Icon icon="material-symbols:search" class="text-[1.25rem]"></Icon>
 </button>
@@ -229,7 +229,7 @@ top-20 left-4 md:left-[unset] right-4 shadow-2xl rounded-2xl p-2"
         </div>
     {:else if result.length > 0}
         {#each result.slice(0, 5) as item}
-            <a href={item.url}
+            <a href={url(item.url)}
                on:click={(e) => handleResultClick(e, item.url)}
                class="transition first-of-type:mt-2 lg:first-of-type:mt-0 group block
            rounded-xl text-lg px-3 py-2 hover:bg-(--btn-plain-bg-hover) active:bg-(--btn-plain-bg-active)">

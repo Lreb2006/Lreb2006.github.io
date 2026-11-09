@@ -1,4 +1,5 @@
 import { siteConfig } from "../config";
+import { activeLocale } from "../i18n/locale-routes";
 
 export function formatDateToYYYYMMDD(date: Date): string {
 	return date.toISOString().substring(0, 10);
@@ -10,7 +11,7 @@ export function formatDateI18n(
 	includeTime?: boolean,
 ): string {
 	const date = typeof dateInput === "string" ? new Date(dateInput) : dateInput;
-	const lang = siteConfig.lang || "en";
+	const lang = activeLocale(siteConfig.lang);
 
 	// 根据语言设置不同的日期格式
 	const options: Intl.DateTimeFormatOptions = {
