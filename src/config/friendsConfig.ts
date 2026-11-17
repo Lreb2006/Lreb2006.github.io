@@ -35,7 +35,7 @@ export const friendsConfig: FriendLink[] = [
 		title: "Trevor's Blog",
 		imgurl: "https://trevoewu.github.io/favicon.png",
 		desc: "Trevor's personal blog.",
-		siteurl: "https://trevoewu.github.io",
+		siteurl: "https://trevor.ccwu.cc/",
 		weight: 1,
 		enabled: true,
 	},
